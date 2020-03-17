@@ -4,7 +4,7 @@
  * GraphSpeech
  */
 
-namespace App\GraphSpeech;
+namespace App\Entity\GraphSpeech;
 
 /**
  * Description of Sentence

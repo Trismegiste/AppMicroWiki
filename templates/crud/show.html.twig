@@ -1,8 +1,19 @@
 {# templates/crud/show.html.twig #}
 {% extends 'base.html.twig' %}
 {%  block title %}
-    {{  doc.title }}
+    {{  doc.title }} - {{ doc.description }}
 {%  endblock %}
 {% block body %}
-    <h1>Your lucky number is {{ doc|length }}</h1>
+    <header>
+        <h1>{{ doc.title }}</h1>
+        <h2>{{ doc.description }}</h2>
+    </header>
+    <section>
+        {% for vertex in doc %}
+            <article>
+                <h3>{{ vertex.key }} ({{ vertex.category }})</h3>
+                <div>{{ vertex.content }}</div>
+            </article>  
+        {% endfor %}
+    </section>
 {% endblock %}

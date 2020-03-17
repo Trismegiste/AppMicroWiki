@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\Entity\GraphSpeech\Sentence;
 use App\Repository\DocumentFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +23,9 @@ class DocumentCrud extends AbstractController {
     public function show() {
         $doc = $this->repository->create();
         $doc->setTitle('Yolo');
+        $obj = new Sentence($doc, 'Alice');
+        $doc->setDescription('Some Mind Map');
+        $obj->setContent('She owns [[artefact]] and she knows [[Caterpillar]]');
 
         return $this->render('crud/show.html.twig', [
                     'doc' => $doc,
