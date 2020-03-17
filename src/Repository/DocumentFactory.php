@@ -13,9 +13,11 @@ use Symfony\Component\Finder\Finder;
 class DocumentFactory {
 
     protected $filesystem;
+    protected $basedir;
 
     public function __construct(Filesystem $fs) {
         $this->filesystem = $fs;
+        $this->basedir = __DIR__ . '/../../var/document/';
     }
 
     public function create(): Document {
@@ -24,13 +26,17 @@ class DocumentFactory {
 
     public function list(): IteratorAggregate {
         $iter = new Finder();
-        $iter->in(__DIR__ . '/../../var/document')->name("*.doc")->files();
+        $iter->in($this->basedir)->name("*.doc")->files();
 
         return $iter;
     }
 
     public function save(Document $doc) {
-        $this->filesystem->dumpFile($doc->getTitle(), serialize($doc));
+        $this->filesystem->dumpFile($this->basedir . $doc->getTitle() . '.doc', serialize($doc));
+    }
+
+    public function load(string $title) {
+        return unserialize(file_get_contents($this->basedir . $title . '.doc'));
     }
 
 }

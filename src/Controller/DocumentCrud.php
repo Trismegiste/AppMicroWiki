@@ -30,7 +30,7 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/docu/new")
+     * @Route("/docu/new", methods={"GET","POST"})
      */
     public function new(Request $request) {
         $form = $this->createForm(DocumentType::class);
@@ -40,7 +40,7 @@ class DocumentCrud extends AbstractController {
             $docu = $form->getData();
             $this->repository->save($docu);
 
-            return $this->redirectToRoute('docu_show', ['title' => $docu->getTitle()]);
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $docu->getTitle()]);
         }
 
         return $this->render('crud/new.html.twig', [
@@ -49,14 +49,10 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("docu/show/{title}")
+     * @Route("docu/show/{title}", methods={"GET"})
      */
-    public function show($title) {
-        $doc = $this->repository->create();
-        $doc->setTitle('Yolo');
-        $obj = new Sentence($doc, 'Alice');
-        $doc->setDescription('Some Mind Map');
-        $obj->setContent('She owns [[artefact]] and she knows [[Caterpillar]]');
+    public function show(string $title) {
+        $doc = $this->repository->load($title);
 
         return $this->render('crud/show.html.twig', [
                     'doc' => $doc,
