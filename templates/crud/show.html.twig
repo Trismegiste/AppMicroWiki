@@ -1,0 +1,8 @@
+{# templates/crud/show.html.twig #}
+{% extends 'base.html.twig' %}
+{%  block title %}
+    {{  doc.title }}
+{%  endblock %}
+{% block body %}
+    <h1>Your lucky number is {{ doc|length }}</h1>
+{% endblock %}
