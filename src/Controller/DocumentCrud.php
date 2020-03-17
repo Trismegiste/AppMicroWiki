@@ -1,14 +1,17 @@
 <?php
 
-// src/Controller/LuckyController.php
-
 namespace App\Controller;
 
 use App\Entity\GraphSpeech\Sentence;
+use App\Form\DocumentType;
 use App\Repository\DocumentFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Document manager
+ */
 class DocumentCrud extends AbstractController {
 
     protected $repository;
@@ -18,9 +21,37 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/show")
+     * @Route("/docu/list")
      */
-    public function show() {
+    public function list() {
+        return $this->render('crud/list.html.twig', [
+                    'listing' => $this->repository->list()
+        ]);
+    }
+
+    /**
+     * @Route("/docu/new")
+     */
+    public function new(Request $request) {
+        $form = $this->createForm(DocumentType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $docu = $form->getData();
+            $this->repository->save($docu);
+
+            return $this->redirectToRoute('docu_show', ['title' => $docu->getTitle()]);
+        }
+
+        return $this->render('crud/new.html.twig', [
+                    'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("docu/show/{title}")
+     */
+    public function show($title) {
         $doc = $this->repository->create();
         $doc->setTitle('Yolo');
         $obj = new Sentence($doc, 'Alice');

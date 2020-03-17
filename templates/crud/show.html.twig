@@ -12,7 +12,7 @@
         {% for vertex in doc %}
             <article>
                 <h3>{{ vertex.key }} ({{ vertex.category }})</h3>
-                <div>{{ vertex.content }}</div>
+                <div>{{ vertex.content|wiki(doc.title) }}</div>
             </article>  
         {% endfor %}
     </section>

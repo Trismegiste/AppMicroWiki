@@ -11,6 +11,8 @@ namespace App\Entity\GraphSpeech;
  */
 class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
 
+    const linkRegex = '/\[\[([^\]]+)\]\]/';
+
     protected $title;
     protected $description;
     protected $vertex = [];
@@ -86,7 +88,7 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         $report = [];
         foreach ($this->vertex as $key => $sentence) {
             $link = [];
-            if (preg_match_all('/\[\[([^\]]+)\]\]/', $sentence->getContent(), $link)) {
+            if (preg_match_all(self::linkRegex, $sentence->getContent(), $link)) {
                 foreach ($link[1] as $key) {
                     $report[] = $key;
                 }

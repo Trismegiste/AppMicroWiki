@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{%  block title %}
+    Listing
+{%  endblock %}
+{% block body %}
+    <header>
+        <h1>Listing</h1>
+    </header>
+    <section>
+        <ul>
+            {% for doc in listing %}
+                <li>
+                    {{ doc }}
+                </li>  
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}
