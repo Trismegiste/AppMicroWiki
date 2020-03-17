@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\GraphSpeech\Sentence;
 use App\Form\DocumentType;
 use App\Repository\DocumentFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +20,10 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/docu/list")
+     * @Route("/docu/list", methods={"GET"})
      */
     public function list() {
-        return $this->render('crud/list.html.twig', [
+        return $this->render('document/list.html.twig', [
                     'listing' => $this->repository->list()
         ]);
     }
@@ -43,7 +42,7 @@ class DocumentCrud extends AbstractController {
             return $this->redirectToRoute('app_documentcrud_show', ['title' => $docu->getTitle()]);
         }
 
-        return $this->render('crud/new.html.twig', [
+        return $this->render('document/new.html.twig', [
                     'form' => $form->createView()
         ]);
     }
@@ -54,7 +53,7 @@ class DocumentCrud extends AbstractController {
     public function show(string $title) {
         $doc = $this->repository->load($title);
 
-        return $this->render('crud/show.html.twig', [
+        return $this->render('document/show.html.twig', [
                     'doc' => $doc,
         ]);
     }

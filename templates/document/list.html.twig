@@ -10,7 +10,7 @@
         <ul>
             {% for doc in listing %}
                 <li>
-                    {{ doc }}
+                    <a href="{{ path('app_documentcrud_show',{title: doc.getBasename('.doc')}) }}">{{ doc.getBasename('.doc') }}</a>
                 </li>  
             {% endfor %}
         </ul>
