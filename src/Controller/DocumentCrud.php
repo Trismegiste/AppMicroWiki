@@ -54,20 +54,24 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("docu/show/{title}", methods={"GET"})
+     * @Route("docu/show/{title}/{key}", methods={"GET"})
      */
-    public function show(string $title) {
+    public function show(string $title, string $key = '') {
         $doc = $this->repository->load($title);
+        if (($key !== '') && (!$doc->offsetExists($key))) {
+            $this->redirectToRoute('app_documentcrud_append', ['title' => $title, 'key' => $key]);
+        }
 
         return $this->render('document/show.html.twig', [
                     'doc' => $doc,
+                    'focus' => $key
         ]);
     }
 
     /**
-     * @Route("/docu/show/{title}/append", methods={"GET","POST"})
+     * @Route("/docu/append/{title}/{key}", methods={"GET","POST"})
      */
-    public function append(string $title, Request $request) {
+    public function append(string $title, Request $request, string $key = '') {
         $doc = $this->repository->load($title);
 
         $form = $this->createForm(SentenceType::class, null, ['document' => $doc]);
@@ -81,7 +85,7 @@ class DocumentCrud extends AbstractController {
             return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle()]);
         }
 
-        return $this->render('document/new.html.twig', [
+        return $this->render('sentence/new.html.twig', [
                     'form' => $form->createView()
         ]);
     }

@@ -31,11 +31,11 @@ class DocumentFactory {
         return $iter;
     }
 
-    public function save(Document $doc) {
+    public function save(Document $doc): void {
         $this->filesystem->dumpFile($this->basedir . $doc->getTitle() . '.doc', serialize($doc));
     }
 
-    public function load(string $title) {
+    public function load(string $title): Document {
         return unserialize(file_get_contents($this->basedir . $title . '.doc'));
     }
 

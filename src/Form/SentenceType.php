@@ -35,6 +35,7 @@ class SentenceType extends AbstractType {
     }
 
     public function configureOptions(OptionsResolver $resolver) {
+        $resolver->setRequired(['document']);
         $resolver->setDefaults([
             'document' => null,
             'data_class' => Sentence::class,

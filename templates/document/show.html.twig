@@ -7,10 +7,11 @@
     <header>
         <h1>{{ doc.title }}</h1>
         <h2>{{ doc.description }}</h2>
+        <a href="{{ path('app_documentcrud_append', {title: doc.title}) }}">Append</a>
     </header>
     <section>
         {% for vertex in doc %}
-            <article>
+            <article {% if vertex.key == focus %}style="background-color: pink"{% endif %}>
                 <h3>{{ vertex.key }} ({{ vertex.category }})</h3>
                 <div>{{ vertex.content|wiki(doc.title) }}</div>
             </article>  
