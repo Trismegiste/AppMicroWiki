@@ -9,7 +9,7 @@ namespace App\Entity\GraphSpeech;
 /**
  * Description of Sentence
  */
-class Sentence {
+class Sentence implements Vertex {
 
     protected $document;
     protected $uniqueKey;
