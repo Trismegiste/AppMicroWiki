@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{%  block title %}
+    Delete Sentence
+{%  endblock %}
+{% block body %}
+    <header>
+        <h1>Delete Sentence</h1>
+    </header>
+    <section>
+        <div>
+            <p>Are you sure you want to delete '{{ key }}' ?</p>
+            {%  if inbound|length > 0  %}
+                <p>There are {{ inbound|length }} Sentence(s) that point to '{{ key }}' :</p>
+                <ul>
+                    {% for sentence in inbound %}
+                        <li>{{ sentence.key }}</li>
+                        {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {{ form(form) }}
+    </section>
+{% endblock %}

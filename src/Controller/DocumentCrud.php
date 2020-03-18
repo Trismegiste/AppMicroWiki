@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\GraphSpeech\Sentence;
 use App\Form\DocumentType;
+use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
 use SplFileInfo;
@@ -115,6 +115,30 @@ class DocumentCrud extends AbstractController {
 
         return $this->render('sentence/edit.html.twig', [
                     'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/docu/delete/{title}/{key}", methods={"GET","DELETE"})
+     */
+    public function delete(string $title, string $key, Request $request) {
+        $doc = $this->repository->load($title);
+
+        $form = $this->createForm(SentenceDeleteType::class, $doc[$key]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            unset($doc[$key]);
+            $this->repository->save($doc);
+
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle()]);
+        }
+
+        return $this->render('sentence/delete.html.twig', [
+                    'form' => $form->createView(),
+                    'key' => $key,
+                    'doc' => $doc->getTitle(),
+                    'inbound' => $doc->findSentenceByLink($key)
         ]);
     }
 

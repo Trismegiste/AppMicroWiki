@@ -95,7 +95,7 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         return array_keys($this->getLinksCount());
     }
 
-    public function getLinksCount() {
+    public function getLinksCount(): array {
         $report = [];
         foreach ($this->vertex as $sentence) {
             $link = [];
@@ -117,6 +117,22 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         $target = $this->getAllLinks();
         foreach ($this->vertex as $key => $obj) {
             if (!in_array($key, $target)) {
+                $report[] = $obj;
+            }
+        }
+
+        return $report;
+    }
+
+    /**
+     * Finds all Sentence that contain a link to [[key]]
+     * @param string $searchKey
+     * @return array of Sentence
+     */
+    public function findSentenceByLink(string $searchKey): array {
+        $report = [];
+        foreach ($this->vertex as $key => $obj) {
+            if (preg_match('/\[\[' . $searchKey . '\]\]/', $obj->getContent())) {
                 $report[] = $obj;
             }
         }

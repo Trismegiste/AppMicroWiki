@@ -18,12 +18,13 @@ h2 {
     margin: 0 0 0.3em;
 }
 
-.document .focus {
+.focus {
     background-color: #ddffda;
 }
 
-.document .warning {
+.warning {
     background-color: #ffc5f6;
+    color: #333;
 }
 
 .document footer {
