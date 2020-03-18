@@ -20,6 +20,9 @@ class Sentence {
         if ($doc->offsetExists($key)) {
             throw new DuplicateKeyException("Key '$key' already exists");
         }
+        if (empty($key)) {
+            throw new InvalidArgumentException("Key '$key' cannot be empty");
+        }
         $this->document = $doc;
         $this->uniqueKey = $key;
         $doc[$key] = $this;

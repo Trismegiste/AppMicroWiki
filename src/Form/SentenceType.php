@@ -26,8 +26,9 @@ class SentenceType extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('category', TextType::class)
+        $builder
                 ->add('key', TextType::class, ['label' => 'Name', 'data' => $options['new_key']])
+                ->add('category', TextType::class)
                 ->add('content', TextareaType::class)
                 ->add('document', HiddenType::class, ['mapped' => false, 'data' => $options['document']->getTitle()])
                 ->add('save', SubmitType::class);
