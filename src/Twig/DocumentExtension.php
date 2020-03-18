@@ -24,10 +24,14 @@ class DocumentExtension extends AbstractExtension {
         ];
     }
 
-    public function decorateWiki(string $content, string $pkDoc): string {
-        return preg_replace_callback(Document::linkRegex, function($match) use ($pkDoc) {
-            $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $match[1], '_fragment' => $pkDoc . '-' . $match[1]]);
-            return "<a href=\"$url\">{$match[1]}</a>";
+    public function decorateWiki(string $content, Document $doc): string {
+        return preg_replace_callback(Document::linkRegex, function($match) use ($doc) {
+            $pkDoc = $doc->getTitle();
+            $pkStc = $match[1];
+            $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc, '_fragment' => $pkDoc . '-' . $pkStc]);
+            $css = $doc->offsetExists($pkStc) ? 'wiki-link' : 'wiki-missing';
+
+            return "<a href=\"$url\" class=\"$css\">$pkStc</a>";
         }, $content);
     }
 

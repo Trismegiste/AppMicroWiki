@@ -19,14 +19,14 @@
                 <article>
                     <a id="{{ doc.title }}-{{ vertex.key }}"></a>
                     <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
-                    <div class="content">{{ vertex.content|wiki(doc.title) }}
+                    <div class="content">{{ vertex.content|wiki(doc) }}
                         {% if vertex.key == focus %}
                             {% set inbound = doc.findVertexByLink(vertex.key) %}
                             {% if inbound|length > 0 %}
                                 <p>
                                     See also : 
                                     {% for link in inbound %}
-                                        {% apply wiki(doc.title) %}[[{{ link.key }}]]{% endapply %}
+                                        {% apply wiki(doc) %}[[{{ link.key }}]]{% endapply %}
                                     {% endfor %}
                                 </p>
                             {% endif %}
