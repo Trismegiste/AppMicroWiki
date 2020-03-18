@@ -28,7 +28,7 @@ class SentenceType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('category', TextType::class)
-                ->add('key', TextType::class, ['label' => 'Name'])
+                ->add('key', TextType::class, ['label' => 'Name', 'data' => $options['new_key']])
                 ->add('content', TextareaType::class)
                 ->add('document', HiddenType::class, ['mapped' => false, 'data' => $options['document']->getTitle()])
                 ->add('save', SubmitType::class);
@@ -38,6 +38,7 @@ class SentenceType extends AbstractType {
         $resolver->setRequired(['document']);
         $resolver->setDefaults([
             'document' => null,
+            'new_key' => '',
             'data_class' => Sentence::class,
             'empty_data' => function(FormInterface $form) {
                 $doc = $this->repository->load($form->get('document')->getData());
@@ -46,6 +47,7 @@ class SentenceType extends AbstractType {
             }
         ]);
         $resolver->setAllowedTypes('document', Document::class);
+        $resolver->setAllowedTypes('new_key', 'string');
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\GraphSpeech\Document;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -10,6 +11,12 @@ use Twig\TwigFilter;
  * Description of DocumentExtension
  */
 class DocumentExtension extends AbstractExtension {
+
+    private $router;
+
+    public function __construct(UrlGeneratorInterface $router) {
+        $this->router = $router;
+    }
 
     public function getFilters() {
         return [
@@ -19,7 +26,8 @@ class DocumentExtension extends AbstractExtension {
 
     public function decorateWiki(string $content, string $pkDoc): string {
         return preg_replace_callback(Document::linkRegex, function($match) use ($pkDoc) {
-            return "<a href=\"/docu/append/$pkDoc/{$match[1]}\">{$match[1]}</a>";
+            $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $match[1]]);
+            return "<a href=\"$url\">{$match[1]}</a>";
         }, $content);
     }
 
