@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\GraphSpeech\Document;
 use App\Form\DocumentType;
 use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
@@ -9,6 +10,7 @@ use App\Repository\DocumentFactory;
 use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -85,7 +87,7 @@ class DocumentCrud extends AbstractController {
             $doc[] = $sentence;
             $this->repository->save($doc);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle(), 'key' => $sentence->getKey()]);
+            return $this->redirectToShowVertex($doc, $sentence);
         }
 
         return $this->render('sentence/new.html.twig', [
@@ -110,7 +112,7 @@ class DocumentCrud extends AbstractController {
             $doc[$key] = $sentence;
             $this->repository->save($doc);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle(), 'key' => $sentence->getKey()]);
+            return $this->redirectToShowVertex($doc, $sentence);
         }
 
         return $this->render('sentence/edit.html.twig', [
@@ -121,7 +123,7 @@ class DocumentCrud extends AbstractController {
     /**
      * @Route("/docu/delete/{title}/{key}", methods={"GET","DELETE"})
      */
-    public function delete(string $title, string $key, Request $request) {
+    public function delete(string $title, string $key, Request $request): Response {
         $doc = $this->repository->load($title);
 
         $form = $this->createForm(SentenceDeleteType::class, $doc[$key]);
@@ -139,6 +141,14 @@ class DocumentCrud extends AbstractController {
                     'key' => $key,
                     'doc' => $doc->getTitle(),
                     'inbound' => $doc->findSentenceByLink($key)
+        ]);
+    }
+
+    protected function redirectToShowVertex(Document $doc, \App\Entity\GraphSpeech\Sentence $sentence): Response {
+        return $this->redirectToRoute('app_documentcrud_show', [
+                    'title' => $doc->getTitle(),
+                    'key' => $sentence->getKey(),
+                    '_fragment' => $doc->getTitle() . '-' . $sentence->getKey()
         ]);
     }
 
