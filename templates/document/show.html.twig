@@ -24,7 +24,9 @@
                             <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button">Edit</a>
                         </div>
                         <div class="pure-u-1-2 right">
-                            <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button warning">Delete</a>
+                            {% if vertex.key == focus %}
+                                <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button warning">Delete</a>
+                            {% endif %}
                         </div>
                     </footer>
                 </article>
