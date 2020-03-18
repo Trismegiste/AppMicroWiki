@@ -5,19 +5,25 @@
 {%  endblock %}
 {% block body %}
     <section class="pure-g document">
-        <header class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1">
-            <h1>{{ doc.title }}</h1>
-            <h2>{{ doc.description }}</h2>
-            <a href="{{ path('app_documentcrud_append', {title: doc.title}) }}">Append</a>
-        </header> 
-        {% for vertex in doc %}
-            <article {% if vertex.key == focus %}style="background-color: pink"{% endif %} class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1">
-                <h3>{{ vertex.key }} ({{ vertex.category }})</h3>
-                <div>{{ vertex.content|wiki(doc.title) }}</div>
+        <div class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1 headline">
+            <header>
+                <h1>{{ doc.title }}</h1>
+                <div>{{ doc.description }}</div>
                 <footer>
-                    <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}">Edit</a>
+                    <a href="{{ path('app_documentcrud_append', {title: doc.title}) }}" class="pure-button">Append</a>
                 </footer>
-            </article>
+            </header> 
+        </div>
+        {% for vertex in doc %}
+            <div class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1 {% if vertex.key == focus %}focus{% endif %}">
+                <article>
+                    <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
+                    <div>{{ vertex.content|wiki(doc.title) }}</div>
+                    <footer>
+                        <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button">Edit</a>
+                    </footer>
+                </article>
+            </div>
         {% endfor %}
     </section>
 {% endblock %}
