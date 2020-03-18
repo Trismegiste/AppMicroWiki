@@ -129,7 +129,7 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
      * @param string $searchKey
      * @return array of Sentence
      */
-    public function findSentenceByLink(string $searchKey): array {
+    public function findVertexByLink(string $searchKey): array {
         $report = [];
         foreach ($this->vertex as $key => $obj) {
             if (preg_match('/\[\[' . $searchKey . '\]\]/', $obj->getContent())) {

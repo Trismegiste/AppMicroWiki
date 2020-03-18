@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\GraphSpeech\Document;
+use App\Entity\GraphSpeech\Sentence;
 use App\Form\DocumentType;
 use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
+use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +21,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class DocumentCrud extends AbstractController {
 
     protected $repository;
+    protected $logger;
 
-    public function __construct(DocumentFactory $repo) {
+    public function __construct(DocumentFactory $repo, LoggerInterface $log) {
         $this->repository = $repo;
+        $this->logger = $log;
     }
 
     /**
@@ -56,7 +60,7 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("docu/show/{title}/{key}", methods={"GET"})
+     * @Route("/docu/show/{title}/{key}", methods={"GET"})
      */
     public function show(string $title, string $key = '') {
         $doc = $this->repository->load($title);
@@ -140,11 +144,11 @@ class DocumentCrud extends AbstractController {
                     'form' => $form->createView(),
                     'key' => $key,
                     'doc' => $doc->getTitle(),
-                    'inbound' => $doc->findSentenceByLink($key)
+                    'inbound' => $doc->findVertexByLink($key)
         ]);
     }
 
-    protected function redirectToShowVertex(Document $doc, \App\Entity\GraphSpeech\Sentence $sentence): Response {
+    protected function redirectToShowVertex(Document $doc, Sentence $sentence): Response {
         return $this->redirectToRoute('app_documentcrud_show', [
                     'title' => $doc->getTitle(),
                     'key' => $sentence->getKey(),

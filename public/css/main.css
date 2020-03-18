@@ -19,7 +19,7 @@ h2 {
 }
 
 .focus {
-    background-color: #ddffda;
+    background-color: #eaffe9;
 }
 
 .warning {
@@ -43,4 +43,14 @@ h2 {
 
 .document footer .right {
     text-align: right;
+}
+
+.document .content a {
+    text-decoration: none;
+    font-style: italic;
+    color: darkblue;    
+}
+
+.content {
+    line-height: 140%
 }
