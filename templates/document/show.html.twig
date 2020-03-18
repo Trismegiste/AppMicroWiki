@@ -19,8 +19,13 @@
                 <article>
                     <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
                     <div>{{ vertex.content|wiki(doc.title) }}</div>
-                    <footer>
-                        <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button">Edit</a>
+                    <footer class="pure-g">
+                        <div class="pure-u-1-2 left">
+                            <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button">Edit</a>
+                        </div>
+                        <div class="pure-u-1-2 right">
+                            <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button warning">Delete</a>
+                        </div>
                     </footer>
                 </article>
             </div>

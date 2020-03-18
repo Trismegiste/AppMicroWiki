@@ -3,6 +3,10 @@
     margin-top: 0.8em;
 }
 
+.document footer {
+    margin-right: 0.8em;
+}
+
 h1 {
     font-weight: 400;
     margin: 0;
@@ -18,12 +22,24 @@ h2 {
     background-color: #ddffda;
 }
 
+.document .warning {
+    background-color: #ffc5f6;
+}
+
 .document footer {
-    margin-top: 0.6em;
+    margin-top: 0.8em;
     margin-bottom: 0.8em;
 }
 
 .document .headline {
     background-color: #2199e8;
     color: white;
+}
+
+.document article footer a {
+    border-radius: 2em;
+}
+
+.document footer .right {
+    text-align: right;
 }
