@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\GraphSpeech\Sentence;
 use App\Form\DocumentType;
+use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
+use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +27,10 @@ class DocumentCrud extends AbstractController {
      */
     public function list() {
         return $this->render('document/list.html.twig', [
-                    'listing' => $this->repository->list()
+                    'listing' => array_map(function(SplFileInfo $doc) {
+                                return $doc->getBasename('.doc');
+                            },
+                            \iterator_to_array($this->repository->list()))
         ]);
     }
 
@@ -55,6 +61,28 @@ class DocumentCrud extends AbstractController {
 
         return $this->render('document/show.html.twig', [
                     'doc' => $doc,
+        ]);
+    }
+
+    /**
+     * @Route("/docu/show/{title}/append", methods={"GET","POST"})
+     */
+    public function append(string $title, Request $request) {
+        $doc = $this->repository->load($title);
+
+        $form = $this->createForm(SentenceType::class, null, ['document' => $doc]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sentence = $form->getData();
+            $doc[] = $sentence;
+            $this->repository->save($doc);
+
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle()]);
+        }
+
+        return $this->render('document/new.html.twig', [
+                    'form' => $form->createView()
         ]);
     }
 
