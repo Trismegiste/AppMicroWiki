@@ -15,6 +15,9 @@
                 <h3>{{ vertex.key }} ({{ vertex.category }})</h3>
                 <div>{{ vertex.content|wiki(doc.title) }}</div>
             </article>  
+            <footer>
+                <a href="{{ path('app_documentcrud_edit', {key:vertex.key, title:doc.title}) }}">Edit</a>
+            </footer>
         {% endfor %}
     </section>
 {% endblock %}

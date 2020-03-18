@@ -54,11 +54,18 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
             throw new \InvalidArgumentException("Item '$oldKey' must be a Sentence");
         }
 
-        if ($oldKey !== $value->getKey()) {
+        if (!is_null($oldKey) && ($oldKey !== $value->getKey())) {
             unset($this->vertex[$oldKey]);
+            $this->replaceBrokenLinks($oldKey, $value->getKey());
         }
 
         $this->vertex[$value->getKey()] = $value;
+    }
+
+    protected function replaceBrokenLinks(string $oldKey, string $newKey): void {
+        foreach ($this->vertex as $sentence) {
+            $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));
+        }
     }
 
     public function offsetUnset($offset): void {
@@ -85,12 +92,19 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
     }
 
     public function getAllLinks(): array {
+        return array_keys($this->getLinksCount());
+    }
+
+    public function getLinksCount() {
         $report = [];
-        foreach ($this->vertex as $key => $sentence) {
+        foreach ($this->vertex as $sentence) {
             $link = [];
             if (preg_match_all(self::linkRegex, $sentence->getContent(), $link)) {
                 foreach ($link[1] as $key) {
-                    $report[] = $key;
+                    if (!array_key_exists($key, $report)) {
+                        $report[$key] = 1;
+                    }
+                    $report[$key] ++;
                 }
             }
         }

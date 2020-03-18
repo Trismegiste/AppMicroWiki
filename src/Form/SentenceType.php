@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\GraphSpeech\Document;
 use App\Entity\GraphSpeech\Sentence;
 use App\Repository\DocumentFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

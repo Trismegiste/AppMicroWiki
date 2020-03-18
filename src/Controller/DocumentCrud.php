@@ -93,4 +93,29 @@ class DocumentCrud extends AbstractController {
         ]);
     }
 
+    /**
+     * @Route("/docu/edit/{title}/{key}", methods={"GET","POST"})
+     */
+    public function edit(string $title, Request $request, string $key) {
+        $doc = $this->repository->load($title);
+
+        $form = $this->createForm(SentenceType::class, $doc[$key], [
+            'document' => $doc,
+            'new_key' => $key
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sentence = $form->getData();
+            $doc[$key] = $sentence;
+            $this->repository->save($doc);
+
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle(), 'key' => $sentence->getKey()]);
+        }
+
+        return $this->render('sentence/edit.html.twig', [
+                    'form' => $form->createView()
+        ]);
+    }
+
 }
