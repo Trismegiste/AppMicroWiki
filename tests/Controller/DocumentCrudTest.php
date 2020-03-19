@@ -33,14 +33,8 @@ class DocumentCrudTest extends WebTestCase {
 
     public function testShow() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/docu/show/TMP');
+        $client->request('GET', '/docu/show/TMP');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
-
-    public function testRedirectNewKey() {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/docu/show/TMP/yolo');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
 }
