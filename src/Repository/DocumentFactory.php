@@ -29,7 +29,7 @@ class DocumentFactory {
         $iter = new Finder();
         $iter->in($this->basedir)->name("*.json")->files();
 
-        return $iter;
+        return new ListingDecorator($iter);
     }
 
     public function save(Document $doc): void {
@@ -45,7 +45,7 @@ class DocumentFactory {
             ];
         }
 
-        $this->filesystem->dumpFile($this->basedir . $doc->getTitle() . '.json', json_encode($flatten));
+        $this->filesystem->dumpFile($this->basedir . sha1($doc->getTitle()) . '.json', json_encode($flatten));
     }
 
     public function load(string $title): Document {
