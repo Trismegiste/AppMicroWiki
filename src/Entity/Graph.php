@@ -13,7 +13,7 @@ class Graph implements \ArrayAccess, \IteratorAggregate, \Countable {
 
     protected $vertex = [];
 
-    // ArrayAccess     
+    // ArrayAccess methods
     public function offsetExists($offset): bool {
         return array_key_exists($offset, $this->vertex);
     }
@@ -51,6 +51,27 @@ class Graph implements \ArrayAccess, \IteratorAggregate, \Countable {
 
     public function getIterator(): \Traversable {
         return new \ArrayIterator($this->vertex);
+    }
+
+    // Graph methods
+    public function moveVertexToNewKey(Vertex $vertex, string $newKey): void {
+        if (array_key_exists($newKey, $this->vertex)) {
+            throw new DuplicateKeyException("Key '$newKey' already exists");
+        }
+
+        $oldKey = $vertex->getKey();
+
+        if (!array_key_exists($oldKey, $this->vertex)) {
+            throw new \OutOfBoundsException("Key '$oldKey' does not exist in this Graph");
+        }
+
+        if ($vertex !== $this->vertex[$oldKey]) {
+            throw new \LogicException('This Vertex does not belong to this Graph');
+        }
+
+        unset($this->vertex[$oldKey]);
+        $this->vertex[$newKey] = $vertex;
+        // this is the responsibility of Vertex to change its own Key !
     }
 
 }

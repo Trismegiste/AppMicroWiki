@@ -91,4 +91,35 @@ class GraphTest extends TestCase {
         }
     }
 
+    public function testMoveVertexToNewKey() {
+        $this->expectException(DuplicateKeyException::class);
+        $first = $this->createVertexMock('yolo');
+        $this->sut[] = $first;
+        $this->sut[] = $this->createVertexMock('zogzog');
+        $this->sut->moveVertexToNewKey($first, 'zogzog');
+    }
+
+    public function testMoveVertexInvalid() {
+        $this->expectException(OutOfBoundsException::class);
+        $first = $this->createVertexMock('yolo');
+        $this->sut[] = $first;
+        $second = $this->createVertexMock('zogzog');
+        $this->sut->moveVertexToNewKey($second, 'other');
+    }
+
+    public function testMoveVertexThief() {
+        $this->expectException(LogicException::class);
+        $first = $this->createVertexMock('yolo');
+        $this->sut[] = $first;
+        $second = $this->createVertexMock('yolo');
+        $this->sut->moveVertexToNewKey($second, 'other');
+    }
+
+    public function testMoveVertexSuccess() {
+        $first = $this->createVertexMock('yolo');
+        $this->sut[] = $first;
+        $this->sut->moveVertexToNewKey($first, 'other');
+        $this->assertArrayHasKey('other', $this->sut);
+    }
+
 }

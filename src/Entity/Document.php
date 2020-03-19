@@ -39,18 +39,7 @@ class Document extends Graph {
     // Graph methods
     public function moveVertexToNewKey(Vertex $vertex, string $newKey): void {
         $oldKey = $vertex->getKey();
-
-        if (!array_key_exists($oldKey, $this->vertex)) {
-            throw new \OutOfBoundsException("Key '$oldKey' does not exists in this Document");
-        }
-
-        if ($vertex !== $this->vertex[$oldKey]) {
-            throw new \LogicException('This Vertex does not belong to this Document');
-        }
-
-        unset($this->vertex[$oldKey]);
-        $this->vertex[$newKey] = $vertex;
-        // this is the responsibility of Vertex to change its own Key !
+        parent::moveVertexToNewKey($vertex, $newKey);
         $this->replaceBrokenLinks($oldKey, $newKey);
     }
 
