@@ -13,7 +13,7 @@ class DocumentFactoryTest extends TestCase {
 
     protected function setUp(): void {
         $this->fs = $this->createMock(Filesystem::class);
-        $this->sut = new DocumentFactory($this->fs, __DIR__);
+        $this->sut = new DocumentFactory($this->fs, __DIR__, '.');
     }
 
     protected function tearDown(): void {
@@ -25,12 +25,12 @@ class DocumentFactoryTest extends TestCase {
         $this->assertCount(1, $result);
         foreach ($result as $obj) {
             $this->assertEquals('Holon', $obj->title);
-            $this->assertStringEndsWith('fixtures.json', $obj->filename);
+            $this->assertEquals('fixtures', $obj->filename);
         }
     }
 
     public function testLoad() {
-        $doc = $this->sut->load('fixtures.json');
+        $doc = $this->sut->load('fixtures');
         $this->assertInstanceOf(Document::class, $doc);
         $this->assertEquals('Holon', $doc->getTitle());
         $this->assertCount(5, $doc);

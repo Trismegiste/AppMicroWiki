@@ -2,17 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\GraphSpeech\Document;
-use App\Entity\GraphSpeech\Sentence;
 use App\Form\DocumentType;
-use App\Form\SentenceDeleteType;
-use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
 use Psr\Log\LoggerInterface;
-use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -33,10 +27,7 @@ class DocumentCrud extends AbstractController {
      */
     public function list() {
         return $this->render('document/list.html.twig', [
-                    'listing' => array_map(function(SplFileInfo $doc) {
-                                return $doc->getBasename('.json');
-                            },
-                            \iterator_to_array($this->repository->list()))
+                    'listing' => $this->repository->list()
         ]);
     }
 

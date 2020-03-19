@@ -11,7 +11,7 @@
         <ul>
             {% for doc in listing %}
                 <li>
-                    <a href="{{ path('app_documentcrud_show',{title: doc}) }}">{{ doc }}</a>
+                    <a href="{{ path('app_documentcrud_show',{title: doc.title}) }}">{{ doc.title }}</a>
                 </li>  
             {% endfor %}
         </ul>

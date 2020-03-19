@@ -18,7 +18,7 @@ class DocumentFactory {
 
     public function __construct(Filesystem $fs, string $projectDir, string $repositoryDir) {
         $this->filesystem = $fs;
-        $this->basedir = $projectDir . '/' . $repositoryDir;
+        $this->basedir = $projectDir . '/' . $repositoryDir . '/';
     }
 
     public function create(): Document {
@@ -47,20 +47,22 @@ class DocumentFactory {
             ];
         }
 
-        $this->filesystem->dumpFile($this->basedir . '/' . sha1($doc->getTitle()) . '.json', json_encode($flatten));
+        $this->filesystem->dumpFile($this->basedir . $doc->getTitle() . '.json', json_encode($flatten));
     }
 
     public function load(string $filename): Document {
-        $flatten = json_decode(file_get_contents($this->basedir . '/' . $filename));
+        $flatten = json_decode(file_get_contents($this->basedir . $filename . '.json'));
 
         $doc = $this->create();
         $doc->setTitle($flatten->title);
         $doc->setDescription($flatten->description);
-        foreach ($flatten->vertex as $vertex) {
-            $stc = new Sentence($vertex->key);
-            $stc->setCategory($vertex->category);
-            $stc->setContent($vertex->content);
-            $doc[] = $stc;
+        if (isset($flatten->vertex)) {
+            foreach ($flatten->vertex as $vertex) {
+                $stc = new Sentence($vertex->key);
+                $stc->setCategory($vertex->category);
+                $stc->setContent($vertex->content);
+                $doc[] = $stc;
+            }
         }
 
         return $doc;
