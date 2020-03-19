@@ -2,8 +2,9 @@
 
 namespace App\Twig;
 
-use App\Entity\GraphSpeech\Document;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Trismegiste\MicroWiki\Document;
+use Trismegiste\MicroWiki\Sentence;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -25,7 +26,7 @@ class DocumentExtension extends AbstractExtension {
     }
 
     public function decorateWiki(string $content, Document $doc): string {
-        $processed = preg_replace_callback(Document::linkRegex, function($match) use ($doc) {
+        $processed = preg_replace_callback(Sentence::linkRegex, function($match) use ($doc) {
             $pkDoc = $doc->getTitle();
             $pkStc = $match[1];
             $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc, '_fragment' => $pkDoc . '-' . $pkStc]);
