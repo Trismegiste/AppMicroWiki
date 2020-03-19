@@ -75,7 +75,7 @@ class SentenceType extends AbstractType implements DataMapperInterface {
         $viewData->setCategory($forms['category']->getData());
         $viewData->setContent($forms['content']->getData());
 
-        if (!array_key_exists($viewData->getKey(), $this->parentDocument)) {
+        if (!$this->parentDocument->offsetExists($viewData->getKey())) {
             $this->parentDocument[] = $viewData;
         }
 

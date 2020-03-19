@@ -32,15 +32,15 @@ class SentenceCrud extends AbstractController {
     public function append(string $title, Request $request, string $key = '') {
         $doc = $this->repository->load($title);
 
-        $form = $this->createForm(SentenceType::class, null, [
-            'document' => $doc,
-            'new_key' => $key
-        ]);
+        $sentence = null;
+        if (strlen($key)) {
+            $sentence = new Sentence($key);
+        }
+        $form = $this->createForm(SentenceType::class, $sentence, ['document' => $doc]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $sentence = $form->getData();
-            $doc[] = $sentence;
             $this->repository->save($doc);
 
             return $this->redirectToShowVertex($doc, $sentence);
@@ -57,15 +57,11 @@ class SentenceCrud extends AbstractController {
     public function edit(string $title, Request $request, string $key) {
         $doc = $this->repository->load($title);
 
-        $form = $this->createForm(SentenceType::class, $doc[$key], [
-            'document' => $doc,
-            'new_key' => $key
-        ]);
+        $form = $this->createForm(SentenceType::class, $doc[$key], ['document' => $doc]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $sentence = $form->getData();
-            $doc[$key] = $sentence;
             $this->repository->save($doc);
 
             return $this->redirectToShowVertex($doc, $sentence);
