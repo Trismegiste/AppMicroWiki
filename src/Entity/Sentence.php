@@ -47,4 +47,8 @@ class Sentence implements Vertex {
         $this->content = $content;
     }
 
+    public function getOutboundKey(): array {
+        throw new LogicException('Not yet implemented');
+    }
+
 }

@@ -12,4 +12,6 @@ namespace Trismegiste\MicroWiki;
 interface Vertex {
 
     public function getKey(): string;
+
+    public function getOutboundKey(): array;
 }
