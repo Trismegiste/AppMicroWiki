@@ -25,7 +25,7 @@ class DocumentExtension extends AbstractExtension {
     }
 
     public function decorateWiki(string $content, Document $doc): string {
-        return preg_replace_callback(Document::linkRegex, function($match) use ($doc) {
+        $processed = preg_replace_callback(Document::linkRegex, function($match) use ($doc) {
             $pkDoc = $doc->getTitle();
             $pkStc = $match[1];
             $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc, '_fragment' => $pkDoc . '-' . $pkStc]);
@@ -33,6 +33,10 @@ class DocumentExtension extends AbstractExtension {
 
             return "<a href=\"$url\" class=\"$css\">$pkStc</a>";
         }, $content);
+
+        $processed = str_replace("\n", '<br/>', $processed);
+
+        return $processed;
     }
 
 }

@@ -34,7 +34,7 @@ class DocumentCrud extends AbstractController {
     public function list() {
         return $this->render('document/list.html.twig', [
                     'listing' => array_map(function(SplFileInfo $doc) {
-                                return $doc->getBasename('.doc');
+                                return $doc->getBasename('.json');
                             },
                             \iterator_to_array($this->repository->list()))
         ]);
