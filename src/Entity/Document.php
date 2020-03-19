@@ -62,6 +62,10 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         $this->vertex[$value->getKey()] = $value;
     }
 
+    public function renameVertexKey(Vertex $vertex, $newKey) {
+        
+    }
+
     protected function replaceBrokenLinks(string $oldKey, string $newKey): void {
         foreach ($this->vertex as $sentence) {
             $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));

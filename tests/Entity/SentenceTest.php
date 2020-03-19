@@ -8,23 +8,15 @@ use Trismegiste\MicroWiki\Sentence;
 class SentenceTest extends TestCase {
 
     protected $sut;
-    protected $doc;
 
     protected function setUp(): void {
-        $this->doc = new Document();
-        $this->sut = new Sentence($this->doc, 'name');
+        $this->sut = new Sentence('name');
         $this->sut->setCategory('category');
         $this->sut->setContent('A sentence with [[link]] and...');
     }
 
     protected function tearDown(): void {
         unset($this->sut);
-        unset($this->doc);
-    }
-
-    public function testRegistered() {
-        $this->assertCount(1, $this->doc);
-        $this->assertArrayHasKey('name', $this->doc);
     }
 
     public function testGetters() {
@@ -39,14 +31,15 @@ class SentenceTest extends TestCase {
     }
 
     public function testChangeKey() {
-        $this->sut->setKey('New Name');
-        $this->assertArrayHasKey('New Name', $this->doc);
-        $this->assertArrayNotHasKey('name', $this->doc);
+        $doc = new Document();
+        $this->sut->renameKey($doc, 'New Name');
+        $this->assertArrayHasKey('New Name', $doc);
+        $this->assertArrayNotHasKey('name', $doc);
     }
 
-    public function testUniqueKey() {
-        $this->expectException(DuplicateKeyException::class);
-        new Sentence($this->doc, 'name');
+    public function testNonEmptyKey() {
+        $this->expectException(\InvalidArgumentException::class);
+        new Sentence('');
     }
 
 }

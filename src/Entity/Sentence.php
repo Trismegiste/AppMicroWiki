@@ -11,21 +11,15 @@ namespace Trismegiste\MicroWiki;
  */
 class Sentence implements Vertex {
 
-    protected $document;
     protected $uniqueKey;
-    protected $category = 'all';
-    protected $content = '';
+    protected $category;
+    protected $content;
 
-    public function __construct(\ArrayAccess $doc, string $key) {
-        if ($doc->offsetExists($key)) {
-            throw new DuplicateKeyException("Key '$key' already exists");
-        }
+    public function __construct(string $key) {
         if (empty($key)) {
-            throw new InvalidArgumentException("Key '$key' cannot be empty");
+            throw new \InvalidArgumentException("Key '$key' cannot be empty");
         }
-        $this->document = $doc;
         $this->uniqueKey = $key;
-        $doc[$key] = $this;
     }
 
     public function setCategory(string $cat): void {
@@ -40,10 +34,9 @@ class Sentence implements Vertex {
         return $this->uniqueKey;
     }
 
-    public function setKey(string $newKey): void {
-        $oldKey = $this->uniqueKey;
+    public function renameKey(Document $doc, string $newKey): void {
+        $doc->renameVertexKey($this, $newKey);
         $this->uniqueKey = $newKey;
-        $this->document[$oldKey] = $this;
     }
 
     public function getContent(): string {
