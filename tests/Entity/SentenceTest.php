@@ -32,6 +32,7 @@ class SentenceTest extends TestCase {
 
     public function testChangeKey() {
         $doc = new Document();
+        $doc[] = $this->sut;
         $this->sut->renameKey($doc, 'New Name');
         $this->assertArrayHasKey('New Name', $doc);
         $this->assertArrayNotHasKey('name', $doc);

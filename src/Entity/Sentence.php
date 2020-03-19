@@ -35,7 +35,7 @@ class Sentence implements Vertex {
     }
 
     public function renameKey(Document $doc, string $newKey): void {
-        $doc->renameVertexKey($this, $newKey);
+        $doc->moveVertexToNewKey($this, $newKey);
         $this->uniqueKey = $newKey;
     }
 

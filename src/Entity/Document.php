@@ -22,6 +22,7 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         $this->description = $d;
     }
 
+    // getters & setters
     public function setTitle(string $str): void {
         $this->title = $str;
     }
@@ -38,6 +39,7 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         return $this->description;
     }
 
+    // ArrayAccess     
     public function offsetExists($offset): bool {
         return array_key_exists($offset, $this->vertex);
     }
@@ -49,27 +51,20 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
         return $this->vertex[$offset];
     }
 
-    public function offsetSet($oldKey, $value): void {
-        if (!($value instanceof Sentence)) {
-            throw new \InvalidArgumentException("Item '$oldKey' must be a Sentence");
+    public function offsetSet($key, $vertex): void {
+        if (!($vertex instanceof Vertex)) {
+            throw new \InvalidArgumentException("Item must be a Vertex");
         }
 
-        if (!is_null($oldKey) && ($oldKey !== $value->getKey())) {
-            unset($this->vertex[$oldKey]);
-            $this->replaceBrokenLinks($oldKey, $value->getKey());
+        if (!is_null($key)) {
+            throw new \LogicException("Sorry Dave, I'm afraid I can't do that");
         }
 
-        $this->vertex[$value->getKey()] = $value;
-    }
-
-    public function renameVertexKey(Vertex $vertex, $newKey) {
-        
-    }
-
-    protected function replaceBrokenLinks(string $oldKey, string $newKey): void {
-        foreach ($this->vertex as $sentence) {
-            $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));
+        if (array_key_exists($vertex->getKey(), $this->vertex)) {
+            throw new DuplicateKeyException("Key '" . $vertex->getKey() . "' already exists");
         }
+
+        $this->vertex[$vertex->getKey()] = $vertex;
     }
 
     public function offsetUnset($offset): void {
@@ -82,6 +77,30 @@ class Document implements \ArrayAccess, \IteratorAggregate, \Countable {
 
     public function getIterator(): \Traversable {
         return new \ArrayIterator($this->vertex);
+    }
+
+    // Graph methods
+    public function moveVertexToNewKey(Vertex $vertex, string $newKey): void {
+        $oldKey = $vertex->getKey();
+
+        if (!array_key_exists($oldKey, $this->vertex)) {
+            throw new \OutOfBoundsException("Key '$oldKey' does not exists in this Document");
+        }
+
+        if ($vertex !== $this->vertex[$oldKey]) {
+            throw new \LogicException('This Vertex does not belong to this Document');
+        }
+
+        unset($this->vertex[$oldKey]);
+        $this->vertex[$newKey] = $vertex;
+        // this is the responsibility of Vertex to change its own Key !
+        $this->replaceBrokenLinks($oldKey, $newKey);
+    }
+
+    protected function replaceBrokenLinks(string $oldKey, string $newKey): void {
+        foreach ($this->vertex as $sentence) {
+            $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));
+        }
     }
 
     public function findBrokenLink(): array {
