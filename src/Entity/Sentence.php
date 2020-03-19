@@ -11,6 +11,8 @@ namespace Trismegiste\MicroWiki;
  */
 class Sentence implements Vertex {
 
+    const linkRegex = '/\[\[([^\]]+)\]\]/';
+
     protected $uniqueKey;
     protected $category;
     protected $content;

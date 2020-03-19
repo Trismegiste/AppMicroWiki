@@ -11,8 +11,6 @@ namespace Trismegiste\MicroWiki;
  */
 class Document extends Graph {
 
-    const linkRegex = '/\[\[([^\]]+)\]\]/';
-
     protected $title;
     protected $description;
 
@@ -81,7 +79,7 @@ class Document extends Graph {
         $report = [];
         foreach ($this->vertex as $sentence) {
             $link = [];
-            if (preg_match_all(self::linkRegex, $sentence->getContent(), $link)) {
+            if (preg_match_all(Sentence::linkRegex, $sentence->getContent(), $link)) {
                 foreach ($link[1] as $key) {
                     if (!array_key_exists($key, $report)) {
                         $report[$key] = 1;
