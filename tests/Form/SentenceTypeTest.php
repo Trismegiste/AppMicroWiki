@@ -40,6 +40,7 @@ class SentenceTypeTest extends TypeTestCase {
         $this->assertEquals('IBM8000', $stc->getKey());
         $this->assertEquals('chess master', $stc->getCategory());
         $this->assertArrayHasKey('IBM8000', $doc);
+        $this->assertEquals($stc, $doc['IBM8000']);
     }
 
 }
