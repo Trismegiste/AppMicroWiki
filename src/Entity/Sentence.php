@@ -49,8 +49,21 @@ class Sentence implements Vertex {
         $this->content = $content;
     }
 
+    /**
+     * Gets the links to other Sentence. We only deals with __fuzzy__ STRING keys because this
+     * object does not know its siblings. Only Document could know other OBJECTS
+     * @return array an array of STRING for each link.
+     */
     public function getOutboundKey(): array {
-        throw new LogicException('Not yet implemented');
+        $report = [];
+        $link = [];
+        if (preg_match_all(self::linkRegex, $this->content, $link)) {
+            foreach ($link[1] as $key) {
+                $report[$key] = true;
+            }
+        }
+
+        return array_keys($report);
     }
 
 }

@@ -43,4 +43,8 @@ class SentenceTest extends TestCase {
         new Sentence('');
     }
 
+    public function testOutboundLink() {
+        $this->assertEquals(['link'], $this->sut->getOutboundKey());
+    }
+
 }
