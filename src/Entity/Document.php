@@ -137,6 +137,17 @@ class Document extends Graph {
                 }));
     }
 
+    /**
+     * Combining the two : LINKS (even broken or not-yet-existing) and real KEYS
+     * @param string $keyword
+     * @return array
+     */
+    public function searchAnyTypeOfLinksStartingBy(string $keyword): array {
+        $combo = array_unique(array_merge($this->searchKeysStartingBy($keyword), $this->searchLinksStartingBy($keyword)));
+        sort($combo);
+        return array_values($combo);
+    }
+
     public function getCategoryList(): array {
         $report = [];
         foreach ($this->vertex as $key => $stc) {

@@ -110,8 +110,7 @@ class SentenceCrud extends AbstractController {
      */
     public function searchLinks(string $title, string $keyword = '') {
         $doc = $this->repository->load($title);
-        return $this->json($doc->searchLinksStartingBy($keyword));
-        return $this->json($doc->searchKeysStartingBy($keyword));
+        return $this->json($doc->searchAnyTypeOfLinksStartingBy($keyword));
     }
 
 }
