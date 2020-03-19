@@ -6,18 +6,6 @@ use Trismegiste\MicroWiki\Document;
 
 class DocumentTypeTest extends TypeTestCase {
 
-    protected $sut;
-
-    protected function setUp(): void {
-        parent::setUp();
-        $this->sut = new DocumentType();
-    }
-
-    protected function tearDown(): void {
-        unset($this->sut);
-        parent::tearDown();
-    }
-
     public function testEmptyData() {
         $form = $this->factory->create(DocumentType::class);
         $formData = [
