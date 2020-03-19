@@ -35,7 +35,7 @@ class SentenceCrudTest extends WebTestCase {
         $client->submit($form, [
             'sentence[key]' => 'Kusanagi Motoko',
             'sentence[category]' => 'cyborg',
-            'sentence[content]' => 'Section 9',
+            'sentence[content]' => '[[Section 9]]',
         ]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $crawler = $client->followRedirect();
@@ -46,6 +46,14 @@ class SentenceCrudTest extends WebTestCase {
         $client = static::createClient();
         $crawler = $client->request('GET', '/docu/show/TMP/Kusanagi Motoko');
         $this->assertCount(1, $crawler->selectLink('Delete'));
+    }
+
+    public function testXhrAutocomplete() {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/vertex/find/TMP/s');
+        $this->assertEquals(['Section 9'], json_decode($client->getResponse()->getContent(), true));
+        $crawler = $client->request('GET', '/vertex/find/TMP/k');
+        $this->assertEquals(['Kusanagi Motoko'], json_decode($client->getResponse()->getContent(), true));
     }
 
     public function testDelete() {
