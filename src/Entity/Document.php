@@ -109,7 +109,12 @@ class Document extends Graph {
         return $report;
     }
 
-    public function searchLinksStartingBy(string $keyword) {
+    /**
+     * Searches all KEYS of sentences. Usage : autocomplete
+     * @param string $keyword
+     * @return array
+     */
+    public function searchKeysStartingBy(string $keyword): array {
         $report = [];
         foreach ($this->vertex as $key => $stc) {
             if (preg_match("|^$keyword|i", $key)) {
@@ -118,6 +123,29 @@ class Document extends Graph {
         }
 
         return $report;
+    }
+
+    /**
+     * Search all LINKS, even broken links that does not point to a sentence with a valid KEY
+     * Usage : autocomplete
+     * @param string $keyword
+     * @return array
+     */
+    public function searchLinksStartingBy(string $keyword): array {
+        return array_values(array_filter($this->getAllLinks(), function($v) use ($keyword) {
+                    return preg_match("|^$keyword|i", $v);
+                }));
+    }
+
+    public function getCategoryList(): array {
+        $report = [];
+        foreach ($this->vertex as $key => $stc) {
+            if (preg_match("|^$keyword|i", $key)) {
+                $report[$stc->getCategory()] = true;
+            }
+        }
+
+        return array_keys($report);
     }
 
 }
