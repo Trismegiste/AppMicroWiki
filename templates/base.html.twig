@@ -8,10 +8,13 @@
             <link rel="stylesheet" href="/css/pure-min.css"/>
             <link rel="stylesheet" href="/css/grids-responsive-min.css"/>
             <link rel="stylesheet" href="/css/main.css"/>
+            <link rel="stylesheet" href="/css/autocomplete.css"/>
         {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="/js/textcomplete.min.js"></script>
+        {% endblock %}
     </body>
 </html>

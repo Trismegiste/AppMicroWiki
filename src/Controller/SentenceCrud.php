@@ -47,6 +47,7 @@ class SentenceCrud extends AbstractController {
         }
 
         return $this->render('sentence/new.html.twig', [
+                    'document' => $doc,
                     'form' => $form->createView()
         ]);
     }
@@ -102,6 +103,13 @@ class SentenceCrud extends AbstractController {
                     'key' => $sentence->getKey(),
                     '_fragment' => $doc->getTitle() . '-' . $sentence->getKey()
         ]);
+    }
+
+    /**
+     * @Route("/vertex/find/{title}/{keyword}", methods={"GET"})
+     */
+    public function searchLinks(string $title, string $keyword) {
+        return $this->json(['toto', 'tata']);
     }
 
 }
