@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\GraphSpeech\Document;
-use App\Entity\GraphSpeech\Sentence;
-use IteratorAggregate;
+use Iterator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Trismegiste\MicroWiki\Document;
+use Trismegiste\MicroWiki\Sentence;
 
 /**
  * Repository of Document
@@ -16,20 +16,22 @@ class DocumentFactory {
     protected $filesystem;
     protected $basedir;
 
-    public function __construct(Filesystem $fs) {
+    public function __construct(Filesystem $fs, string $basedir) {
         $this->filesystem = $fs;
-        $this->basedir = __DIR__ . '/../../var/document/';
+        $this->basedir = $basedir;
     }
 
     public function create(): Document {
         return new Document();
     }
 
-    public function list(): IteratorAggregate {
+    public function list(): Iterator {
         $iter = new Finder();
-        $iter->in($this->basedir)->name("*.json")->files();
+        $iter->in($this->basedir)
+                ->name("*.json")
+                ->files();
 
-        return new ListingDecorator($iter);
+        return new ListingDecorator($iter->getIterator());
     }
 
     public function save(Document $doc): void {
@@ -45,19 +47,20 @@ class DocumentFactory {
             ];
         }
 
-        $this->filesystem->dumpFile($this->basedir . sha1($doc->getTitle()) . '.json', json_encode($flatten));
+        $this->filesystem->dumpFile($this->basedir . '/' . sha1($doc->getTitle()) . '.json', json_encode($flatten));
     }
 
-    public function load(string $title): Document {
-        $flatten = json_decode(file_get_contents($this->basedir . $title . '.json'));
+    public function load(string $filename): Document {
+        $flatten = json_decode(file_get_contents($this->basedir . '/' . $filename));
 
         $doc = $this->create();
         $doc->setTitle($flatten->title);
         $doc->setDescription($flatten->description);
         foreach ($flatten->vertex as $vertex) {
-            $stc = new Sentence($doc, $vertex->key);
+            $stc = new Sentence($vertex->key);
             $stc->setCategory($vertex->category);
             $stc->setContent($vertex->content);
+            $doc[] = $stc;
         }
 
         return $doc;
