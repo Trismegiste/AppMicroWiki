@@ -16,6 +16,17 @@ class DocumentTest extends TestCase {
         unset($this->sut);
     }
 
+    public function simpleEdgeFactory() {
+        $origin = new Sentence('origin');
+        $origin->setContent('Link to [[target]] and [[missing]]');
+        $target = new Sentence('target');
+        $target->setContent('[[origin]] nothing');
+
+        return [
+            [$origin, $target]
+        ];
+    }
+
     public function testSetter() {
         $this->assertequals('', $this->sut->getTitle());
         $this->assertequals('', $this->sut->getDescription());
@@ -25,50 +36,41 @@ class DocumentTest extends TestCase {
         $this->assertequals('b', $this->sut->getDescription());
     }
 
-    public function testAutoInsert() {
-        $this->assertCount(0, $this->sut);
-        new Sentence($this->sut, 'yolo');
-        $this->assertCount(1, $this->sut);
-        unset($this->sut['yolo']);
-        $this->assertCount(0, $this->sut);
-    }
-
-    public function testGet() {
-        $obj = new Sentence($this->sut, 'yolo');
-        $this->assertEquals($obj, $this->sut['yolo']);
-    }
-
-    public function testIsset() {
-        new Sentence($this->sut, 'yolo');
-        $this->assertArrayHasKey('yolo', $this->sut);
-    }
-
-    public function testInvalidKey() {
+    /** @dataProvider simpleEdgeFactory */
+    public function testMoveVertexToNewKeyBadKey($origin, $target) {
+        $this->sut[] = $origin;
         $this->expectException(OutOfBoundsException::class);
-        $this->sut[123];
+        $this->sut->moveVertexToNewKey($target, 'dummy');
     }
 
-    public function testIterable() {
-        $sentence = new Sentence($this->sut, 'yolo');
-        foreach ($this->sut as $key => $item) {
-            $this->assertEquals('yolo', $key);
-            $this->assertEquals($sentence, $item);
-        }
+    /** @dataProvider simpleEdgeFactory */
+    public function testMoveVertexToNewKeySameKey($origin, $target) {
+        $this->sut[] = $origin;
+        $identityThief = new Sentence('origin');
+        $this->expectException(LogicException::class);
+        $this->sut->moveVertexToNewKey($identityThief, 'dummy');
     }
 
-    public function testSetTrash() {
-        $this->expectException(InvalidArgumentException::class);
-        $this->sut[] = new stdClass();
+    /** @dataProvider simpleEdgeFactory */
+    public function testMoveVertexToNewKey($origin, $target) {
+        $this->sut[] = $origin;
+        $this->sut[] = $target;
+        $this->sut->moveVertexToNewKey($target, 'new target');
+        $this->assertArrayHasKey('new target', $this->sut);
+        $this->assertStringStartsWith('Link to [[new target]]', $this->sut['origin']->getContent());
     }
 
-    public function testLink() {
-        $origin = new Sentence($this->sut, 'origin');
-        $origin->setContent('Link to [[target]] and [[missing]]');
-        $target = new Sentence($this->sut, 'target');
-        $target->setContent('[[origin]] nothing [fake]');
+    /** @dataProvider simpleEdgeFactory */
+    public function testLink($origin, $target) {
+        $orphan = new Sentence('orphan');
+        $orphan->setContent('nothing');
+        $this->sut[] = $origin;
+        $this->sut[] = $target;
+        $this->sut[] = $orphan;
         $this->assertEquals(['target', 'missing', 'origin'], $this->sut->getAllLinks());
         $this->assertEquals(['missing'], $this->sut->findBrokenLink());
-        $this->assertCount(0, $this->sut->findOrphan());
+        $this->assertEquals([$orphan], $this->sut->findOrphan());
+        $this->assertEquals([$target], $this->sut->findVertexByLink('origin'));
     }
 
 }
