@@ -109,4 +109,15 @@ class Document extends Graph {
         return $report;
     }
 
+    public function searchLinksStartingBy(string $keyword) {
+        $report = [];
+        foreach ($this->vertex as $key => $stc) {
+            if (preg_match("|^$keyword|i", $key)) {
+                $report[] = $key;
+            }
+        }
+
+        return $report;
+    }
+
 }

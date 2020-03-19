@@ -20,7 +20,7 @@
         textcomplete.register([{
                 match: /(^|\s)\[\[(\w+)$/,
                 search: function (term, callback) {
-                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title, keyword: 'yolo'}) }}')
+                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
                             .then((response) => {
                                 return response.json();
                             })
