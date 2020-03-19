@@ -1,6 +1,10 @@
 <?php
 
-namespace App\Entity\GraphSpeech;
+/*
+ * MicroWiki
+ */
+
+namespace Trismegiste\MicroWiki;
 
 /**
  * A vertex from a graph

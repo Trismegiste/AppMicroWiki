@@ -1,10 +1,10 @@
 <?php
 
 /*
- * GraphSpeech
+ * MicroWiki
  */
 
-namespace App\Entity\GraphSpeech;
+namespace Trismegiste\MicroWiki;
 
 use RuntimeException;
 
