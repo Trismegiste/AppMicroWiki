@@ -69,6 +69,7 @@ class SentenceCrud extends AbstractController {
         }
 
         return $this->render('sentence/edit.html.twig', [
+                    'document' => $doc,
                     'form' => $form->createView()
         ]);
     }

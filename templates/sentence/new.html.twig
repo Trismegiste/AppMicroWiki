@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'sentence/form.html.twig' %}
 {%  block title %}
     Create new Sentence
 {%  endblock %}
@@ -9,29 +9,4 @@
     <section>
         {{ form(form) }}
     </section>
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        var Textarea = Textcomplete.editors.Textarea
-        var editor = new Textarea(document.getElementById('sentence_content'));
-        var textcomplete = new Textcomplete(editor);
-
-        textcomplete.register([{
-                match: /(^|\s)\[\[(\w+)$/,
-                search: function (term, callback) {
-                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
-                            .then((response) => {
-                                return response.json();
-                            })
-                            .then((data) => {
-                                console.log(data);
-                                callback(data);
-                            });
-                },
-                replace: function (value) {
-                    return '$1[[' + value + ']] ';
-                }
-            }]);
-    </script>
 {% endblock %}
