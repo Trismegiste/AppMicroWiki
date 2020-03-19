@@ -16,9 +16,9 @@ class DocumentFactory {
     protected $filesystem;
     protected $basedir;
 
-    public function __construct(Filesystem $fs, string $repositoryDir) {
+    public function __construct(Filesystem $fs, string $projectDir, string $repositoryDir) {
         $this->filesystem = $fs;
-        $this->basedir = $repositoryDir;
+        $this->basedir = $projectDir . '/' . $repositoryDir;
     }
 
     public function create(): Document {

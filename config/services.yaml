@@ -28,4 +28,5 @@ services:
 
     App\Repository\DocumentFactory:
         arguments:
-            $repositoryDir: '%kernel.project_dir%'
+            $projectDir: '%kernel.project_dir%'
+            $repositoryDir: 'var/document'
