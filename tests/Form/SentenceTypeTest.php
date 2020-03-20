@@ -1,11 +1,14 @@
 <?php
 
 use App\Form\SentenceType;
+use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
 class SentenceTypeTest extends TypeTestCase {
+
+    use ValidatorExtensionTrait;
 
     public function testEmptyData() {
         $doc = new Document();

@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
@@ -25,7 +27,13 @@ class SentenceType extends AbstractType implements DataMapperInterface {
         $this->parentDocument = $options['document'];
 
         $builder
-                ->add('key', TextType::class, ['label' => 'Name'])
+                ->add('key', TextType::class, [
+                    'label' => 'Name',
+                    'constraints' => [
+                        new Length(['min' => 3]),
+                        new Regex(['pattern' => '/[\]\[]/', 'match' => false, 'message' => 'Square brackets are forbidden'])
+                    ]
+                ])
                 ->add('category', TextType::class)
                 ->add('content', TextareaType::class)
                 ->add('save', SubmitType::class)
