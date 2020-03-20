@@ -27,10 +27,11 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/append/{title}/{key}", methods={"GET","POST"})
+     * @Route("/vertex/append/{title}", methods={"GET","POST"})
      */
-    public function append(string $title, Request $request, string $key = '') {
+    public function append(string $title, Request $request) {
         $doc = $this->repository->load($title);
+        $key = $request->query->get('key');
 
         $sentence = null;
         if (strlen($key)) {
@@ -102,7 +103,6 @@ class SentenceCrud extends AbstractController {
         return $this->redirectToRoute('app_documentcrud_show', [
                     'title' => $doc->getTitle(),
                     'key' => $sentence->getKey(),
-                    '_fragment' => $doc->getTitle() . '-' . $sentence->getKey()
         ]);
     }
 
