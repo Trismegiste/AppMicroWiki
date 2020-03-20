@@ -55,6 +55,7 @@ class DocumentCrud extends AbstractController {
      */
     public function show(string $title, string $key = '') {
         $doc = $this->repository->load($title);
+
         if ($key !== '') {
             $doc->pinVertex($key);
             $this->repository->save($doc);
@@ -64,10 +65,7 @@ class DocumentCrud extends AbstractController {
             return $this->redirectToRoute('app_sentencecrud_append', ['title' => $title, 'key' => $key]);
         }
 
-        return $this->render('document/show.html.twig', [
-                    'document' => $doc,
-                    'focus' => $key
-        ]);
+        return $this->render('document/show.html.twig', ['document' => $doc]);
     }
 
 }

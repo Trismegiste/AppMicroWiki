@@ -18,10 +18,6 @@ h2 {
     margin: 0 0 0.3em;
 }
 
-.focus {
-    background-color: #eaffe9;
-}
-
 .warning {
     background-color: #ffc5f6;
     color: #333;
@@ -57,4 +53,12 @@ h2 {
 
 .document .content a.wiki-missing {
     color: red;
+}
+
+.pinned {
+    text-align: right;
+}
+
+.pinned a {
+    margin-right: 0.8em;
 }

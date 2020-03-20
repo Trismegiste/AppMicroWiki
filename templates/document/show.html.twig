@@ -14,12 +14,17 @@
 
 {% block content %}
     {% for vertex in document %}
-        <div class="{{ cssgrid }} {% if vertex.key == focus %}focus{% endif %}">
+        <div class="{{ cssgrid }}">
             <article>
                 <a id="{{ document.title }}-{{ vertex.key }}"></a>
-                <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
+                <div class="pure-g">
+                    <div class="pure-u-7-8">
+                        <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
+                    </div>
+                    <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: vertex.key}) }}">^</a></div>
+                </div>
                 <div class="content">{{ vertex.content|wiki(document) }}
-                    {% if vertex.key == focus %}
+                    {% if loop.first %}
                         {% set inbound = document.findVertexByLink(vertex.key) %}
                         {% if inbound|length > 0 %}
                             <p>
@@ -36,7 +41,7 @@
                         <a href="{{ path('app_sentencecrud_edit', {key:vertex.key, title:document.title}) }}" class="pure-button">Edit</a>
                     </div>
                     <div class="pure-u-1-2 right">
-                        {% if vertex.key == focus %}
+                        {% if loop.first %}
                             <a href="{{ path('app_sentencecrud_delete', {key:vertex.key, title:document.title}) }}" class="pure-button warning">Delete</a>
                         {% endif %}
                     </div>
