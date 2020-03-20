@@ -1,6 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'mobile.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/autocomplete.css"/>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
+    <script src="/js/textcomplete.min.js"></script>
     <script>
         var Textarea = Textcomplete.editors.Textarea
         var editor = new Textarea(document.getElementById('sentence_content'));

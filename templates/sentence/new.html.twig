@@ -1,12 +1,15 @@
 {% extends 'sentence/form.html.twig' %}
-{%  block title %}
-    Create new Sentence
-{%  endblock %}
-{% block body %}
-    <header>
-        <h1>Creation of Sentence</h1>
-    </header>
-    <section>
-        {{ form(form) }}
-    </section>
+
+{% block title %}Create new Sentence{%  endblock %}
+{% block header_title %}Create new Sentence{% endblock %}
+{% block header_detail %}The name must be unique{% endblock %}
+{% block header_footer %}{% endblock %}
+{% block header_class %}headline{% endblock %}
+
+{% block content %}
+    <div class="{{ cssgrid }}">
+        <article> 
+            {{ form(form) }}
+        </article>
+    </div>
 {% endblock %}

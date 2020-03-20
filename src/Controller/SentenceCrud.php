@@ -93,7 +93,7 @@ class SentenceCrud extends AbstractController {
         return $this->render('sentence/delete.html.twig', [
                     'form' => $form->createView(),
                     'key' => $key,
-                    'doc' => $doc->getTitle(),
+                    'document' => $doc,
                     'inbound' => $doc->findVertexByLink($key)
         ]);
     }

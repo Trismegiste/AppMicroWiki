@@ -1,12 +1,13 @@
-{% extends 'document/list.html.twig' %}
-{%  block title %}
-    Create new document
-{%  endblock %}
+{% extends 'mobile.html.twig' %}
+
+{% block title %}Create a new document{%  endblock %}
+{% block header_title %}Create a new document{% endblock %}
+{% block header_detail %}It will be automatically saved{% endblock %}
+{% block header_footer %}{% endblock %}
+
 {% block content %}
     <div class="{{ cssgrid }}">
         <article> 
-            <h1>Creation of Document</h1>
-
             {{ form(form) }}
         </article>
     </div>
