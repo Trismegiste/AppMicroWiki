@@ -61,10 +61,6 @@ class DocumentCrud extends AbstractController {
             $this->repository->save($doc);
         }
 
-        if (($key !== '') && (!$doc->offsetExists($key))) {
-            return $this->redirectToRoute('app_sentencecrud_append', ['title' => $title, 'key' => $key]);
-        }
-
         return $this->render('document/show.html.twig', ['document' => $doc]);
     }
 

@@ -4,12 +4,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SentenceCrudTest extends WebTestCase {
 
-    public function testRedirectNewKeyAndCreate() {
+    public function testAppend() {
         $client = static::createClient();
-        $client->request('GET', '/docu/show/TMP/yolo');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $crawler = $client->followRedirect();
-        $this->assertStringEndsWith('/vertex/append/TMP/yolo', $crawler->getUri());
+        $crawler = $client->request('GET', '/vertex/append/TMP/yolo');
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
         $buttonCrawlerNode = $crawler->selectButton('Save');

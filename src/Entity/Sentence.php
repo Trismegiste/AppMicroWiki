@@ -14,7 +14,7 @@ class Sentence implements Vertex {
     const linkRegex = '/\[\[([^\]]+)\]\]/';
 
     protected $uniqueKey;
-    protected $category = 'none';
+    protected $category = '';
     protected $content = '';
 
     public function __construct(string $key) {
