@@ -28,7 +28,7 @@ class DocumentExtension extends AbstractExtension {
     public function decorateWiki(string $content, Document $doc): string {
         $processed = preg_replace_callback(Sentence::linkRegex, function($match) use ($doc) {
             $pkDoc = $doc->getTitle();
-            $pkStc = html_entity_decode($match[1]);
+            $pkStc = html_entity_decode($match[1], ENT_HTML5 | ENT_QUOTES);
 
             if ($doc->offsetExists($pkStc)) {
                 $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc]);

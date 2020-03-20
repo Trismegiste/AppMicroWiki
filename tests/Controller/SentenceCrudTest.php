@@ -9,7 +9,7 @@ class SentenceCrudTest extends WebTestCase {
         $client->request('GET', '/docu/show/TMP/yolo');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $crawler = $client->followRedirect();
-        $this->assertStringEndsWith('/vertex/append/TMP?key=yolo', $crawler->getUri());
+        $this->assertStringEndsWith('/vertex/append/TMP/yolo', $crawler->getUri());
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
