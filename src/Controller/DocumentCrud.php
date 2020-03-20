@@ -55,6 +55,11 @@ class DocumentCrud extends AbstractController {
      */
     public function show(string $title, string $key = '') {
         $doc = $this->repository->load($title);
+        if ($key !== '') {
+            $doc->pinVertex($key);
+            $this->repository->save($doc);
+        }
+
         if (($key !== '') && (!$doc->offsetExists($key))) {
             return $this->redirectToRoute('app_sentencecrud_append', ['title' => $title, 'key' => $key]);
         }

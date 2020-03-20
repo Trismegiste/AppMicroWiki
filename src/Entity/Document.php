@@ -159,4 +159,12 @@ class Document extends Graph {
         return array_keys($report);
     }
 
+    public function pinVertex(string $key): void {
+        if (array_key_exists($key, $this->vertex)) {
+            $pinned = $this->vertex[$key];
+            unset($this->vertex[$key]);
+            $this->vertex = array_merge([$key => $pinned], $this->vertex);
+        }
+    }
+
 }
