@@ -14,10 +14,11 @@
     <script src="/js/textcomplete.min.js"></script>
     <script>
         var Textarea = Textcomplete.editors.Textarea
-        var editor = new Textarea(document.getElementById('sentence_content'));
-        var textcomplete = new Textcomplete(editor);
 
-        textcomplete.register([{
+        var contentTxt = new Textarea(document.getElementById('sentence_content'));
+        var contentTC = new Textcomplete(contentTxt);
+
+        contentTC.register([{
                 match: /(^|\s)\[\[(\w+)$/,
                 search: function (term, callback) {
                     fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
@@ -25,12 +26,31 @@
                                 return response.json();
                             })
                             .then((data) => {
-                                console.log(data);
                                 callback(data);
                             });
                 },
                 replace: function (value) {
                     return '$1[[' + value + ']] ';
+                }
+            }]);
+
+        var categoryTxt = new Textarea(document.getElementById('sentence_category'));
+        var categoryTC = new Textcomplete(categoryTxt);
+
+        categoryTC.register([{
+                match: /^(\w+)$/,
+                search: function (term, callback) {
+                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
+                            .then((response) => {
+                                return response.json();
+                            })
+                            .then((data) => {
+                                console.log(data);
+                                callback(['cat1', 'human', 'person']);
+                            });
+                },
+                replace: function (value) {
+                    return value + ' ';
                 }
             }]);
     </script>

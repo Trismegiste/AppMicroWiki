@@ -34,7 +34,7 @@ class SentenceType extends AbstractType implements DataMapperInterface {
                         new Regex(['pattern' => '/[\]\[]/', 'match' => false, 'message' => 'Square brackets are forbidden'])
                     ]
                 ])
-                ->add('category', TextType::class)
+                ->add('category', TextareaType::class, ['attr' => ['rows' => 1, 'style' => 'resize: none; height:2.27em;']])
                 ->add('content', TextareaType::class, ['attr' => ['rows' => 10]])
                 ->add('save', SubmitType::class)
                 ->setDataMapper($this);
