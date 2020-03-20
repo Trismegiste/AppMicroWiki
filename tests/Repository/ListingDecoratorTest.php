@@ -2,16 +2,17 @@
 
 use App\Repository\ListingDecorator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\SplFileInfo;
 
 class ListingDecoratorTest extends TestCase {
 
     protected $sut;
 
     protected function setUp(): void {
-        $file = $this->createMock(\Symfony\Component\Finder\SplFileInfo::class);
+        $file = $this->createMock(SplFileInfo::class);
         $file->expects($this->atLeastOnce())
                 ->method('getContents')
-                ->willReturn('{"title":"2001","description":"Best sci-fi movie"}');
+                ->willReturn('{"title":"2001","description":"Best sci-fi movie","vertex":[]}');
 
         $this->sut = new ListingDecorator(new ArrayIterator([$file]));
     }
