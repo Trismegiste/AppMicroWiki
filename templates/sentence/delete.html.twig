@@ -1,8 +1,13 @@
-{% extends 'sentence/new.html.twig' %}
+{% extends 'mobile.html.twig' %}
 
 {% block title %}Delete Sentence{% endblock %}
 {% block header_title %}Delete a Sentence{% endblock %}
 {% block header_detail %}in {{ document.title }}{% endblock %}
+{% block header_class %}headline{% endblock %}
+
+{% block header_footer %}
+    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">Retour au document</a>
+{% endblock %}
 
 {% block content %}
     <div class="{{ cssgrid }}">

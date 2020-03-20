@@ -106,11 +106,19 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/find/{title}/{keyword}", methods={"GET"})
+     * @Route("/link/find/{title}/{keyword}", methods={"GET"})
      */
     public function searchLinks(string $title, string $keyword = '') {
         $doc = $this->repository->load($title);
         return $this->json($doc->searchAnyTypeOfLinksStartingBy($keyword));
+    }
+
+    /**
+     * @Route("/category/find/{title}/{keyword}", methods={"GET"})
+     */
+    public function searchCategories(string $title, string $keyword = '') {
+        $doc = $this->repository->load($title);
+        return $this->json($doc->searchCategoryStartingBy($keyword));
     }
 
 }

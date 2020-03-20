@@ -148,15 +148,16 @@ class Document extends Graph {
         return array_values($combo);
     }
 
-    public function getCategoryList(): array {
-        $report = [];
-        foreach ($this->vertex as $key => $stc) {
-            if (preg_match("|^$keyword|i", $key)) {
-                $report[$stc->getCategory()] = true;
-            }
-        }
-
-        return array_keys($report);
+    public function searchCategoryStartingBy(string $keyword): array {
+        $combo = array_unique(
+                array_map(function(Sentence $stc) {
+                    return $stc->getCategory();
+                },
+                        array_filter($this->vertex, function(Sentence $stc) use ($keyword) {
+                            return preg_match("|^$keyword|i", $stc->getCategory());
+                        })));
+        sort($combo);
+        return array_values($combo);
     }
 
     public function pinVertex(string $key): void {

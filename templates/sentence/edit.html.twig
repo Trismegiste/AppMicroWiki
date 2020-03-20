@@ -2,3 +2,10 @@
 
 {% block title %}Edit Sentence{%  endblock %}
 {% block header_title %}Edit a Sentence{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.getElementById('sentence_content').focus()
+    </script>
+{% endblock %}

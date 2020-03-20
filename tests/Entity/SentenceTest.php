@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 use Trismegiste\MicroWiki\Document;
-use Trismegiste\MicroWiki\DuplicateKeyException;
 use Trismegiste\MicroWiki\Sentence;
 
 class SentenceTest extends TestCase {
@@ -39,7 +38,7 @@ class SentenceTest extends TestCase {
     }
 
     public function testNonEmptyKey() {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new Sentence('');
     }
 

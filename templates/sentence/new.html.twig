@@ -12,3 +12,11 @@
         </article>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var obj = document.getElementById('sentence_key')
+        obj.focus()
+    </script>
+{% endblock %}

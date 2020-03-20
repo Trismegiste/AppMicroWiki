@@ -15,6 +15,7 @@
     <script>
         var Textarea = Textcomplete.editors.Textarea
 
+        // Autocoomplete links
         var contentTxt = new Textarea(document.getElementById('sentence_content'));
         var contentTC = new Textcomplete(contentTxt);
 
@@ -34,19 +35,20 @@
                 }
             }]);
 
+        // Autocomplete category
         var categoryTxt = new Textarea(document.getElementById('sentence_category'));
         var categoryTC = new Textcomplete(categoryTxt);
 
         categoryTC.register([{
-                match: /^(\w+)$/,
+                match: /(^)([^\s]+)$/,
                 search: function (term, callback) {
-                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
+                    fetch('{{ path('app_sentencecrud_searchcategories', {title: document.title}) }}' + '/' + term)
                             .then((response) => {
                                 return response.json();
                             })
                             .then((data) => {
                                 console.log(data);
-                                callback(['cat1', 'human', 'person']);
+                                callback(data);
                             });
                 },
                 replace: function (value) {
