@@ -1,52 +1,42 @@
-{% extends 'document/document.html.twig' %}
+{% extends 'mobile.html.twig' %}
 
-{% block header %}
-    <div class="{{ cssgrid }} headline">
-        <header>
-            <h1>{{ document.title }}</h1>
-            <div>{{ document.description }}</div>
-            <footer>
-                <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">Append</a>
-            </footer>
-        </header> 
-    </div>
+{% block title %}{{ document.title }} - {{ document.description }}{% endblock %}
+{% block header_class %}headline{% endblock %}
+{% block header_title %}{{ document.title }}{% endblock %}
+{% block header_detail %}{{ document.description }}{% endblock %}
+{% block header_footer %}
+    <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">Append</a>
 {% endblock %}
 
-{% block content %}
-    {% for vertex in document %}
-        <div class="{{ cssgrid }}">
-            <article>
-                {% if loop.first %}<a id="pinned-vertex"></a>{% endif %}
-                <div class="pure-g">
-                    <div class="pure-u-7-8">
-                        <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
-                    </div>
-                    <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: vertex.key}) }}">^</a></div>
-                </div>
-                <div class="content">{{ vertex.content|wiki(document) }}
-                    {% if loop.first %}
-                        {% set inbound = document.findVertexByLink(vertex.key) %}
-                        {% if inbound|length > 0 %}
-                            <p>
-                                See also : 
-                                {% for link in inbound %}
-                                    {% apply wiki(document) %}[[{{ link.key }}]]{% endapply %}
-                                {% endfor %}
-                            </p>
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <footer class="pure-g">
-                    <div class="pure-u-1-2 left">
-                        <a href="{{ path('app_sentencecrud_edit', {key:vertex.key, title:document.title}) }}" class="pure-button">Edit</a>
-                    </div>
-                    <div class="pure-u-1-2 right">
-                        {% if loop.first %}
-                            <a href="{{ path('app_sentencecrud_delete', {key:vertex.key, title:document.title}) }}" class="pure-button warning">Delete</a>
-                        {% endif %}
-                    </div>
-                </footer>
-            </article>
+{% block item_article %}
+    {% if loop.first %}<a id="pinned-vertex"></a>{% endif %}
+    <div class="pure-g">
+        <div class="pure-u-7-8">
+            <h2>{{ item.key }} ({{ item.category }})</h2>
         </div>
-    {% endfor %}
+        <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}">^</a></div>
+    </div>
+    <div class="content">{{ item.content|wiki(document) }}
+        {% if loop.first %}
+            {% set inbound = document.findVertexByLink(item.key) %}
+            {% if inbound|length > 0 %}
+                <p>
+                    See also : 
+                    {% for link in inbound %}
+                        {% apply wiki(document) %}[[{{ link.key }}]]{% endapply %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+    <footer class="pure-g">
+        <div class="pure-u-1-2 left">
+            <a href="{{ path('app_sentencecrud_edit', {key:item.key, title:document.title}) }}" class="pure-button">Edit</a>
+        </div>
+        <div class="pure-u-1-2 right">
+            {% if loop.first %}
+                <a href="{{ path('app_sentencecrud_delete', {key:item.key, title:document.title}) }}" class="pure-button warning">Delete</a>
+            {% endif %}
+        </div>
+    </footer>
 {% endblock %}

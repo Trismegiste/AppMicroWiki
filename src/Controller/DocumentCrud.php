@@ -61,7 +61,7 @@ class DocumentCrud extends AbstractController {
             $this->repository->save($doc);
         }
 
-        return $this->render('document/show.html.twig', ['document' => $doc]);
+        return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }
 
 }

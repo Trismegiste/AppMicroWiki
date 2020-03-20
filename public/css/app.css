@@ -1,0 +1,35 @@
+.warning {
+    background-color: #ffc5f6;
+    color: #333;
+}
+
+.mobile .headline {
+    background-color: #2199e8;
+    color: white;
+}
+
+.mobile article footer a {
+    border-radius: 2em;
+}
+
+.mobile footer .right {
+    text-align: right;
+}
+
+.mobile .content a {
+    text-decoration: none;
+    font-style: italic;
+    color: darkblue;    
+}
+
+.mobile .content a.wiki-missing {
+    color: red;
+}
+
+.pinned {
+    text-align: right;
+}
+
+.pinned a {
+    margin-right: 0.8em;
+}
