@@ -1,37 +1,24 @@
-{% extends 'base.html.twig' %}
-{%  block title %}
-    Listing
-{%  endblock %}
-{% block body %}
-    <section class="pure-g document">
-        <div class="{{ cssgrid }} neutral">
-            <header>
-                <h1>Listing</h1>
-                <footer>
-                    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">New document</a>
-                </footer>
-            </header>
+{% extends 'mobile.html.twig' %}
+
+{% block title %}Listing{% endblock %}
+{% block header_title %}Listing{% endblock %}
+{% block header_detail %}{% endblock %}
+{% block header_footer %}
+    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">New document</a>
+{% endblock %}
+
+{% block item_article %}
+    <div class="pure-g">
+        <div class="pure-u-4-5">
+            <h2>{{ item.title }}</h2>
+            <div>
+                {{ item.description }}
+                <p>{{ item.vertex }} vertices</p>
+            </div>
+            <footer>X</footer>
         </div>
-        {% block content %}
-            {% for doc in listing %}
-                <div class="{{ cssgrid }}">
-                    <article>
-                        <div class="pure-g">
-                            <div class="pure-u-4-5">
-                                <h2>{{ doc.title }}</h2>
-                                <div>
-                                    {{ doc.description }}
-                                    <p>{{ doc.vertex }} vertices</p>
-                                </div>
-                                <footer>X</footer>
-                            </div>
-                            <div class="pure-u-1-5">
-                                <a href="{{ path('app_documentcrud_show',{title: doc.title}) }}">&gt;</a>
-                            </div>
-                        </div>
-                    </article>       
-                </div>
-            {% endfor %}
-        {% endblock %}
-    </section>
+        <div class="pure-u-1-5">
+            <a href="{{ path('app_documentcrud_show',{title: item.title}) }}">&gt;</a>
+        </div>
+    </div>
 {% endblock %}
