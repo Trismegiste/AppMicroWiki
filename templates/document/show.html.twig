@@ -1,49 +1,47 @@
-{# templates/crud/show.html.twig #}
-{% extends 'base.html.twig' %}
-{%  block title %}
-    {{  doc.title }} - {{ doc.description }}
-{%  endblock %}
-{% block body %}
-    <section class="pure-g document">
-        <div class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1 headline">
-            <header>
-                <h1>{{ doc.title }}</h1>
-                <div>{{ doc.description }}</div>
-                <footer>
-                    <a href="{{ path('app_sentencecrud_append', {title: doc.title}) }}" class="pure-button">Append</a>
-                </footer>
-            </header> 
-        </div>
-        {% for vertex in doc %}
-            <div class="pure-u-xl-1-3 pure-u-md-1-2 pure-u-1-1 {% if vertex.key == focus %}focus{% endif %}">
-                <article>
-                    <a id="{{ doc.title }}-{{ vertex.key }}"></a>
-                    <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
-                    <div class="content">{{ vertex.content|wiki(doc) }}
+{% extends 'document/document.html.twig' %}
+
+{% block header %}
+    <div class="{{ cssgrid }} headline">
+        <header>
+            <h1>{{ document.title }}</h1>
+            <div>{{ document.description }}</div>
+            <footer>
+                <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">Append</a>
+            </footer>
+        </header> 
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% for vertex in document %}
+        <div class="{{ cssgrid }} {% if vertex.key == focus %}focus{% endif %}">
+            <article>
+                <a id="{{ document.title }}-{{ vertex.key }}"></a>
+                <h2>{{ vertex.key }} ({{ vertex.category }})</h2>
+                <div class="content">{{ vertex.content|wiki(document) }}
+                    {% if vertex.key == focus %}
+                        {% set inbound = document.findVertexByLink(vertex.key) %}
+                        {% if inbound|length > 0 %}
+                            <p>
+                                See also : 
+                                {% for link in inbound %}
+                                    {% apply wiki(document) %}[[{{ link.key }}]]{% endapply %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <footer class="pure-g">
+                    <div class="pure-u-1-2 left">
+                        <a href="{{ path('app_sentencecrud_edit', {key:vertex.key, title:document.title}) }}" class="pure-button">Edit</a>
+                    </div>
+                    <div class="pure-u-1-2 right">
                         {% if vertex.key == focus %}
-                            {% set inbound = doc.findVertexByLink(vertex.key) %}
-                            {% if inbound|length > 0 %}
-                                <p>
-                                    See also : 
-                                    {% for link in inbound %}
-                                        {% apply wiki(doc) %}[[{{ link.key }}]]{% endapply %}
-                                    {% endfor %}
-                                </p>
-                            {% endif %}
+                            <a href="{{ path('app_sentencecrud_delete', {key:vertex.key, title:document.title}) }}" class="pure-button warning">Delete</a>
                         {% endif %}
                     </div>
-                    <footer class="pure-g">
-                        <div class="pure-u-1-2 left">
-                            <a href="{{ path('app_sentencecrud_edit', {key:vertex.key, title:doc.title}) }}" class="pure-button">Edit</a>
-                        </div>
-                        <div class="pure-u-1-2 right">
-                            {% if vertex.key == focus %}
-                                <a href="{{ path('app_sentencecrud_delete', {key:vertex.key, title:doc.title}) }}" class="pure-button warning">Delete</a>
-                            {% endif %}
-                        </div>
-                    </footer>
-                </article>
-            </div>
-        {% endfor %}
-    </section>
+                </footer>
+            </article>
+        </div>
+    {% endfor %}
 {% endblock %}

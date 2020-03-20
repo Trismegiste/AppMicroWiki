@@ -60,7 +60,7 @@ class DocumentCrud extends AbstractController {
         }
 
         return $this->render('document/show.html.twig', [
-                    'doc' => $doc,
+                    'document' => $doc,
                     'focus' => $key
         ]);
     }
