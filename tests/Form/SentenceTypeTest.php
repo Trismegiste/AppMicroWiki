@@ -70,14 +70,15 @@ class SentenceTypeTest extends KernelTestCase {
 
     public function getBadNames(): array {
         return [
-            ['HA[9000'],
-            ['HA]9000'],
-            ['[HA9000]'],
+            ['HA[9000', 'bracket'],
+            ['HA]9000', 'bracket'],
+            ['[HA9000]', 'bracket'],
+            ['HA', 'too short'],
         ];
     }
 
     /** @dataProvider getBadNames */
-    public function testBadData($badname) {
+    public function testBadData($badname, $msg) {
         $sut = $this->createForm();
         $formData = [
             'key' => $badname,
@@ -88,7 +89,7 @@ class SentenceTypeTest extends KernelTestCase {
         $this->assertFalse($sut->isValid());
         $errors = $sut->get('key')->getErrors();
         $this->assertCount(1, $errors);
-        $this->assertStringContainsStringIgnoringCase('bracket', $errors[0]->getMessage());
+        $this->assertStringContainsStringIgnoringCase($msg, $errors[0]->getMessage());
     }
 
 }
