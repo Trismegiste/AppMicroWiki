@@ -16,7 +16,7 @@
     {% for vertex in document %}
         <div class="{{ cssgrid }}">
             <article>
-                <a id="{{ document.title }}-{{ vertex.key }}"></a>
+                {% if loop.first %}<a id="pinned-vertex"></a>{% endif %}
                 <div class="pure-g">
                     <div class="pure-u-7-8">
                         <h2>{{ vertex.key }} ({{ vertex.category }})</h2>

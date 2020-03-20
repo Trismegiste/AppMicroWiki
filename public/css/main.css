@@ -18,6 +18,11 @@ h2 {
     margin: 0 0 0.3em;
 }
 
+.neutral {
+    background-color: #fe6f1a;
+    color: white;
+}
+
 .warning {
     background-color: #ffc5f6;
     color: #333;

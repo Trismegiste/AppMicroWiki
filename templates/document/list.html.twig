@@ -3,17 +3,35 @@
     Listing
 {%  endblock %}
 {% block body %}
-    <header>
-        <h1>Listing</h1>
-        <a href="{{ path('app_documentcrud_new') }}">New document</a>
-    </header>
-    <section>
-        <ul>
+    <section class="pure-g document">
+        <div class="{{ cssgrid }} neutral">
+            <header>
+                <h1>Listing</h1>
+                <footer>
+                    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">New document</a>
+                </footer>
+            </header>
+        </div>
+        {% block content %}
             {% for doc in listing %}
-                <li>
-                    <a href="{{ path('app_documentcrud_show',{title: doc.title}) }}">{{ doc.title }}</a>
-                </li>  
+                <div class="{{ cssgrid }}">
+                    <article>
+                        <div class="pure-g">
+                            <div class="pure-u-4-5">
+                                <h2>{{ doc.title }}</h2>
+                                <div>
+                                    {{ doc.description }}
+                                    <p>{{ doc.vertex }} vertices</p>
+                                </div>
+                                <footer>X</footer>
+                            </div>
+                            <div class="pure-u-1-5">
+                                <a href="{{ path('app_documentcrud_show',{title: doc.title}) }}">&gt;</a>
+                            </div>
+                        </div>
+                    </article>       
+                </div>
             {% endfor %}
-        </ul>
+        {% endblock %}
     </section>
 {% endblock %}

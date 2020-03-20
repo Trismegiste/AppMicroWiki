@@ -39,6 +39,8 @@ class DocumentFactory {
             'title' => $doc->getTitle(),
             'description' => $doc->getDescription()
         ];
+
+        $flatten['vertex'] = [];
         foreach ($doc as $vertex) {
             $flatten['vertex'][] = [
                 'key' => $vertex->getKey(),

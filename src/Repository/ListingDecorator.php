@@ -20,7 +20,8 @@ class ListingDecorator implements \Iterator {
         return (object) [
                     'filename' => $current->getBasename('.json'),
                     'title' => $docu->title,
-                    'info' => $docu->description
+                    'description' => $docu->description,
+                    'vertex' => count($docu->vertex)
         ];
     }
 
