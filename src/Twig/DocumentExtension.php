@@ -29,7 +29,7 @@ class DocumentExtension extends AbstractExtension {
         $processed = preg_replace_callback(Sentence::linkRegex, function($match) use ($doc) {
             $pkDoc = $doc->getTitle();
             $pkStc = $match[1];
-            $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc, '_fragment' => $pkDoc . '-' . $pkStc]);
+            $url = $this->router->generate('app_documentcrud_show', ['title' => $pkDoc, 'key' => $pkStc]);
             $css = $doc->offsetExists($pkStc) ? 'wiki-link' : 'wiki-missing';
 
             return "<a href=\"$url\" class=\"$css\">$pkStc</a>";
