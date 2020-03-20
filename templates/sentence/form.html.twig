@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="/css/autocomplete.css"/>
 {% endblock %}
 
+{% block header_footer %}
+    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">Retour au document</a>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="/js/textcomplete.min.js"></script>
