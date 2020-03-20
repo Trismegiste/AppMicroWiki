@@ -28,3 +28,11 @@ h2 {
 .content {
     line-height: 140%
 }
+
+.pure-form ul.form-error {
+    margin: 0;
+    padding: 0;
+    font-size: 80%;
+    color: red;
+    list-style-type: none;
+}

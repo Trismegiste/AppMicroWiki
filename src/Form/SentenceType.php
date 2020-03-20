@@ -35,7 +35,7 @@ class SentenceType extends AbstractType implements DataMapperInterface {
                     ]
                 ])
                 ->add('category', TextType::class)
-                ->add('content', TextareaType::class)
+                ->add('content', TextareaType::class, ['attr' => ['rows' => 10]])
                 ->add('save', SubmitType::class)
                 ->setDataMapper($this);
     }

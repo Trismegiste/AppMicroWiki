@@ -1,18 +1,38 @@
 <?php
 
 use App\Form\SentenceType;
-use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Form\Form;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
-class SentenceTypeTest extends TypeTestCase {
+/** Functionnal tests */
+class SentenceTypeTest extends KernelTestCase {
 
-    use ValidatorExtensionTrait;
+    protected $document;
+
+    static public function setUpBeforeClass(): void {
+        static::bootKernel();
+    }
+
+    protected function setUp(): void {
+        $this->document = new Document();
+    }
+
+    protected function createForm($obj = null): Form {
+        return self::$kernel->getContainer()->get('form.factory')->create(SentenceType::class, $obj, [
+                    'document' => $this->document,
+                    'csrf_protection' => false
+        ]);
+    }
+
+    protected function tearDown(): void {
+        unset($this->document);
+    }
 
     public function testEmptyData() {
-        $doc = new Document();
-        $form = $this->factory->create(SentenceType::class, null, ['document' => $doc]);
+        $doc = $this->document;
+        $form = $this->createForm();
         $formData = [
             'key' => 'HAL9000',
             'category' => "evil computer",
@@ -28,9 +48,10 @@ class SentenceTypeTest extends TypeTestCase {
     }
 
     public function testEdit() {
-        $doc = new Document();
+        $doc = $this->document;
         $stc = new Sentence("HAL9000");
-        $form = $this->factory->create(SentenceType::class, $stc, ['document' => $doc]);
+        $doc[] = $stc;
+        $form = $this->createForm($stc);
 
         $formData = [
             'key' => 'IBM8000',
@@ -39,11 +60,35 @@ class SentenceTypeTest extends TypeTestCase {
         ];
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
+        $this->assertTrue($form->isValid());
 
         $this->assertEquals('IBM8000', $stc->getKey());
         $this->assertEquals('chess master', $stc->getCategory());
         $this->assertArrayHasKey('IBM8000', $doc);
         $this->assertEquals($stc, $doc['IBM8000']);
+    }
+
+    public function getBadNames(): array {
+        return [
+            ['HA[9000'],
+            ['HA]9000'],
+            ['[HA9000]'],
+        ];
+    }
+
+    /** @dataProvider getBadNames */
+    public function testBadData($badname) {
+        $sut = $this->createForm();
+        $formData = [
+            'key' => $badname,
+            'category' => "evil computer",
+            'content' => "Computer from the [[Discovery One]]"
+        ];
+        $sut->submit($formData);
+        $this->assertFalse($sut->isValid());
+        $errors = $sut->get('key')->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertStringContainsStringIgnoringCase('bracket', $errors[0]->getMessage());
     }
 
 }
