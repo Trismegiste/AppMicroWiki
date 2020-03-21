@@ -52,3 +52,7 @@
 .pinned a {
     margin-right: 0.8em;
 }
+
+.mobile .big-link {
+    font-size: 300%;
+}
