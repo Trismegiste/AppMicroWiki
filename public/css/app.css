@@ -12,12 +12,25 @@
 /* design for all icons */
 .mobile i {
     font-size: 140%;
-    color: #bbb;
+    color: #aaa;
 }
 
 /* design for footer icons */
 .mobile article footer {
     text-align: center;
+}
+
+.mobile .content i {
+    font-size: 100%;
+}
+
+/* design for article */
+.mobile article h2 span {
+    color: #aaa;
+}
+
+.content {
+    line-height: 160%
 }
 
 /* color of links in content */

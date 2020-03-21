@@ -19,7 +19,7 @@ class SentenceCrudTest extends WebTestCase {
         ]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $crawler = $client->followRedirect();
-        $this->assertEquals('Motoko (cyborg)', $crawler->filter('h2')->text());
+        $this->assertEquals('Motoko cyborg', $crawler->filter('h2')->text());
     }
 
     public function testEdit() {
@@ -36,13 +36,13 @@ class SentenceCrudTest extends WebTestCase {
         ]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $crawler = $client->followRedirect();
-        $this->assertEquals('Kusanagi Motoko (cyborg)', $crawler->filter('h2')->text());
+        $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('h2')->text());
     }
 
     public function testDeleteButtonWhenFocus() {
         $client = static::createClient();
         $crawler = $client->request('GET', '/docu/show/TMP/Kusanagi Motoko');
-        $this->assertCount(1, $crawler->selectLink('Delete'));
+        $this->assertCount(1, $crawler->filter('article footer i.icon-trash'));
     }
 
     public function testXhrLinkAutocomplete() {
