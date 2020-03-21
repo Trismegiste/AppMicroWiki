@@ -1,3 +1,4 @@
+/* some color for header */
 .warning {
     background-color: #ffc5f6;
     color: #333;
@@ -8,14 +9,18 @@
     color: white;
 }
 
-.mobile article footer a {
-    border-radius: 2em;
+/* design for all icons */
+.mobile i {
+    font-size: 140%;
+    color: #bbb;
 }
 
-.mobile footer .right {
-    text-align: right;
+/* design for footer icons */
+.mobile article footer {
+    text-align: center;
 }
 
+/* color of links in content */
 .mobile .content a {
     text-decoration: none;
     font-style: italic;
@@ -26,6 +31,7 @@
     color: red;
 }
 
+/* for the pin icon */
 .pinned {
     text-align: right;
 }
