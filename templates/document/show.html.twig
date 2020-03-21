@@ -14,7 +14,7 @@
         <div class="pure-u-7-8">
             <h2>{{ item.key }} <span class="category">{{ item.category }}</span></h2>
         </div>
-        <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}"><i class="icon-pin-1"></i></a></div>
+        <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}"><i class="icon-pin"></i></a></div>
     </div>
     <div class="content">{{ item.content|wiki(document) }}
         {% if loop.first %}
@@ -34,7 +34,7 @@
             <a href="{{ path('app_sentencecrud_edit', {key:item.key, title:document.title}) }}"><i class="icon-pencil"></i></a>
         </div>
         <div class="pure-u-1-3 center">
-            <a href="#"><i class="icon-fire"></i></a>
+            <a href="{{ path('app_sentencecrud_showqrcode', {key:item.key, title:document.title}) }}"><i class="icon-qrcode"></i></a>
         </div>
         {% if loop.first %}
             <div class="pure-u-1-3 center">

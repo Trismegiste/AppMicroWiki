@@ -31,12 +31,6 @@
       "src": "mfglabs"
     },
     {
-      "uid": "cc6a79edb1e82ee90129147ba089c323",
-      "css": "fire",
-      "code": 62757,
-      "src": "mfglabs"
-    },
-    {
       "uid": "a6267a0b7262e1deffcc83076bc0e197",
       "css": "trash",
       "code": 61571,
@@ -56,9 +50,15 @@
     },
     {
       "uid": "p57wgnf4glngbchbucdi029iptu8oxb8",
-      "css": "pin-1",
+      "css": "pin",
       "code": 59395,
       "src": "typicons"
+    },
+    {
+      "uid": "fd45bb961d08f9f2092f0df3fba29fe9",
+      "css": "qrcode",
+      "code": 59394,
+      "src": "fontawesome"
     }
   ]
 }

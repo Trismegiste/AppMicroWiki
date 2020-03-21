@@ -121,4 +121,16 @@ class SentenceCrud extends AbstractController {
         return $this->json($doc->searchCategoryStartingBy($keyword));
     }
 
+    /**
+     * @Route("/vertex/qr/{title}/{key}", methods={"GET"})
+     */
+    public function showQrCode(string $title, string $key = '') {
+        $doc = $this->repository->load($title);
+        $stc = $doc[$key];
+        return $this->render('sentence/qrcode.html.twig', [
+                    'document' => $doc,
+                    'vertex' => $stc
+        ]);
+    }
+
 }

@@ -1,0 +1,30 @@
+{%  extends "mobile.html.twig" %}
+
+{% block header_title %}{{ vertex.key }}{% endblock %}
+{% block header_detail %}{% endblock %}
+{% block header_footer %}
+    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">Retour au document</a>
+{% endblock %}
+
+{% block content %}
+<img id="qrious"/>
+<div class="pure-u-1 qrcode-human">
+    <article>
+        <h2>{{ vertex.key }}</h2>
+        {{ vertex.content|wiki(document)|striptags|raw }}
+    </article>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/qrious.min.js"></script>
+    <script>
+        var qr = window.qr = new QRious({
+            element: document.getElementById('qrious'),
+            size: innerWidth,
+            // the double quotes below are here for forcing some QRcode reader to understand it's UFT-8 and not JIS or chinese
+            value: '{{ ('« ' ~ vertex.key ~ ' : ' ~ vertex.content|wiki(document)|striptags ~ ' »')|e('js') }}'
+        });
+    </script>
+{% endblock %}
