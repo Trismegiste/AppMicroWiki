@@ -56,3 +56,8 @@
 .mobile .big-link {
     font-size: 300%;
 }
+
+/* for qrcode export */
+#qrious {
+    margin: 2.4em auto;
+}

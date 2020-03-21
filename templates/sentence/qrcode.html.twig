@@ -7,13 +7,15 @@
 {% endblock %}
 
 {% block content %}
-<img id="qrious"/>
-<div class="pure-u-1 qrcode-human">
-    <article>
-        <h2>{{ vertex.key }}</h2>
-        {{ vertex.content|wiki(document)|striptags|raw }}
-    </article>
-</div>
+    <div class="{{ cssgrid }}">
+        <img id="qrious" class="pure-img"/>
+    </div>
+    <div class="{{ cssgrid }}">
+        <article>
+            <h2>{{ vertex.key }}</h2>
+            {{ vertex.content|raw|wiki(document)|striptags }}
+        </article>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -22,9 +24,9 @@
     <script>
         var qr = window.qr = new QRious({
             element: document.getElementById('qrious'),
-            size: innerWidth,
-            // the double quotes below are here for forcing some QRcode reader to understand it's UFT-8 and not JIS or chinese
-            value: '{{ ('« ' ~ vertex.key ~ ' : ' ~ vertex.content|wiki(document)|striptags ~ ' »')|e('js') }}'
+            size: Math.min(innerWidth, innerHeight),
+            // the double quotes + space below are here for forcing some QR code reader to detect it's full UTF-8 and not JIS
+            value: '{{ ('« ' ~ vertex.key ~ ' : ' ~ vertex.content|raw|wiki(document)|striptags ~ ' »')|e('js') }}'
         });
     </script>
 {% endblock %}
