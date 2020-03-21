@@ -53,11 +53,12 @@
     margin-right: 0.8em;
 }
 
+/* list of doc */
 .mobile .big-link {
     font-size: 300%;
 }
 
 /* for qrcode export */
-#qrious {
-    margin: 2.4em auto;
+.qrcode article {
+    margin: 2em;
 }
