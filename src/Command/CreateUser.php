@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Security\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,7 @@ class CreateUser extends Command {
         $username = $input->getArgument('user');
         $io->title($this->getDescription() . ' : ' . $username);
 
+        new User($username, 'toto');
 
         return 0;
     }

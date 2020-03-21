@@ -6,7 +6,7 @@ class SentenceCrudTest extends WebTestCase {
 
     public function testAppend() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/vertex/append/TMP/yolo');
+        $crawler = $client->request('GET', '/docu/show/TMP/append/yolo');
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
@@ -24,7 +24,7 @@ class SentenceCrudTest extends WebTestCase {
 
     public function testEdit() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/vertex/edit/TMP/Motoko');
+        $crawler = $client->request('GET', '/docu/show/TMP/edit/Motoko');
 
         $button = $crawler->selectButton('Save');
         $form = $button->form();
@@ -41,27 +41,27 @@ class SentenceCrudTest extends WebTestCase {
 
     public function testDeleteButtonWhenFocus() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/docu/show/TMP/Kusanagi Motoko');
+        $crawler = $client->request('GET', '/docu/show/TMP/vertex/Kusanagi Motoko');
         $this->assertCount(1, $crawler->filter('article footer i.icon-trash'));
     }
 
     public function testXhrLinkAutocomplete() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/link/find/TMP/s');
+        $crawler = $client->request('GET', '/docu/show/TMP/link/find/s');
         $this->assertEquals(['Section 9'], json_decode($client->getResponse()->getContent(), true));
-        $crawler = $client->request('GET', '/link/find/TMP/k');
+        $crawler = $client->request('GET', '/docu/show/TMP/link/find/k');
         $this->assertEquals(['Kusanagi Motoko'], json_decode($client->getResponse()->getContent(), true));
     }
 
     public function testXhrCategoryAutocomplete() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/category/find/TMP/cy');
+        $crawler = $client->request('GET', '/docu/show/TMP/category/find/cy');
         $this->assertEquals(['cyborg'], json_decode($client->getResponse()->getContent(), true));
     }
 
     public function testDelete() {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/vertex/delete/TMP/Kusanagi Motoko');
+        $crawler = $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
 
         $button = $crawler->selectButton('Delete');
         $form = $button->form();

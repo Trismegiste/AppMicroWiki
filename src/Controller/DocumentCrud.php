@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Document manager
+ * 
+ * @Route("/docu")
  */
 class DocumentCrud extends AbstractController {
 
@@ -23,7 +25,7 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/docu/list", methods={"GET"})
+     * @Route("/list", methods={"GET"})
      */
     public function list() {
         return $this->render('document/list.html.twig', [
@@ -32,7 +34,7 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/docu/new", methods={"GET","POST"})
+     * @Route("/new", methods={"GET","POST"})
      */
     public function new(Request $request) {
         $form = $this->createForm(DocumentType::class);
@@ -51,7 +53,7 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/docu/show/{title}/{key}", methods={"GET"})
+     * @Route("/show/{title}/vertex/{key}", methods={"GET"})
      */
     public function show(string $title, string $key = '') {
         $doc = $this->repository->load($title);

@@ -15,6 +15,8 @@ use Trismegiste\MicroWiki\Document;
 
 /**
  * Sentence manager
+ * 
+ * @Route("/docu/show/{title}")
  */
 class SentenceCrud extends AbstractController {
 
@@ -27,7 +29,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/append/{title}/{key}", methods={"GET","POST"})
+     * @Route("/append/{key}", methods={"GET","POST"})
      */
     public function append(string $title, Request $request, string $key = '') {
         $doc = $this->repository->load($title);
@@ -53,7 +55,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/edit/{title}/{key}", methods={"GET","POST"})
+     * @Route("/edit/{key}", methods={"GET","POST"})
      */
     public function edit(string $title, Request $request, string $key) {
         $doc = $this->repository->load($title);
@@ -75,7 +77,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/delete/{title}/{key}", methods={"GET","DELETE"})
+     * @Route("/delete/{key}", methods={"GET","DELETE"})
      */
     public function delete(string $title, string $key, Request $request): Response {
         $doc = $this->repository->load($title);
@@ -106,7 +108,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/link/find/{title}/{keyword}", methods={"GET"})
+     * @Route("/link/find/{keyword}", methods={"GET"})
      */
     public function searchLinks(string $title, string $keyword = '') {
         $doc = $this->repository->load($title);
@@ -114,7 +116,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/category/find/{title}/{keyword}", methods={"GET"})
+     * @Route("/category/find/{keyword}", methods={"GET"})
      */
     public function searchCategories(string $title, string $keyword = '') {
         $doc = $this->repository->load($title);
@@ -122,7 +124,7 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/vertex/qr/{title}/{key}", methods={"GET"})
+     * @Route("/qrcode/{key}", methods={"GET"})
      */
     public function showQrCode(string $title, string $key = '') {
         $doc = $this->repository->load($title);

@@ -33,7 +33,7 @@ class DocumentCrudTest extends WebTestCase {
 
     public function testShow() {
         $client = static::createClient();
-        $client->request('GET', '/docu/show/TMP');
+        $client->request('GET', '/docu/show/TMP/vertex');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
