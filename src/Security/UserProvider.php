@@ -32,7 +32,11 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface {
         // The $username argument may not actually be a username:
         // it is whatever value is being returned by the getUsername()
         // method in your User class.
-        return new User($username, 'toto');
+        if ($username !== 'admin') {
+            throw new UsernameNotFoundException("Unknow user");
+        }
+
+        return new User('admin', '$argon2id$v=19$m=65536,t=4,p=1$rqUdGpOVhhGoXqHnH8CH/g$VJ/h8Czen+a2Qd8R1n1KqvuBuJ6e9k5jCGONRb+RHZs');
     }
 
     /**
@@ -55,10 +59,10 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface {
 
         // Return a User object after making sure its data is "fresh".
         // Or throw a UsernameNotFoundException if the user no longer exists.
-        $this->logger->debug('refresh', ['user' => $user]);
-        
-        return $user;
-        throw new \Exception('TODO: fill in refreshUser() inside ' . __FILE__);
+        $this->logger->debug('refreshUser');
+        $loadUser = $this->loadUserByUsername($user->getUsername());
+
+        return $loadUser;
     }
 
     /**
