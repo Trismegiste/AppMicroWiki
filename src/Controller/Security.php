@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class Security extends AbstractController {
 
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="app_login", methods={"GET", "POST"})
      */
     public function login(AuthenticationUtils $authenticationUtils): Response {
         // if ($this->getUser()) {
@@ -22,6 +22,14 @@ class Security extends AbstractController {
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/logout", name="app_logout", methods={"GET"})
+     */
+    public function logout() {
+        // controller can be blank: it will never be executed!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
 }
