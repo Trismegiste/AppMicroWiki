@@ -62,6 +62,12 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals(['cyborg'], json_decode($client->getResponse()->getContent(), true));
     }
 
+    public function testQrCode() {
+        $client = static::getAuthenticatedClient();
+        $crawler = $client->request('GET', '/docu/show/TMP/qrcode/Kusanagi Motoko');
+        $this->assertPageTitleContains('QR Code');
+    }
+
     public function testDelete() {
         $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
