@@ -14,7 +14,11 @@
         <div class="pure-u-7-8">
             <h2>{{ item.key }} <span class="category">{{ item.category }}</span></h2>
         </div>
-        <div class="pure-u-1-8 pinned"><a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}"><i class="icon-pin"></i></a></div>
+        {% if not loop.first %}
+            <div class="pure-u-1-8 pinned">
+                <a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}"><i class="icon-pin"></i></a>
+            </div>
+        {% endif %}
     </div>
     <div class="content">{{ item.content|wiki(document) }}
         {% if loop.first %}
