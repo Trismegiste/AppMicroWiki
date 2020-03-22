@@ -12,6 +12,8 @@ class CreateUserTest extends KernelTestCase {
 
         $command = $application->find('app:create-user');
         $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['yolo']);
+
         $commandTester->execute([
             'user' => 'Oshii',
         ]);
