@@ -1,11 +1,14 @@
 <?php
 
+use App\Tests\Controller\SecuredClientImpl;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SentenceCrudTest extends WebTestCase {
 
+    use SecuredClientImpl;
+
     public function testAppend() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/append/yolo');
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
@@ -23,7 +26,7 @@ class SentenceCrudTest extends WebTestCase {
     }
 
     public function testEdit() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/edit/Motoko');
 
         $button = $crawler->selectButton('Save');
@@ -40,13 +43,13 @@ class SentenceCrudTest extends WebTestCase {
     }
 
     public function testDeleteButtonWhenFocus() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/vertex/Kusanagi Motoko');
         $this->assertCount(1, $crawler->filter('article footer i.icon-trash'));
     }
 
     public function testXhrLinkAutocomplete() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/link/find/s');
         $this->assertEquals(['Section 9'], json_decode($client->getResponse()->getContent(), true));
         $crawler = $client->request('GET', '/docu/show/TMP/link/find/k');
@@ -54,13 +57,13 @@ class SentenceCrudTest extends WebTestCase {
     }
 
     public function testXhrCategoryAutocomplete() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/category/find/cy');
         $this->assertEquals(['cyborg'], json_decode($client->getResponse()->getContent(), true));
     }
 
     public function testDelete() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $crawler = $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
 
         $button = $crawler->selectButton('Delete');

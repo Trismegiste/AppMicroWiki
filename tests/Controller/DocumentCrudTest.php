@@ -1,11 +1,14 @@
 <?php
 
+use App\Tests\Controller\SecuredClientImpl;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DocumentCrudTest extends WebTestCase {
 
+    use SecuredClientImpl;
+
     public function testList() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
 
         $crawler = $client->request('GET', '/docu/list');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -19,7 +22,7 @@ class DocumentCrudTest extends WebTestCase {
     }
 
     public function testNew() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
 
         $crawler = $client->request('GET', '/docu/new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -32,7 +35,7 @@ class DocumentCrudTest extends WebTestCase {
     }
 
     public function testShow() {
-        $client = static::createClient();
+        $client = static::getAuthenticatedClient();
         $client->request('GET', '/docu/show/TMP/vertex');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
