@@ -29,12 +29,6 @@ class User implements UserInterface {
         return (string) $this->username;
     }
 
-    public function setUsername(string $username): self {
-        $this->username = $username;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
@@ -46,23 +40,11 @@ class User implements UserInterface {
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
     public function getPassword(): string {
         return (string) $this->password;
-    }
-
-    public function setPassword(string $password): self {
-        $this->password = $password;
-
-        return $this;
     }
 
     /**
