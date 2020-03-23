@@ -1,14 +1,3 @@
-/* some color for header */
-.warning {
-    background-color: #ffc5f6;
-    color: #333;
-}
-
-.mobile .headline {
-    background-color: #2199e8;
-    color: white;
-}
-
 /* design for all icons */
 .mobile i {
     font-size: 140%;

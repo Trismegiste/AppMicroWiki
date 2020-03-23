@@ -3,6 +3,8 @@
 {% block title %}QR Code{% endblock %}
 {% block header_title %}{{ vertex.key }}{% endblock %}
 {% block header_detail %}{% endblock %}
+{% block header_class %}color-secondary-2{% endblock %}
+
 {% block header_footer %}
     <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
 {% endblock %}
