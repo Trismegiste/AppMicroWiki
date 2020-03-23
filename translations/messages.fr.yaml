@@ -1,7 +1,7 @@
 Listing: Liste
 'New document': 'Nouveau document'
 'Create a new document': 'Créer nouveau document'
-'It will be automatically saved': 'Il sera automatiquement sauvé'
+'It will be automatically saved': 'Il sera automatiquement enregistré'
 vertices: articles
 'Please authenticate yourself': 'Veuillez vous authentifier'
 Username: Utilisateur
@@ -17,3 +17,8 @@ Append: Ajouter
 'Delete Sentence': 'Effacer article'
 in: dans
 'Are you sure you want to delete': 'Êtes-vous sûr de vouloir effacer'
+Name: Nom
+Category: Catégorie
+Content: Contenu
+Title: Titre
+Save: Enregistrer
