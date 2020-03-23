@@ -32,3 +32,7 @@ h2 {
     color: red;
     list-style-type: none;
 }
+
+.mobile article form {
+    margin-right: 0.8em;
+}
