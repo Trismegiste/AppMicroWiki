@@ -5,7 +5,7 @@
 {% block header_title %}{{ document.title }}{% endblock %}
 {% block header_detail %}{{ document.description }}{% endblock %}
 {% block header_footer %}
-    <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">Append</a>
+    <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">{% trans %}Append{% endtrans %}</a>
 {% endblock %}
 
 {% block item_article %}

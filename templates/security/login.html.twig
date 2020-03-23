@@ -3,7 +3,7 @@
 {% block title %}Log in{% endblock %}
 
 {% block header_title %}Log in{% endblock %}
-{% block header_detail %}Please authenticate yourself{% endblock %}
+{% block header_detail %}{% trans %}Please authenticate yourself{% endtrans %}{% endblock %}
 {% block header_footer %}{% endblock %}
 
 {% block content %}
@@ -14,9 +14,9 @@
                     <h2 class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</h2>
                 {% endif %}
 
-                <label for="inputUsername">Username</label>
+                <label for="inputUsername">{% trans %}Username{% endtrans %}</label>
                 <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="pure-input-1" required autofocus>
-                <label for="inputPassword">Password</label>
+                <label for="inputPassword">{% trans %}Password{% endtrans %}</label>
                 <input type="password" name="password" id="inputPassword" class="pure-input-1" required>
 
                 <input type="hidden" name="_csrf_token"
@@ -24,7 +24,7 @@
                        >
 
                 <button class="pure-button" type="submit">
-                    Sign in
+                    {% trans %}Sign in{% endtrans %}
                 </button>
             </form>
         </article>

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">Retour au document</a>
+    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
 {% endblock %}
 
 {% block javascripts %}

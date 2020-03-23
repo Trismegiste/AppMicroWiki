@@ -1,21 +1,21 @@
 {% extends 'mobile.html.twig' %}
 
-{% block title %}Delete Sentence{% endblock %}
-{% block header_title %}Delete a Sentence{% endblock %}
-{% block header_detail %}in {{ document.title }}{% endblock %}
+{% block title %}{% trans %}Delete Sentence{% endtrans %}{% endblock %}
+{% block header_title %}{% trans %}Delete Sentence{% endtrans %}{% endblock %}
+{% block header_detail %}{% trans %}in{% endtrans %} {{ document.title }}{% endblock %}
 {% block header_class %}headline{% endblock %}
 
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">Retour au document</a>
+    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
 {% endblock %}
 
 {% block content %}
     <div class="{{ cssgrid }}">
         <article> 
             <div>
-                <p>Are you sure you want to delete '{{ key }}' ?</p>
+                <p>{% trans %}Are you sure you want to delete{% endtrans %} '{{ key }}' ?</p>
                 {%  if inbound|length > 0  %}
-                    <p>There are {{ inbound|length }} Sentence(s) that point to '{{ key }}' :</p>
+                    <p>{% trans %}There are{% endtrans %} {{ inbound|length }} {% trans %}Sentence(s) that point to{% endtrans %} '{{ key }}' :</p>
                     <ul>
                         {% for sentence in inbound %}
                             <li>{{ sentence.key }}</li>

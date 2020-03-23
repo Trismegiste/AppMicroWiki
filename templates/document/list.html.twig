@@ -1,10 +1,10 @@
 {% extends 'mobile.html.twig' %}
 
-{% block title %}Listing{% endblock %}
-{% block header_title %}Listing{% endblock %}
+{% block title %}{% trans %}Listing{% endtrans %}{% endblock %}
+{% block header_title %}{% trans %}Listing{% endtrans %}{% endblock %}
 {% block header_detail %}{% endblock %}
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">New document</a>
+    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">{% trans %}New document{% endtrans %}</a>
 {% endblock %}
 
 {% block item_article %}
@@ -13,7 +13,7 @@
             <h2>{{ item.title }}</h2>
             <div>
                 {{ item.description }}
-                <p>{{ item.vertex }} vertices</p>
+                <p>{{ item.vertex }} {% trans %}vertices{% endtrans %}</p>
             </div>
         </div>
         <div class="pure-u-1-4 big-link">

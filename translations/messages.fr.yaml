@@ -1,0 +1,19 @@
+Listing: Liste
+'New document': 'Nouveau document'
+'Create a new document': 'Créer nouveau document'
+'It will be automatically saved': 'Il sera automatiquement sauvé'
+vertices: articles
+'Please authenticate yourself': 'Veuillez vous authentifier'
+Username: Utilisateur
+Password: 'Mot de passe'
+'Sign in': Connexion
+Append: Ajouter
+'Create new Sentence': 'Créer nouvel article'
+'The name must be unique': 'Le nom doit être unique'
+'Go back': Retour
+'Edit Sentence': 'Éditer article'
+'There are': 'Il y a'
+'Sentence(s) that point to': 'articles qui pointent vers'
+'Delete Sentence': 'Effacer article'
+in: dans
+'Are you sure you want to delete': 'Êtes-vous sûr de vouloir effacer'
