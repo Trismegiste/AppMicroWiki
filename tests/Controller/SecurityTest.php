@@ -29,28 +29,25 @@ class SecurityTest extends WebTestCase {
         $this->assertResponseRedirects('/login');
     }
 
-    public function testRoutesAreAllSecured() {
+    /** Minimum test to check if all routes for a Document are secured (i.e redirect to login when user is not authenticated) */
+    public function testAllRoutesUnderDocumentMustBeSecured() {
         /* @var $router Router */
         $router = $this->client->getContainer()->get('router');
         $crud = array_filter(iterator_to_array($router->getRouteCollection()), function(Route $route) {
             return preg_match('#^/docu#', $route->getPath());
         });
-        $this->assertCount(10, $crud);
+        $this->assertCount(10, $crud, "There are new or less Routes to test (conservative test to check if all routes are secured)");
 
         $url = array_map(function(Route $route) {
             $path = $route->getPath();
-            $path = preg_replace('#(\{title\})#', 'dummy', $path);
-            $path = preg_replace('#(\{key\})#', 'dummy', $path);
-            $path = preg_replace('#(\{keyword\})#', 'dummy', $path);
-            list($meth) = $route->getMethods();
+            list($meth) = $route->getMethods(); // gets only the first method
+            $this->client->request($meth, $path);
+            $this->assertResponseRedirects('/login', 302, "$path is not secured");
 
-            return [$meth, $path];
+            return $this->client->getResponse()->getStatusCode();
         }, $crud);
 
-        foreach ($url as $name => $path) {
-            $this->client->request($path[0], $path[1]);
-            $this->assertResponseRedirects('/login', 302, "$name is not secured");
-        }
+        $this->assertNotContains(200, $url);  // useless
     }
 
 }

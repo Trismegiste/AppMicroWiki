@@ -7,6 +7,7 @@ use App\Repository\DocumentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -27,7 +28,7 @@ class DocumentCrud extends AbstractController {
     /**
      * @Route("/list", methods={"GET"})
      */
-    public function list() {
+    public function list(): Response {
         return $this->render('document/list.html.twig', [
                     'listing' => $this->repository->list()
         ]);
@@ -36,7 +37,7 @@ class DocumentCrud extends AbstractController {
     /**
      * @Route("/new", methods={"GET","POST"})
      */
-    public function new(Request $request) {
+    public function new(Request $request): Response {
         $form = $this->createForm(DocumentType::class);
 
         $form->handleRequest($request);
@@ -55,7 +56,7 @@ class DocumentCrud extends AbstractController {
     /**
      * @Route("/show/{title}", methods={"GET"})
      */
-    public function show(string $title) {
+    public function show(string $title): Response {
         $doc = $this->repository->load($title);
         return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }

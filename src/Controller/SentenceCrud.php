@@ -7,6 +7,7 @@ use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,7 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/append/{key}", methods={"GET","POST"})
      */
-    public function append(string $title, Request $request, string $key = '') {
+    public function append(string $title, Request $request, string $key = ''): Response {
         $doc = $this->repository->load($title);
 
         $sentence = null;
@@ -57,7 +58,7 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/edit/{key}", methods={"GET","POST"})
      */
-    public function edit(string $title, Request $request, string $key) {
+    public function edit(string $title, string $key, Request $request): Response {
         $doc = $this->repository->load($title);
 
         $form = $this->createForm(SentenceType::class, $doc[$key], ['document' => $doc]);
@@ -104,7 +105,7 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/link/find/{keyword}", methods={"GET"})
      */
-    public function searchLinks(string $title, string $keyword = '') {
+    public function searchLinks(string $title, string $keyword = ''): JsonResponse {
         $doc = $this->repository->load($title);
         return $this->json($doc->searchAnyTypeOfLinksStartingBy($keyword));
     }
@@ -112,7 +113,7 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/category/find/{keyword}", methods={"GET"})
      */
-    public function searchCategories(string $title, string $keyword = '') {
+    public function searchCategories(string $title, string $keyword = ''): JsonResponse {
         $doc = $this->repository->load($title);
         return $this->json($doc->searchCategoryStartingBy($keyword));
     }
@@ -120,7 +121,7 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/qrcode/{key}", methods={"GET"})
      */
-    public function showQrCode(string $title, string $key = '') {
+    public function showQrCode(string $title, string $key): Response {
         $doc = $this->repository->load($title);
         $stc = $doc[$key];
         return $this->render('sentence/qrcode.html.twig', [
