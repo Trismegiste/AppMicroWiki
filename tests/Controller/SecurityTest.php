@@ -14,6 +14,11 @@ class SecurityTest extends WebTestCase {
         $this->client = static::createClient();
     }
 
+    protected function tearDown(): void {
+        parent::tearDown();
+        unset($this->client);
+    }
+
     public function testLogin() {
         $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
@@ -30,19 +35,20 @@ class SecurityTest extends WebTestCase {
         $crud = array_filter(iterator_to_array($router->getRouteCollection()), function(Route $route) {
             return preg_match('#^/docu#', $route->getPath());
         });
-        $this->assertCount(9, $crud);
+        $this->assertCount(10, $crud);
 
         $url = array_map(function(Route $route) {
             $path = $route->getPath();
             $path = preg_replace('#(\{title\})#', 'dummy', $path);
             $path = preg_replace('#(\{key\})#', 'dummy', $path);
             $path = preg_replace('#(\{keyword\})#', 'dummy', $path);
+            list($meth) = $route->getMethods();
 
-            return $path;
+            return [$meth, $path];
         }, $crud);
 
         foreach ($url as $name => $path) {
-            $this->client->request('GET', $path);
+            $this->client->request($path[0], $path[1]);
             $this->assertResponseRedirects('/login', 302, "$name is not secured");
         }
     }

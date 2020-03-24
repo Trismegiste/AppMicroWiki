@@ -44,7 +44,7 @@ class SentenceCrudTest extends WebTestCase {
 
     public function testDeleteButtonWhenFocus() {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', '/docu/show/TMP/vertex/Kusanagi Motoko');
+        $crawler = $client->request('GET', '/docu/show/TMP');
         $this->assertCount(1, $crawler->filter('article footer i.icon-trash'));
     }
 
