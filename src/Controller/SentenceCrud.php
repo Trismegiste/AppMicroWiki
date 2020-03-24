@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Trismegiste\MicroWiki\Sentence;
 
 /**
@@ -22,10 +23,12 @@ class SentenceCrud extends AbstractController {
 
     protected $repository;
     protected $logger;
+    protected $csrf;
 
-    public function __construct(DocumentFactory $repo, LoggerInterface $log) {
+    public function __construct(DocumentFactory $repo, CsrfTokenManagerInterface $csrf, LoggerInterface $log) {
         $this->repository = $repo;
         $this->logger = $log;
+        $this->csrf = $csrf;
     }
 
     /**
@@ -131,12 +134,13 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/pin/{key}", methods={"POST"})
+     * @Route("/pin/{key}", methods={"GET"})
      */
     public function pinVertex(string $title, string $key, Request $request): Response {
-        $submittedToken = $request->request->get('token');
+        $submittedToken = $request->query->get('token');
 
         if ($this->isCsrfTokenValid('pin-vertex', $submittedToken)) {
+            $this->csrf->removeToken('pin-vertex');
             $doc = $this->repository->load($title);
             $doc->pinVertex($key);
             $this->repository->save($doc);

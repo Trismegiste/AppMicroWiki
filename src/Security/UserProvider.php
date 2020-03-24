@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -12,7 +13,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface {
 
     protected $logger;
 
-    public function __construct(\Psr\Log\LoggerInterface $log) {
+    public function __construct(LoggerInterface $log) {
         $this->logger = $log;
     }
 
