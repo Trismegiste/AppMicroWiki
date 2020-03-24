@@ -135,4 +135,13 @@ class SentenceCrud extends AbstractController {
         ]);
     }
 
+    /**
+     * @Route("/pin/{key}", methods={"POST"})
+     */
+    public function pinVertex(string $title, string $key, Request $request): Response {
+        return $this->redirectToRoute('app_documentcrud_show', [
+                    'title' => $title
+        ]);
+    }
+
 }

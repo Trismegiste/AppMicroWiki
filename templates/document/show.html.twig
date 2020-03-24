@@ -16,7 +16,10 @@
         </div>
         {% if not loop.first %}
             <div class="pure-u-1-8 pinned">
-                <a href="{{ path('app_documentcrud_show',{title: document.title, key: item.key}) }}"><i class="icon-pin"></i></a>
+                <form action="{{ path('app_sentencecrud_pinvertex',{title: document.title, key: item.key}) }}" method="POST" class="fakelink">
+                    <input type="hidden" name="token" value="{{ csrf_token('pin-vertex') }}"/>
+                    <button><i class="icon-pin"></i></button>
+                </form>
             </div>
         {% endif %}
     </div>
