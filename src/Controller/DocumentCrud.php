@@ -53,16 +53,10 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/show/{title}/vertex/{key}", methods={"GET"})
+     * @Route("/show/{title}", methods={"GET"})
      */
-    public function show(string $title, string $key = '') {
+    public function show(string $title) {
         $doc = $this->repository->load($title);
-
-        if ($key !== '') {
-            $doc->pinVertex($key);
-            $this->repository->save($doc);
-        }
-
         return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }
 

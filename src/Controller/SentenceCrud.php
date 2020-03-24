@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Trismegiste\MicroWiki\Sentence;
-use Trismegiste\MicroWiki\Document;
 
 /**
  * Sentence manager
@@ -43,9 +42,10 @@ class SentenceCrud extends AbstractController {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $sentence = $form->getData();
+            $doc->pinVertex($sentence->getKey());
             $this->repository->save($doc);
 
-            return $this->redirectToShowVertex($doc, $sentence);
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
         }
 
         return $this->render('sentence/new.html.twig', [
@@ -65,9 +65,10 @@ class SentenceCrud extends AbstractController {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $sentence = $form->getData();
+            $doc->pinVertex($sentence->getKey());
             $this->repository->save($doc);
 
-            return $this->redirectToShowVertex($doc, $sentence);
+            return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
         }
 
         return $this->render('sentence/edit.html.twig', [
@@ -97,13 +98,6 @@ class SentenceCrud extends AbstractController {
                     'key' => $key,
                     'document' => $doc,
                     'inbound' => $doc->findVertexByLink($key)
-        ]);
-    }
-
-    protected function redirectToShowVertex(Document $doc, Sentence $sentence): Response {
-        return $this->redirectToRoute('app_documentcrud_show', [
-                    'title' => $doc->getTitle(),
-                    'key' => $sentence->getKey(),
         ]);
     }
 
