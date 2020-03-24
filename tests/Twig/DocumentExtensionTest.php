@@ -49,4 +49,8 @@ class DocumentExtensionTest extends TestCase {
         $this->assertCount(1, $this->sut->getFilters());
     }
 
+    public function testFunction() {
+        $this->assertCount(1, $this->sut->getFunctions());
+    }
+
 }
