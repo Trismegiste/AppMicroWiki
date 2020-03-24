@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
 use App\Repository\DocumentFactory;
+use App\Twig\DocumentExtension;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -134,13 +135,11 @@ class SentenceCrud extends AbstractController {
     }
 
     /**
-     * @Route("/pin/{key}", methods={"GET"})
+     * @Route("/pin/{key}/{token}", methods={"GET"})
      */
-    public function pinVertex(string $title, string $key, Request $request): Response {
-        $submittedToken = $request->query->get('token');
-
-        if ($this->isCsrfTokenValid('pin-vertex', $submittedToken)) {
-            $this->csrf->removeToken('pin-vertex');
+    public function pinVertex(string $title, string $key, string $token): Response {
+        if ($this->isCsrfTokenValid(DocumentExtension::csrf, $token)) {
+            $this->csrf->removeToken(DocumentExtension::csrf);
             $doc = $this->repository->load($title);
             $doc->pinVertex($key);
             $this->repository->save($doc);

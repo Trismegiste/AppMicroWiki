@@ -85,8 +85,8 @@ class SentenceCrudTest extends WebTestCase {
         // click on pin :
         $pinIcon = $crawler->filter('i.icon-pin');
         $this->assertCount(1, $pinIcon); // 1 because Togusa has no pin icon since it's the first on the list, the button is hidden
-        $pinForm = $pinIcon->parents()->first()->form();
-        $client->submit($pinForm);
+        $pinLink = $pinIcon->parents()->first()->link();
+        $client->click($pinLink);
         $crawler = $client->followRedirect();
         $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('.mobile article h2')->eq(0)->text(), 'Vertex Motoko is not the first on the list');
     }

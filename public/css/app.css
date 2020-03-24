@@ -51,9 +51,3 @@
 .qrcode article {
     margin: 2em;
 }
-
-form.fakelink button {
-    padding: 0;
-    background-color: transparent;
-    border: none;
-}

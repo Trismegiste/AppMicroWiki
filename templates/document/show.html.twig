@@ -16,9 +16,7 @@
         </div>
         {% if not loop.first %}
             <div class="pure-u-1-8 pinned">
-                <a href="{{ path('app_sentencecrud_pinvertex',{ title: document.title, key: item.key, token: csrf_token('pin-vertex') }) }}">
-                    <i class="icon-pin"></i>
-                </a>
+                <a href="{{ pinned(document, item) }}"><i class="icon-pin"></i></a>
             </div>
         {% endif %}
     </div>
