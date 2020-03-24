@@ -139,9 +139,15 @@ class SentenceCrud extends AbstractController {
      * @Route("/pin/{key}", methods={"POST"})
      */
     public function pinVertex(string $title, string $key, Request $request): Response {
-        return $this->redirectToRoute('app_documentcrud_show', [
-                    'title' => $title
-        ]);
+        $submittedToken = $request->request->get('token');
+
+        if ($this->isCsrfTokenValid('pin-vertex', $submittedToken)) {
+            $doc = $this->repository->load($title);
+            $doc->pinVertex($key);
+            $this->repository->save($doc);
+        }
+
+        return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
     }
 
 }
