@@ -68,14 +68,37 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertPageTitleContains('QR Code');
     }
 
+    public function testPinVertex() {
+        $client = static::getAuthenticatedClient();
+        // add another vertex :
+        $crawler = $client->request('GET', '/docu/show/TMP/append');
+
+        $client->submitForm('Save', [
+            'sentence[key]' => 'Togusa',
+            'sentence[category]' => 'human',
+            'sentence[content]' => 'Mateba Unica'
+        ]);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $crawler = $client->followRedirect();
+        $this->assertEquals('Togusa human', $crawler->filter('.mobile article h2')->eq(0)->text());
+        $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('.mobile article h2')->eq(1)->text());
+        // click on pin :
+        $pinIcon = $crawler->filter('i.icon-pin');
+        $this->assertCount(1, $pinIcon); // 1 because Togusa has no pin icon since it's the first on the list, the button is hidden
+        $pinForm = $pinIcon->parents()->first()->form();
+        $client->submit($pinForm);
+        $crawler = $client->followRedirect();
+        $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('.mobile article h2')->eq(0)->text(), 'Vertex Motoko is not the first on the list');
+    }
+
     public function testDelete() {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
+        $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
+        $client->submitForm('Delete');
+        $client->request('GET', '/docu/show/TMP/delete/Togusa');
+        $client->submitForm('Delete');
+        $crawler = $client->followRedirect();
 
-        $button = $crawler->selectButton('Delete');
-        $form = $button->form();
-
-        $crawler = $client->submit($form);
         $this->assertCount(0, $crawler->filter('h2'));
     }
 
