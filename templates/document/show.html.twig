@@ -34,15 +34,16 @@
         {% endif %}
     </div>
     <footer class="pure-g">
+        {% set itemPk = {key:item.key, title:document.title} %}
         <div class="pure-u-1-3 center">
-            <a href="{{ path('app_sentencecrud_edit', {key:item.key, title:document.title}) }}"><i class="icon-pencil"></i></a>
+            <a href="{{ path('app_sentencecrud_edit', itemPk) }}"><i class="icon-pencil"></i></a>
         </div>
         <div class="pure-u-1-3 center">
-            <a href="{{ path('app_sentencecrud_showqrcode', {key:item.key, title:document.title}) }}"><i class="icon-qrcode"></i></a>
+            <a href="{{ path('app_sentencecrud_showqrcode', itemPk) }}"><i class="icon-qrcode"></i></a>
         </div>
         {% if loop.first %}
             <div class="pure-u-1-3 center">
-                <a href="{{ path('app_sentencecrud_delete', {key:item.key, title:document.title}) }}"><i class="icon-trash"></i></a>
+                <a href="{{ path('app_sentencecrud_delete', itemPk) }}"><i class="icon-trash"></i></a>
             </div>
         {% endif %}
     </footer>
