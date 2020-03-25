@@ -26,11 +26,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Repository\DocumentFactory:
-        arguments:
-            $projectDir: '%kernel.project_dir%'
-            $repositoryDir: 'var/document'
-            
     MongoDB\Driver\Manager:
         arguments:
             - 'mongodb://localhost:27017'
