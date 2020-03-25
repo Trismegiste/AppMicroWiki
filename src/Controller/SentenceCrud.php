@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
-use App\Repository\DocumentFactory;
+use App\Repository\DocumentRepo;
 use App\Twig\DocumentExtension;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class SentenceCrud extends AbstractController {
     protected $logger;
     protected $csrf;
 
-    public function __construct(DocumentFactory $repo, CsrfTokenManagerInterface $csrf, LoggerInterface $log) {
+    public function __construct(DocumentRepo $repo, CsrfTokenManagerInterface $csrf, LoggerInterface $log) {
         $this->repository = $repo;
         $this->logger = $log;
         $this->csrf = $csrf;

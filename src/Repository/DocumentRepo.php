@@ -48,10 +48,16 @@ class DocumentRepo {
     }
 
     public function save(Document $doc): void {
-        $bulk = new BulkWrite(['ordered' => true]);
-        $id = $bulk->insert($doc);
+        $bulk = new BulkWrite();
+
+        if ($doc->isNew()) {
+            $id = $bulk->insert($doc);
+            $doc->setPk($id);
+        } else {
+            $bulk->update(['_id' => $doc->getPk()], $doc);
+        }
+
         $this->mongo->executeBulkWrite($this->getNamespace(), $bulk);
-        $doc->setPk($id);
     }
 
     public function load(string $pk): Document {

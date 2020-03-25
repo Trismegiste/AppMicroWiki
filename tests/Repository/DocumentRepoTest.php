@@ -21,7 +21,7 @@ class DocumentRepoTest extends KernelTestCase {
         unset($this->sut);
     }
 
-    public function testSave() {
+    public function testInsertNew() {
         $doc = new Document('title', 'descr');
         $this->sut->save($doc);
         $this->assertInstanceOf(ObjectIdInterface::class, $doc->getPk());
@@ -30,11 +30,29 @@ class DocumentRepoTest extends KernelTestCase {
         return (string) $doc->getPk();
     }
 
-    /** @depends testSave */
+    /** @depends testInsertNew */
     public function testLoad(string $pk) {
         $doc = $this->sut->load($pk);
         $this->assertEquals('title', $doc->getTitle());
         $this->assertEquals('descr', $doc->getDescription());
+
+        return $doc;
+    }
+
+    /** @depends testLoad */
+    public function testUpdate(Document $doc) {
+        $this->assertRegExp('/^[0-9a-f]{24}$/', $doc->getPk());
+        $doc->setDescription('Updated');
+        $this->sut->save($doc);
+
+        return (string) $doc->getPk();
+    }
+
+    /** @depends testUpdate */
+    public function testLoadUpdated(string $pk) {
+        $doc = $this->sut->load($pk);
+        $this->assertEquals('title', $doc->getTitle());
+        $this->assertEquals('Updated', $doc->getDescription());
     }
 
 }
