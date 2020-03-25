@@ -20,9 +20,9 @@ class SentenceCrudTest extends WebTestCase {
     }
 
     /** @depends testCreate */
-    public function testAppend($start) {
+    public function testAppend($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $start . '/append/yolo');
+        $crawler = $client->request('GET', $urlDoc . '/append/yolo');
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
@@ -36,11 +36,14 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $crawler = $client->followRedirect();
         $this->assertEquals('Motoko cyborg', $crawler->filter('h2')->text());
+
+        return $urlDoc;
     }
 
-    public function testEdit() {
+    /** @depends testCreate */
+    public function testEdit($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart . '/edit/Motoko');
+        $crawler = $client->request('GET', $urlDoc . '/edit/Motoko');
 
         $button = $crawler->selectButton('Save');
         $form = $button->form();
@@ -55,36 +58,41 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('h2')->text());
     }
 
-    public function testDeleteButtonWhenFocus() {
+    /** @depends testCreate */
+    public function testDeleteButtonWhenFocus($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart);
+        $crawler = $client->request('GET', $urlDoc);
         $this->assertCount(1, $crawler->filter('article footer i.icon-trash'));
     }
 
-    public function testXhrLinkAutocomplete() {
+    /** @depends testCreate */
+    public function testXhrLinkAutocomplete($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart . '/link/find/s');
+        $crawler = $client->request('GET', $urlDoc . '/link/find/s');
         $this->assertEquals(['Section 9'], json_decode($client->getResponse()->getContent(), true));
-        $crawler = $client->request('GET', $this->urlStart . '/link/find/k');
+        $crawler = $client->request('GET', $urlDoc . '/link/find/k');
         $this->assertEquals(['Kusanagi Motoko'], json_decode($client->getResponse()->getContent(), true));
     }
 
-    public function testXhrCategoryAutocomplete() {
+    /** @depends testCreate */
+    public function testXhrCategoryAutocomplete($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart . '/category/find/cy');
+        $crawler = $client->request('GET', $urlDoc . '/category/find/cy');
         $this->assertEquals(['cyborg'], json_decode($client->getResponse()->getContent(), true));
     }
 
-    public function testQrCode() {
+    /** @depends testCreate */
+    public function testQrCode($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart . '/qrcode/Kusanagi Motoko');
+        $crawler = $client->request('GET', $urlDoc . '/qrcode/Kusanagi Motoko');
         $this->assertPageTitleContains('QR Code');
     }
 
-    public function testPinVertex() {
+    /** @depends testCreate */
+    public function testPinVertex($urlDoc) {
         $client = static::getAuthenticatedClient();
         // add another vertex :
-        $crawler = $client->request('GET', $this->urlStart . '/append');
+        $crawler = $client->request('GET', $urlDoc . '/append');
 
         $client->submitForm('Save', [
             'sentence[key]' => 'Togusa',
@@ -104,9 +112,10 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('.mobile article h2')->eq(0)->text(), 'Vertex Motoko is not the first on the list');
     }
 
-    public function testMissingWikiLink() {
+    /** @depends testCreate */
+    public function testMissingWikiLink($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart);
+        $crawler = $client->request('GET', $urlDoc);
         $newVertex = $crawler->selectLink('Section 9')->link();
         $this->assertNotNull($newVertex);
         $crawler = $client->click($newVertex);
@@ -122,18 +131,20 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals('Section 9 Japan', $crawler->filter('.mobile article h2')->eq(0)->text());
     }
 
-    public function testExistingLink() {
+    /** @depends testCreate */
+    public function testExistingLink($urlDoc) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart);
+        $crawler = $client->request('GET', $urlDoc);
         $link = $crawler->filter('article .content')->selectLink('Section 9')->eq(0)->link();
         $client->click($link);
-        $this->assertResponseRedirects('/docu/show/TMP', 302);
+        $this->assertResponseRedirects($urlDoc, 302);
     }
 
-    public function testDelete() {
+    /** @depends testCreate */
+    public function testDelete($urlDoc) {
         $client = static::getAuthenticatedClient();
         foreach (['Kusanagi Motoko', 'Togusa', 'Section 9']as $key) {
-            $client->request('GET', $this->urlStart . '/delete/' . $key);
+            $client->request('GET', $urlDoc . '/delete/' . $key);
             $client->submitForm('Delete');
         }
         $crawler = $client->followRedirect();
