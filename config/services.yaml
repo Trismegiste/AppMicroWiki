@@ -28,4 +28,8 @@ services:
 
     MongoDB\Driver\Manager:
         arguments:
-            - 'mongodb://localhost:27017'
+            - '%env(resolve:DATABASE_URL)%'
+            
+    App\Repository\DocumentRepo:
+        arguments:
+            $database: microwiki
