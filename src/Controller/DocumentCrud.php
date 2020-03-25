@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\DocumentType;
-use App\Repository\DocumentFactory;
+use App\Repository\DocumentRepo;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class DocumentCrud extends AbstractController {
     protected $repository;
     protected $logger;
 
-    public function __construct(DocumentFactory $repo, LoggerInterface $log) {
+    public function __construct(DocumentRepo $repo, LoggerInterface $log) {
         $this->repository = $repo;
         $this->logger = $log;
     }
@@ -45,7 +45,8 @@ class DocumentCrud extends AbstractController {
             $docu = $form->getData();
             $this->repository->save($docu);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $docu->getTitle()]);
+            return $this->redirectToRoute('app_documentcrud_list');
+            return $this->redirectToRoute('app_documentcrud_show', ['pk' => $docu->getPk()]);
         }
 
         return $this->render('document/new.html.twig', [

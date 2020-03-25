@@ -6,10 +6,16 @@
 
 namespace Trismegiste\MicroWiki;
 
+use InvalidArgumentException;
+use MongoDB\BSON\Persistable;
+use Trismegiste\Toolbox\MongoDb\PersistableImpl;
+
 /**
  * Description of Sentence
  */
-class Sentence implements Vertex {
+class Sentence implements Vertex, Persistable {
+
+    use PersistableImpl;
 
     const linkRegex = '/\[\[([^\]]+)\]\]/';
 
@@ -19,7 +25,7 @@ class Sentence implements Vertex {
 
     public function __construct(string $key) {
         if (empty($key)) {
-            throw new \InvalidArgumentException("Key '$key' cannot be empty");
+            throw new InvalidArgumentException("Key '$key' cannot be empty");
         }
         $this->uniqueKey = $key;
     }

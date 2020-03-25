@@ -27,7 +27,8 @@
         "symfony/twig-pack": "*",
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+        "trismegiste/toolbox": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
@@ -82,5 +83,11 @@
             "allow-contrib": false,
             "require": "5.0.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/Develop/toolbox"
+        }
+    ]
 }

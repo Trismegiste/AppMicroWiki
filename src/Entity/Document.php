@@ -6,10 +6,15 @@
 
 namespace Trismegiste\MicroWiki;
 
+use Trismegiste\Toolbox\MongoDb\Root;
+use Trismegiste\Toolbox\MongoDb\RootImpl;
+
 /**
  * Description of Document
  */
-class Document extends Graph {
+class Document extends Graph implements Root {
+
+    use RootImpl;
 
     protected $title;
     protected $description;
@@ -17,10 +22,6 @@ class Document extends Graph {
     public function __construct(string $t = '', string $d = '') {
         $this->title = $t;
         $this->description = $d;
-    }
-
-    public function getPk() {
-        return $this->title;
     }
 
     // getters & setters
