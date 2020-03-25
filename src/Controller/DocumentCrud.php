@@ -45,7 +45,6 @@ class DocumentCrud extends AbstractController {
             $docu = $form->getData();
             $this->repository->save($docu);
 
-            return $this->redirectToRoute('app_documentcrud_list');
             return $this->redirectToRoute('app_documentcrud_show', ['pk' => $docu->getPk()]);
         }
 

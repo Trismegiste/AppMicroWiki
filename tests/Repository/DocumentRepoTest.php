@@ -58,7 +58,7 @@ class DocumentRepoTest extends KernelTestCase {
     public function testInDepth() {
         $doc = new Document('a', 'b');
         $doc[] = new Trismegiste\MicroWiki\Sentence('Alice');
-        $doc[] = new Trismegiste\MicroWiki\Sentence('Bod');
+        $doc[] = new Trismegiste\MicroWiki\Sentence('Bob');
         $this->sut->save($doc);
 
         $reload = $this->sut->load($doc->getPk());

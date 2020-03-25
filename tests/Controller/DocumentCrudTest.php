@@ -32,11 +32,19 @@ class DocumentCrudTest extends WebTestCase {
         $form['document[title]'] = 'TMP';
         $form['document[description]'] = 'YOLO!';
         $crawler = $client->submit($form);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $crawler = $client->followRedirect();
+
+        $result = [];
+        $this->assertEquals(1, preg_match('#/docu/show/([0-9a-f]{24})$#', $crawler->getUri(), $result));
+
+        return $result[1];
     }
 
-    public function testShow() {
+    /** @depends testNew */
+    public function testShow(string $pkDoc) {
         $client = static::getAuthenticatedClient();
-        $client->request('GET', '/docu/show/TMP');
+        $client->request('GET', "/docu/show/$pkDoc");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
