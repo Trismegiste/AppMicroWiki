@@ -30,3 +30,7 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $repositoryDir: 'var/document'
+            
+    MongoDB\Driver\Manager:
+        arguments:
+            - 'mongodb://localhost:27017'

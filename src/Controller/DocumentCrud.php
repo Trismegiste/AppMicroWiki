@@ -54,10 +54,10 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/show/{title}", methods={"GET"})
+     * @Route("/show/{pk}", methods={"GET"})
      */
-    public function show(string $title): Response {
-        $doc = $this->repository->load($title);
+    public function show(string $pk): Response {
+        $doc = $this->repository->load($pk);
         return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }
 

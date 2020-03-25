@@ -18,7 +18,7 @@ class ListingDecorator implements \Iterator {
         $docu = json_decode($current->getContents());
 
         return (object) [
-                    'filename' => $current->getBasename('.json'),
+                    'pk' => $current->getBasename('.json'),
                     'title' => $docu->title,
                     'description' => $docu->description,
                     'vertex' => count($docu->vertex)

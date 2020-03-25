@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
+    <a href="{{ path('app_documentcrud_show', {pk: document.pk}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
 {% endblock %}
 
 {% block javascripts %}
@@ -24,7 +24,7 @@
         contentTC.register([{
                 match: /(^|\s)\[\[(\w+)$/,
                 search: function (term, callback) {
-                    fetch('{{ path('app_sentencecrud_searchlinks', {title: document.title}) }}' + '/' + term)
+                    fetch('{{ path('app_sentencecrud_searchlinks', {pk: document.pk}) }}' + '/' + term)
                             .then((response) => {
                                 return response.json();
                             })
@@ -44,7 +44,7 @@
         categoryTC.register([{
                 match: /(^)([^\s]+)$/,
                 search: function (term, callback) {
-                    fetch('{{ path('app_sentencecrud_searchcategories', {title: document.title}) }}' + '/' + term)
+                    fetch('{{ path('app_sentencecrud_searchcategories', {pk: document.pk}) }}' + '/' + term)
                             .then((response) => {
                                 return response.json();
                             })

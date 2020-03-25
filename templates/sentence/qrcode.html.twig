@@ -6,7 +6,7 @@
 {% block header_class %}color-secondary-2{% endblock %}
 
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_show', {title: document.title}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
+    <a href="{{ path('app_documentcrud_show', {pk: document.pk}) }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
 {% endblock %}
 
 {% block content %}

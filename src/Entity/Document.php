@@ -19,6 +19,10 @@ class Document extends Graph {
         $this->description = $d;
     }
 
+    public function getPk() {
+        return $this->title;
+    }
+
     // getters & setters
     public function setTitle(string $str): void {
         $this->title = $str;

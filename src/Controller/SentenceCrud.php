@@ -18,7 +18,7 @@ use Trismegiste\MicroWiki\Sentence;
 /**
  * Sentence manager
  * 
- * @Route("/docu/show/{title}")
+ * @Route("/docu/show/{pk}")
  */
 class SentenceCrud extends AbstractController {
 
@@ -35,8 +35,8 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/append/{key}", methods={"GET","POST"})
      */
-    public function append(string $title, Request $request, string $key = ''): Response {
-        $doc = $this->repository->load($title);
+    public function append(string $pk, Request $request, string $key = ''): Response {
+        $doc = $this->repository->load($pk);
 
         $sentence = null;
         if (strlen($key)) {
@@ -50,7 +50,7 @@ class SentenceCrud extends AbstractController {
             $doc->pinVertex($sentence->getKey());
             $this->repository->save($doc);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
+            return $this->redirectToRoute('app_documentcrud_show', ['pk' => $pk]);
         }
 
         return $this->render('sentence/new.html.twig', [
@@ -62,8 +62,8 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/edit/{key}", methods={"GET","POST"})
      */
-    public function edit(string $title, string $key, Request $request): Response {
-        $doc = $this->repository->load($title);
+    public function edit(string $pk, string $key, Request $request): Response {
+        $doc = $this->repository->load($pk);
 
         $form = $this->createForm(SentenceType::class, $doc[$key], ['document' => $doc]);
 
@@ -73,7 +73,7 @@ class SentenceCrud extends AbstractController {
             $doc->pinVertex($sentence->getKey());
             $this->repository->save($doc);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
+            return $this->redirectToRoute('app_documentcrud_show', ['pk' => $pk]);
         }
 
         return $this->render('sentence/edit.html.twig', [
@@ -85,8 +85,8 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/delete/{key}", methods={"GET","DELETE"})
      */
-    public function delete(string $title, string $key, Request $request): Response {
-        $doc = $this->repository->load($title);
+    public function delete(string $pk, string $key, Request $request): Response {
+        $doc = $this->repository->load($pk);
 
         $form = $this->createForm(SentenceDeleteType::class, $doc[$key]);
 
@@ -95,7 +95,7 @@ class SentenceCrud extends AbstractController {
             unset($doc[$key]);
             $this->repository->save($doc);
 
-            return $this->redirectToRoute('app_documentcrud_show', ['title' => $doc->getTitle()]);
+            return $this->redirectToRoute('app_documentcrud_show', ['pk' => $pk]);
         }
 
         return $this->render('sentence/delete.html.twig', [
@@ -109,24 +109,24 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/link/find/{keyword}", methods={"GET"})
      */
-    public function searchLinks(string $title, string $keyword = ''): JsonResponse {
-        $doc = $this->repository->load($title);
+    public function searchLinks(string $pk, string $keyword = ''): JsonResponse {
+        $doc = $this->repository->load($pk);
         return $this->json($doc->searchAnyTypeOfLinksStartingBy($keyword));
     }
 
     /**
      * @Route("/category/find/{keyword}", methods={"GET"})
      */
-    public function searchCategories(string $title, string $keyword = ''): JsonResponse {
-        $doc = $this->repository->load($title);
+    public function searchCategories(string $pk, string $keyword = ''): JsonResponse {
+        $doc = $this->repository->load($pk);
         return $this->json($doc->searchCategoryStartingBy($keyword));
     }
 
     /**
      * @Route("/qrcode/{key}", methods={"GET"})
      */
-    public function showQrCode(string $title, string $key): Response {
-        $doc = $this->repository->load($title);
+    public function showQrCode(string $pk, string $key): Response {
+        $doc = $this->repository->load($pk);
         $stc = $doc[$key];
         return $this->render('sentence/qrcode.html.twig', [
                     'document' => $doc,
@@ -137,15 +137,15 @@ class SentenceCrud extends AbstractController {
     /**
      * @Route("/pin/{key}/{token}", methods={"GET"})
      */
-    public function pinVertex(string $title, string $key, string $token): Response {
+    public function pinVertex(string $pk, string $key, string $token): Response {
         if ($this->isCsrfTokenValid(DocumentExtension::csrf, $token)) {
             $this->csrf->removeToken(DocumentExtension::csrf);
-            $doc = $this->repository->load($title);
+            $doc = $this->repository->load($pk);
             $doc->pinVertex($key);
             $this->repository->save($doc);
         }
 
-        return $this->redirectToRoute('app_documentcrud_show', ['title' => $title]);
+        return $this->redirectToRoute('app_documentcrud_show', ['pk' => $pk]);
     }
 
 }

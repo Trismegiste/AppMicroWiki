@@ -39,14 +39,14 @@ class DocumentExtension extends AbstractExtension {
 
     public function decorateWiki(string $content, Document $doc): string {
         $processed = preg_replace_callback(Sentence::linkRegex, function($match) use ($doc) {
-            $pkDoc = $doc->getTitle();
+            $pkDoc = $doc->getPk();
             $pkStc = html_entity_decode($match[1], ENT_HTML5 | ENT_QUOTES);
 
             if ($doc->offsetExists($pkStc)) {
                 $url = $this->getLink($pkDoc, $pkStc);
                 $css = 'wiki-link';
             } else {
-                $url = $this->router->generate('app_sentencecrud_append', ['title' => $pkDoc, 'key' => $pkStc]);
+                $url = $this->router->generate('app_sentencecrud_append', ['pk' => $pkDoc, 'key' => $pkStc]);
                 $css = 'wiki-missing';
             }
 
@@ -60,7 +60,7 @@ class DocumentExtension extends AbstractExtension {
 
     protected function getLink(string $pkDoc, string $pkStc): string {
         return $this->router->generate('app_sentencecrud_pinvertex', [
-                    'title' => $pkDoc,
+                    'pk' => $pkDoc,
                     'key' => $pkStc,
                     'token' => $this->csrfTokenManager->getToken(self::csrf)->getValue()
         ]);

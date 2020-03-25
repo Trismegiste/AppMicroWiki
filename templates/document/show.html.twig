@@ -5,7 +5,7 @@
 {% block header_title %}{{ document.title }}{% endblock %}
 {% block header_detail %}{{ document.description }}{% endblock %}
 {% block header_footer %}
-    <a href="{{ path('app_sentencecrud_append', {title: document.title}) }}" class="pure-button">{% trans %}Append{% endtrans %}</a>
+    <a href="{{ path('app_sentencecrud_append', {pk: document.pk}) }}" class="pure-button">{% trans %}Append{% endtrans %}</a>
 {% endblock %}
 
 {% block item_article %}
@@ -34,7 +34,7 @@
         {% endif %}
     </div>
     <footer class="pure-g">
-        {% set itemPk = {key:item.key, title:document.title} %}
+        {% set itemPk = {key:item.key, pk:document.pk} %}
         <div class="pure-u-1-3 center">
             <a href="{{ path('app_sentencecrud_edit', itemPk) }}"><i class="icon-pencil"></i></a>
         </div>
