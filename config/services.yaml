@@ -32,4 +32,4 @@ services:
             
     App\Repository\DocumentRepo:
         arguments:
-            $database: microwiki
+            $database: '%env(resolve:DATABASE_NAME)%'
