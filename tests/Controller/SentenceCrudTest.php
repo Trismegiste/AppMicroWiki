@@ -9,19 +9,20 @@ class SentenceCrudTest extends WebTestCase {
 
     use SecuredClientImpl;
 
-    protected $urlStart;
-
     public function testCreate() {
+        static::createClient();
         $doc = new Document('Test', 'Nihil');
         $repo = static::$container->get(DocumentRepo::class);
         $repo->save($doc);
         $this->assertRegExp('/^[0-9a-z]{24}$/', $doc->getPk());
-        $this->urlStart = '/docu/show/' . $doc->getPk();
+
+        return '/docu/show/' . $doc->getPk();
     }
 
-    public function testAppend() {
+    /** @depends testCreate */
+    public function testAppend($start) {
         $client = static::getAuthenticatedClient();
-        $crawler = $client->request('GET', $this->urlStart . '/append/yolo');
+        $crawler = $client->request('GET', $start . '/append/yolo');
         $this->assertEquals('yolo', $crawler->filter('#sentence_key')->attr('value'));
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
