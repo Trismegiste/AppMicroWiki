@@ -4,6 +4,5 @@
 - webprofiler et datacollector
 - export ?
 - check pour les exceptions (404 not found)
-- formatter les page d'exception
-- config database de test (avec parameter)
-- 
+- formatter les pages d'exception
+- user in database
