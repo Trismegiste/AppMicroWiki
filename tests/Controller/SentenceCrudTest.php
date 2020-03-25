@@ -91,15 +91,41 @@ class SentenceCrudTest extends WebTestCase {
         $this->assertEquals('Kusanagi Motoko cyborg', $crawler->filter('.mobile article h2')->eq(0)->text(), 'Vertex Motoko is not the first on the list');
     }
 
+    public function testMissingWikiLink() {
+        $client = static::getAuthenticatedClient();
+        $crawler = $client->request('GET', '/docu/show/TMP');
+        $newVertex = $crawler->selectLink('Section 9')->link();
+        $this->assertNotNull($newVertex);
+        $crawler = $client->click($newVertex);
+        $this->assertStringEndsWith('/append/Section%209', $crawler->getUri());
+        $this->assertEquals('Section 9', $crawler->filter('form #sentence_key')->attr('value'));
+
+        $client->submitForm('Save', [
+            'sentence[key]' => 'Section 9',
+            'sentence[category]' => 'Japan',
+            'sentence[content]' => 'Cyber-counter-terrorism'
+        ]);
+        $crawler = $client->followRedirect();
+        $this->assertEquals('Section 9 Japan', $crawler->filter('.mobile article h2')->eq(0)->text());
+    }
+
+    public function testExistingLink() {
+        $client = static::getAuthenticatedClient();
+        $crawler = $client->request('GET', '/docu/show/TMP');
+        $link = $crawler->filter('article .content')->selectLink('Section 9')->eq(0)->link();
+        $client->click($link);
+        $this->assertResponseRedirects('/docu/show/TMP', 302);
+    }
+
     public function testDelete() {
         $client = static::getAuthenticatedClient();
-        $client->request('GET', '/docu/show/TMP/delete/Kusanagi Motoko');
-        $client->submitForm('Delete');
-        $client->request('GET', '/docu/show/TMP/delete/Togusa');
-        $client->submitForm('Delete');
+        foreach (['Kusanagi Motoko', 'Togusa', 'Section 9']as $key) {
+            $client->request('GET', '/docu/show/TMP/delete/' . $key);
+            $client->submitForm('Delete');
+        }
         $crawler = $client->followRedirect();
 
-        $this->assertCount(0, $crawler->filter('h2'));
+        $this->assertCount(0, $crawler->filter('.mobile article h2'));
     }
 
 }
