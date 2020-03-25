@@ -20,7 +20,7 @@ trait SecuredClientImpl {
         $loginForm = $crawler->selectButton('Sign in')->form();
         $client->submit($loginForm, [
             'username' => 'admin',
-            'password' => 'toto',
+            'password' => 'toto',  // @todo will be removed when MongoDb with multiple config for dev, prod & test
             '_csrf_token' => $loginForm->get('_csrf_token')->getValue(),
         ]);
 
