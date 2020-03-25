@@ -32,6 +32,7 @@ class DocumentExtensionTest extends TestCase {
 
     public function fixtures() {
         $doc = new Document();
+        $doc->setPk($this->createStub(\MongoDB\BSON\ObjectIdInterface::class));
         $doc->setTitle('graph');
         $doc[] = new Sentence('existing');
 

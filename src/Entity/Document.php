@@ -14,7 +14,9 @@ use Trismegiste\Toolbox\MongoDb\RootImpl;
  */
 class Document extends Graph implements Root {
 
-    use RootImpl;
+    use RootImpl {
+        RootImpl::bsonUnserialize as bugUnserialize;
+    }
 
     protected $title;
     protected $description;
@@ -171,6 +173,11 @@ class Document extends Graph implements Root {
             unset($this->vertex[$key]);
             $this->vertex = array_merge([$key => $pinned], $this->vertex);
         }
+    }
+
+    public function bsonUnserialize(array $data): void {
+        $this->bugUnserialize($data);
+        $this->vertex = (array) $this->vertex;
     }
 
 }

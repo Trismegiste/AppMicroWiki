@@ -62,6 +62,7 @@ class DocumentRepo {
 
     public function load(string $pk): Document {
         $cursor = $this->mongo->executeQuery($this->getNamespace(), new Query(['_id' => new ObjectId($pk)]));
+        $cursor->setTypeMap(['zob' => 'array']);
         $rows = iterator_to_array($cursor);
 
         return $rows[0];

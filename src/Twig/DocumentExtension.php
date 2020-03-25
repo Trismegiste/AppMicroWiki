@@ -67,7 +67,7 @@ class DocumentExtension extends AbstractExtension {
     }
 
     public function getPinnedLink(Document $doc, Sentence $stc): string {
-        return $this->getLink($doc->getTitle(), $stc->getKey());
+        return $this->getLink($doc->getPk(), $stc->getKey());
     }
 
 }
