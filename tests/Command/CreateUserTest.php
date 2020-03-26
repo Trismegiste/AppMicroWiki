@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Tests\Command;
+
 use App\Security\User;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -9,6 +11,7 @@ use Trismegiste\Toolbox\MongoDb\DefaultRepository;
 class CreateUserTest extends KernelTestCase {
 
     const username = 'test';
+    const password = 'pwd';
 
     protected function setUp(): void {
         static::bootKernel();
@@ -30,7 +33,7 @@ class CreateUserTest extends KernelTestCase {
 
         $command = $application->find('app:create-user');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['test']);
+        $commandTester->setInputs([self::password]);
 
         $commandTester->execute([
             'user' => self::username,

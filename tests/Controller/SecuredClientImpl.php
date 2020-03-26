@@ -2,7 +2,9 @@
 
 namespace App\Tests\Controller;
 
+use App\Tests\Command\CreateUserTest;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Zend\EventManager\Exception\RuntimeException;
 
 trait SecuredClientImpl {
 
@@ -19,10 +21,14 @@ trait SecuredClientImpl {
         $crawler = $client->request('GET', '/login');
         $loginForm = $crawler->selectButton('Sign in')->form();
         $client->submit($loginForm, [
-            'username' => 'admin',
-            'password' => 'toto',  // @todo will be removed when MongoDb with multiple config for dev, prod & test
+            'username' => CreateUserTest::username,
+            'password' => CreateUserTest::password,
             '_csrf_token' => $loginForm->get('_csrf_token')->getValue(),
         ]);
+
+        if ($client->getResponse()->headers->get('Location') === '/login') {
+            throw new RuntimeException("Bad configuration for TEST : authentication failed");
+        }
 
         return $client;
     }
