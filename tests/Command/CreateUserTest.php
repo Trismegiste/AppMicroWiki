@@ -8,7 +8,7 @@ use Trismegiste\Toolbox\MongoDb\DefaultRepository;
 
 class CreateUserTest extends KernelTestCase {
 
-    const username = 'Oshii';
+    const username = 'test';
 
     protected function setUp(): void {
         static::bootKernel();
@@ -30,7 +30,7 @@ class CreateUserTest extends KernelTestCase {
 
         $command = $application->find('app:create-user');
         $commandTester = new CommandTester($command);
-        $commandTester->setInputs(['yolo']);
+        $commandTester->setInputs(['test']);
 
         $commandTester->execute([
             'user' => self::username,

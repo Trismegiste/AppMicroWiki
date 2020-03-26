@@ -12,9 +12,10 @@
         <article>
             <form method="post" class="pure-form pure-form-stacked">
                 {% if error %}
-                    <h2 class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</h2>
+                    <ul class="form-error">
+                        <li>{{ error.messageKey|trans(error.messageData, 'security') }}</li>
+                    </ul>
                 {% endif %}
-
                 <label for="inputUsername">{% trans %}Username{% endtrans %}</label>
                 <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="pure-input-1" required autofocus>
                 <label for="inputPassword">{% trans %}Password{% endtrans %}</label>

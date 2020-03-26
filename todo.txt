@@ -1,9 +1,10 @@
+- webprofiler et datacollector
 - edit document (titre, descript)
 - delete document
-- import vertex dans document
-- webprofiler et datacollector
-- export ?
-- check pour les exceptions (404 not found)
-- formatter les pages d'exception
 - regex sur les param de route
+- check pour les exceptions (404 not found)
 - check lowercase sur les key des sentence mais côté Appli, pas le Graph
+- import vertex dans document
+- formatter les pages d'exception
+- export ?
+- check sur l'unicité du username : mongodb ou appli ?
