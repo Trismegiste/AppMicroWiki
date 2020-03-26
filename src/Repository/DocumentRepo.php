@@ -7,9 +7,6 @@
 namespace App\Repository;
 
 use Iterator;
-use MongoDB\BSON\ObjectId;
-use MongoDB\Driver\BulkWrite;
-use MongoDB\Driver\Query;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\Toolbox\Iterator\ClosureDecorator;
 use Trismegiste\Toolbox\MongoDb\Repository;
