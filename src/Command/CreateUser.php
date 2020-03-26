@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Trismegiste\Toolbox\MongoDb\Repository;
 
 /**
  * Description of CreateUserCommand
@@ -17,9 +18,11 @@ class CreateUser extends Command {
 
     protected static $defaultName = 'app:create-user';
     private $encoderFactory;
+    private $repository;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory) {
+    public function __construct(EncoderFactoryInterface $encoderFactory, Repository $userRepo) {
         $this->encoderFactory = $encoderFactory;
+        $this->repository = $userRepo;
         parent::__construct();
     }
 
@@ -38,7 +41,8 @@ class CreateUser extends Command {
         $encodedPwd = $encoder->encodePassword($password, $this->generateSalt());
 
         $user = new User($username, $encodedPwd);
-        // @todo save to a mongo collection
+        // save to a mongo collection
+        $this->repository->save($user);
 
         return 0;
     }

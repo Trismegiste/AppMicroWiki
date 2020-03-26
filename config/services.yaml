@@ -30,6 +30,27 @@ services:
         arguments:
             - '%env(resolve:DATABASE_URL)%'
             
+    Trismegiste\Toolbox\MongoDb\RepositoryFactory:
+        $dbName: '%env(resolve:DATABASE_NAME)%'
+            
     App\Repository\DocumentRepo:
         arguments:
             $database: '%env(resolve:DATABASE_NAME)%'
+
+    app.document.repository:
+        class: Trismegiste\Toolbox\MongoDb\Repository
+        factory: ['@Trismegiste\Toolbox\MongoDb\RepositoryFactory', 'create']
+        arguments: ['document']
+            
+    app.user.repository:
+        class: Trismegiste\Toolbox\MongoDb\Repository
+        factory: ['@Trismegiste\Toolbox\MongoDb\RepositoryFactory', 'create']
+        arguments: ['user']
+        
+    App\Security\UserProvider:
+        arguments:
+            $userRepo: '@app.user.repository'
+            
+    App\Command\CreateUser:
+        arguments:
+            $userRepo: '@app.user.repository'

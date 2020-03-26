@@ -3,8 +3,12 @@
 namespace App\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Trismegiste\Toolbox\MongoDb\Root;
+use Trismegiste\Toolbox\MongoDb\RootImpl;
 
-class User implements UserInterface {
+class User implements UserInterface, Root {
+
+    use RootImpl;
 
     private $username;
     private $roles = [];
