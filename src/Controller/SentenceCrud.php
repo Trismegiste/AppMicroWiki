@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\SentenceDeleteType;
 use App\Form\SentenceType;
-use App\Repository\DocumentRepo;
 use App\Twig\DocumentExtension;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Trismegiste\MicroWiki\Sentence;
+use Trismegiste\Toolbox\MongoDb\Repository;
 
 /**
  * Sentence manager
@@ -26,8 +26,8 @@ class SentenceCrud extends AbstractController {
     protected $logger;
     protected $csrf;
 
-    public function __construct(DocumentRepo $repo, CsrfTokenManagerInterface $csrf, LoggerInterface $log) {
-        $this->repository = $repo;
+    public function __construct(Repository $documentRepo, CsrfTokenManagerInterface $csrf, LoggerInterface $log) {
+        $this->repository = $documentRepo;
         $this->logger = $log;
         $this->csrf = $csrf;
     }

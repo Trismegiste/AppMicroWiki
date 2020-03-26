@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Form\DocumentType;
-use App\Repository\DocumentRepo;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Trismegiste\MicroWiki\Document;
+use Trismegiste\Toolbox\Iterator\ClosureDecorator;
+use Trismegiste\Toolbox\MongoDb\Repository;
 
 /**
  * Document manager
@@ -20,8 +22,8 @@ class DocumentCrud extends AbstractController {
     protected $repository;
     protected $logger;
 
-    public function __construct(DocumentRepo $repo, LoggerInterface $log) {
-        $this->repository = $repo;
+    public function __construct(Repository $documentRepo, LoggerInterface $log) {
+        $this->repository = $documentRepo;
         $this->logger = $log;
     }
 
@@ -29,8 +31,17 @@ class DocumentCrud extends AbstractController {
      * @Route("/list", methods={"GET"})
      */
     public function list(): Response {
+        $iter = $this->repository->search();
+
         return $this->render('document/list.html.twig', [
-                    'listing' => $this->repository->list()
+                    'listing' => new ClosureDecorator($iter, function(Document $docu) {
+                                return (object) [
+                                            'pk' => $docu->getPk(),
+                                            'title' => $docu->getTitle(),
+                                            'description' => $docu->getDescription(),
+                                            'vertex' => count($docu)
+                                ];
+                            })
         ]);
     }
 

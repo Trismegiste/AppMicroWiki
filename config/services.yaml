@@ -33,11 +33,6 @@ services:
     Trismegiste\Toolbox\MongoDb\RepositoryFactory:
         $dbName: '%env(resolve:DATABASE_NAME)%'
       
-    ## @todo : remove this Adapter and use app.document.repository directly
-    App\Repository\DocumentRepo:
-        arguments:
-            $documentRepo: '@app.document.repository'
-
     app.document.repository:
         class: Trismegiste\Toolbox\MongoDb\Repository
         factory: ['@Trismegiste\Toolbox\MongoDb\RepositoryFactory', 'create']
@@ -48,10 +43,5 @@ services:
         factory: ['@Trismegiste\Toolbox\MongoDb\RepositoryFactory', 'create']
         arguments: ['user']
         
-    App\Security\UserProvider:
-        arguments:
-            $userRepo: '@app.user.repository'
-            
-    App\Command\CreateUser:
-        arguments:
-            $userRepo: '@app.user.repository'
+    Trismegiste\Toolbox\MongoDb\Repository $documentRepo: '@app.document.repository'
+    Trismegiste\Toolbox\MongoDb\Repository $userRepo: '@app.user.repository'
