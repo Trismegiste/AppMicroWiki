@@ -22,7 +22,7 @@ class DocumentRepo {
     protected $mongo;
     protected $dbName;
 
-    public function __construct(Manager $man, $database = 'dev') {
+    public function __construct(Manager $man, string $database) {
         $this->mongo = $man;
         $this->dbName = $database;
     }
