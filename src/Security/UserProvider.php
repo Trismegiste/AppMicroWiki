@@ -44,8 +44,6 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface {
         }
 
         return $users[0];
-
-        return new User('admin', '$argon2id$v=19$m=65536,t=4,p=1$rqUdGpOVhhGoXqHnH8CH/g$VJ/h8Czen+a2Qd8R1n1KqvuBuJ6e9k5jCGONRb+RHZs');
     }
 
     /**

@@ -5,4 +5,5 @@
 - export ?
 - check pour les exceptions (404 not found)
 - formatter les pages d'exception
-- user in database
+- regex sur les param de route
+- check lowercase sur les key des sentence mais côté Appli, pas le Graph
