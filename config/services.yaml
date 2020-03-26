@@ -32,10 +32,11 @@ services:
             
     Trismegiste\Toolbox\MongoDb\RepositoryFactory:
         $dbName: '%env(resolve:DATABASE_NAME)%'
-            
+      
+    ## @todo : remove this Adapter and use app.document.repository directly
     App\Repository\DocumentRepo:
         arguments:
-            $database: '%env(resolve:DATABASE_NAME)%'
+            $documentRepo: '@app.document.repository'
 
     app.document.repository:
         class: Trismegiste\Toolbox\MongoDb\Repository
