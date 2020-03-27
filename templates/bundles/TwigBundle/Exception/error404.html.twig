@@ -1,0 +1,15 @@
+{% extends "mobile.html.twig" %}
+
+{% block title %}Error{% endblock %}
+
+{% block header_title %}Not Found{% endblock %}
+{% block header_detail %}The requested URL was not found{% endblock %}
+{% block header_footer %}{% endblock %}
+
+{% block content %}
+    <div class="{{ cssgrid }}">
+        <article>
+            Perhaps you want to try <a href="{{ path('app_documentcrud_list') }}">the list of Documents</a>
+        </article>
+    </div>
+{% endblock %}

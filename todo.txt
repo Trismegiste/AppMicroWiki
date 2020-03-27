@@ -2,7 +2,6 @@
 - delete document
 - check pour les exceptions (404 not found, 403...)
 - import vertex dans document => command
-- formatter les pages d'exception
 - export ?
 - check sur l'unicité du username : mongodb ou appli ?
 - webprofiler pour l'état de mongodb (avec injection de Manager) : db.stats(), db.serverStatus(), db.getCollectionsInfo()
