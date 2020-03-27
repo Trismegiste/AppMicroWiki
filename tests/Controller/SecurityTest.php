@@ -41,6 +41,7 @@ class SecurityTest extends WebTestCase {
         $url = array_map(function(Route $route) {
             $path = $route->getPath();
             list($meth) = $route->getMethods(); // gets only the first method
+            $path = preg_replace('#(\{pk\})#', '123456789012345678901234', $path); // an PK that is conform to mongo id : [0-9a-f]{24}
             $this->client->request($meth, $path);
             $this->assertResponseRedirects('/login', 302, "$path is not secured");
 
