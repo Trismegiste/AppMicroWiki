@@ -46,4 +46,10 @@ class SentenceTest extends TestCase {
         $this->assertEquals(['link'], $this->sut->getOutboundKey());
     }
 
+    public function testNonDuplicateOutbound() {
+        $this->sut = new Sentence('name');
+        $this->sut->setContent('[[link]] [[zelda]] and [[link]]');
+        $this->assertEquals(['link', 'zelda'], $this->sut->getOutboundKey());
+    }
+
 }
