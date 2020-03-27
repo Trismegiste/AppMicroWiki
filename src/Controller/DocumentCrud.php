@@ -65,10 +65,15 @@ class DocumentCrud extends AbstractController {
     }
 
     /**
-     * @Route("/show/{pk}", methods={"GET"})
+     * @Route("/show/{pk<[0-9a-f]{24}>}", methods={"GET"})
      */
     public function show(string $pk): Response {
-        $doc = $this->repository->load($pk);
+        try {
+            $doc = $this->repository->load($pk);
+        } catch (\Exception $ex) {
+            throw $this->createNotFoundException("The Document $pk was not found", $ex);
+        }
+
         return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }
 

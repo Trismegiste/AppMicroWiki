@@ -18,7 +18,7 @@ use Trismegiste\Toolbox\MongoDb\Repository;
 /**
  * Sentence manager
  * 
- * @Route("/docu/show/{pk}")
+ * @Route("/docu/show/{pk<[0-9a-f]{24}>}")
  */
 class SentenceCrud extends AbstractController {
 
