@@ -1,8 +1,7 @@
 - edit document (titre, descript)
 - delete document
 - check pour les exceptions (404 not found, 403...)
-- check lowercase sur les key des sentence mais côté Appli, pas le Graph
-- import vertex dans document
+- import vertex dans document => command
 - formatter les pages d'exception
 - export ?
 - check sur l'unicité du username : mongodb ou appli ?
