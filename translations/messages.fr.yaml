@@ -23,3 +23,8 @@ Content: Contenu
 Title: Titre
 Save: Enregistrer
 Delete: Effacer
+Error: Erreur
+'Not Found': 'Non trouvé'
+'The requested URL was not found': "L'adresse URL demandée n'a pas été trouvée"
+'Perhaps you want to try': 'Peut-être voulez-vous accéder à'
+'the list of Documents': 'la liste des Documents'
