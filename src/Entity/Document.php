@@ -12,51 +12,58 @@ use Trismegiste\Toolbox\MongoDb\RootImpl;
 /**
  * Description of Document
  */
-class Document extends Graph implements Root {
+class Document extends Graph implements Root
+{
 
-    use RootImpl {
-        RootImpl::bsonUnserialize as bugUnserialize;
-    }
+    use RootImpl;
 
     protected $title;
     protected $description;
 
-    public function __construct(string $t = '', string $d = '') {
+    public function __construct(string $t = '', string $d = '')
+    {
         $this->title = $t;
         $this->description = $d;
     }
 
     // getters & setters
-    public function setTitle(string $str): void {
+    public function setTitle(string $str): void
+    {
         $this->title = $str;
     }
 
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 
-    public function setDescription(string $str): void {
+    public function setDescription(string $str): void
+    {
         $this->description = $str;
     }
 
-    public function getDescription(): string {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 
     // Graph methods
-    public function moveVertexToNewKey(Vertex $vertex, string $newKey): void {
+    public function moveVertexToNewKey(Vertex $vertex, string $newKey): void
+    {
         $oldKey = $vertex->getKey();
         parent::moveVertexToNewKey($vertex, $newKey);
         $this->replaceBrokenLinks($oldKey, $newKey);
     }
 
-    protected function replaceBrokenLinks(string $oldKey, string $newKey): void {
+    protected function replaceBrokenLinks(string $oldKey, string $newKey): void
+    {
         foreach ($this->vertex as $sentence) {
             $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));
         }
     }
 
-    public function findBrokenLink(): array {
+    public function findBrokenLink(): array
+    {
         $report = [];
         foreach ($this->getAllLinks() as $key) {
             if (!array_key_exists($key, $this->vertex)) {
@@ -67,11 +74,13 @@ class Document extends Graph implements Root {
         return $report;
     }
 
-    public function getAllLinks(): array {
+    public function getAllLinks(): array
+    {
         return array_keys($this->getLinksCount());
     }
 
-    public function getLinksCount(): array {
+    public function getLinksCount(): array
+    {
         $report = [];
         foreach ($this->vertex as $sentence) {
             $link = [];
@@ -88,7 +97,8 @@ class Document extends Graph implements Root {
         return $report;
     }
 
-    public function findOrphan(): array {
+    public function findOrphan(): array
+    {
         $report = [];
         $target = $this->getAllLinks();
         foreach ($this->vertex as $key => $obj) {
@@ -105,7 +115,8 @@ class Document extends Graph implements Root {
      * @param string $searchKey
      * @return array of Sentence
      */
-    public function findVertexByLink(string $searchKey): array {
+    public function findVertexByLink(string $searchKey): array
+    {
         $report = [];
         foreach ($this->vertex as $key => $obj) {
             if (preg_match('/\[\[' . $searchKey . '\]\]/', $obj->getContent())) {
@@ -121,7 +132,8 @@ class Document extends Graph implements Root {
      * @param string $keyword
      * @return array
      */
-    public function searchKeysStartingBy(string $keyword): array {
+    public function searchKeysStartingBy(string $keyword): array
+    {
         $report = [];
         foreach ($this->vertex as $key => $stc) {
             if (preg_match("|^$keyword|i", $key)) {
@@ -138,10 +150,11 @@ class Document extends Graph implements Root {
      * @param string $keyword
      * @return array
      */
-    public function searchLinksStartingBy(string $keyword): array {
+    public function searchLinksStartingBy(string $keyword): array
+    {
         return array_values(array_filter($this->getAllLinks(), function($v) use ($keyword) {
-                    return preg_match("|^$keyword|i", $v);
-                }));
+                return preg_match("|^$keyword|i", $v);
+            }));
     }
 
     /**
@@ -149,35 +162,33 @@ class Document extends Graph implements Root {
      * @param string $keyword
      * @return array
      */
-    public function searchAnyTypeOfLinksStartingBy(string $keyword): array {
+    public function searchAnyTypeOfLinksStartingBy(string $keyword): array
+    {
         $combo = array_unique(array_merge($this->searchKeysStartingBy($keyword), $this->searchLinksStartingBy($keyword)));
         sort($combo);
         return array_values($combo);
     }
 
-    public function searchCategoryStartingBy(string $keyword): array {
+    public function searchCategoryStartingBy(string $keyword): array
+    {
         $combo = array_unique(
-                array_map(function(Sentence $stc) {
-                    return $stc->getCategory();
-                },
-                        array_filter($this->vertex, function(Sentence $stc) use ($keyword) {
-                            return preg_match("|^$keyword|i", $stc->getCategory());
-                        })));
+            array_map(function(Sentence $stc) {
+                return $stc->getCategory();
+            },
+                array_filter($this->vertex, function(Sentence $stc) use ($keyword) {
+                    return preg_match("|^$keyword|i", $stc->getCategory());
+                })));
         sort($combo);
         return array_values($combo);
     }
 
-    public function pinVertex(string $key): void {
+    public function pinVertex(string $key): void
+    {
         if (array_key_exists($key, $this->vertex)) {
             $pinned = $this->vertex[$key];
             unset($this->vertex[$key]);
             $this->vertex = array_merge([$key => $pinned], $this->vertex);
         }
-    }
-
-    public function bsonUnserialize(array $data): void {
-        $this->bugUnserialize($data);
-        $this->vertex = (array) $this->vertex;
     }
 
 }
