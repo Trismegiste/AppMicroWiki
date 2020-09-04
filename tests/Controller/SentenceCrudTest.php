@@ -14,7 +14,7 @@ class SentenceCrudTest extends WebTestCase {
         $doc = new Document('Test', 'Nihil');
         $repo = static::$container->get('app.document.repository');
         $repo->save($doc);
-        $this->assertRegExp('/^[0-9a-z]{24}$/', $doc->getPk());
+        $this->assertMatchesRegularExpression('/^[0-9a-z]{24}$/', $doc->getPk());
 
         return '/docu/show/' . $doc->getPk();
     }
