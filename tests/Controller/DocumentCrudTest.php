@@ -44,7 +44,14 @@ class DocumentCrudTest extends WebTestCase
         return $result[1];
     }
 
-    /** @depends testNew */
+    public function testNotFound()
+    {
+        $client = static::getAuthenticatedClient();
+        $client->request('GET', "/docu/show/123456789012345678901234");
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
+    
+        /** @depends testNew */
     public function testShow(string $pkDoc)
     {
         $client = static::getAuthenticatedClient();
