@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\Toolbox\Iterator\ClosureDecorator;
 use Trismegiste\Toolbox\MongoDb\Repository;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use App\Twig\DocumentExtension;
 
 /**
  * Document manager
@@ -22,11 +24,13 @@ class DocumentCrud extends AbstractController
 
     protected $repository;
     protected $logger;
+    protected $csrf;
 
-    public function __construct(Repository $documentRepo, LoggerInterface $log)
+    public function __construct(Repository $documentRepo, LoggerInterface $log, CsrfTokenManagerInterface $csrf)
     {
         $this->repository = $documentRepo;
         $this->logger = $log;
+        $this->csrf = $csrf;
     }
 
     /**
@@ -99,6 +103,20 @@ class DocumentCrud extends AbstractController
                         ];
                     })
         ]);
+    }
+
+    /**
+     * @Route("/deleteconfirm/{pk<[0-9a-f]{24}>}/{token}", methods={"GET"})
+     */
+    public function deleteConfirm(string $pk, string $token): Response
+    {
+        if ($this->isCsrfTokenValid(DocumentExtension::csrf_doc_delete, $token)) {
+            $this->csrf->removeToken(DocumentExtension::csrf_doc_delete);
+            $doc = $this->repository->load($pk);
+            $this->repository->delete($doc);
+        }
+
+        return $this->redirectToRoute('app_documentcrud_list');
     }
 
 }
