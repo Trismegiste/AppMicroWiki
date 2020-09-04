@@ -82,4 +82,23 @@ class DocumentCrud extends AbstractController
         return $this->render('document/show.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
     }
 
+    /**
+     * @Route("/deletemode", methods={"GET"})
+     */
+    public function deleteMode(): Response
+    {
+        $iter = $this->repository->search();
+
+        return $this->render('document/list_delete.html.twig', [
+                'listing' => new ClosureDecorator($iter, function(Document $docu) {
+                        return (object) [
+                                'pk' => $docu->getPk(),
+                                'title' => $docu->getTitle(),
+                                'description' => $docu->getDescription(),
+                                'vertex' => count($docu)
+                        ];
+                    })
+        ]);
+    }
+
 }

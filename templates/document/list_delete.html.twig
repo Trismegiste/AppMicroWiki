@@ -1,0 +1,11 @@
+{% extends 'document/list.html.twig' %}
+
+{% block header_class %}color-complement{% endblock %}
+
+{% block header_footer %}
+    <a href="{{ path('app_documentcrud_list') }}" class="pure-button">{% trans %}Go back{% endtrans %}</a>
+{% endblock %}
+
+{%  block item_action %}
+    <a href="{{ path('app_documentcrud_show',{pk: item.pk}) }}"><i class="icon-trash"></i></a>
+{% endblock %}

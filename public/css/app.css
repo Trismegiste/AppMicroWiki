@@ -51,3 +51,15 @@
 .qrcode article {
     margin: 2em;
 }
+
+.transparent-action {
+    text-align: right;
+}
+
+.transparent-action a.pure-button {
+    background-color: transparent;
+}
+
+.transparent-action i {
+    color: white;
+}

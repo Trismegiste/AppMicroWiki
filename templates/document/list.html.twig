@@ -6,7 +6,14 @@
 {% block header_class %}color-secondary-2{% endblock %}
 
 {% block header_footer %}
-    <a href="{{ path('app_documentcrud_new') }}" class="pure-button">{% trans %}New document{% endtrans %}</a>
+    <div class="pure-g">
+        <div class="pure-u-1-2">
+            <a href="{{ path('app_documentcrud_new') }}" class="pure-button">{% trans %}New document{% endtrans %}</a>
+        </div>
+        <div class="pure-u-1-2 transparent-action">
+            <a href="{{ path('app_documentcrud_deletemode') }}" class="pure-button"><i class="icon-trash"></i></a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block item_article %}
@@ -19,7 +26,9 @@
             </div>
         </div>
         <div class="pure-u-1-4 big-link">
-            <a href="{{ path('app_documentcrud_show',{pk: item.pk}) }}"><i class="icon-right-open"></i></a>
+            {%  block item_action %}
+                <a href="{{ path('app_documentcrud_show',{pk: item.pk}) }}"><i class="icon-right-open"></i></a>
+                {% endblock %}
         </div>
     </div>
 {% endblock %}
