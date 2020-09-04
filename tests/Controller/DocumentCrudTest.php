@@ -3,25 +3,28 @@
 use App\Tests\Controller\SecuredClientImpl;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DocumentCrudTest extends WebTestCase {
+class DocumentCrudTest extends WebTestCase
+{
 
     use SecuredClientImpl;
 
-    public function testList() {
+    public function testList()
+    {
         $client = static::getAuthenticatedClient();
 
         $crawler = $client->request('GET', '/docu/list');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $link = $crawler
-                ->filter('a:contains("New document")')
-                ->eq(0)
-                ->link();
+            ->filter('a:contains("New document")')
+            ->eq(0)
+            ->link();
 
         $this->assertStringEndsWith('/docu/new', $link->getUri());
     }
 
-    public function testNew() {
+    public function testNew()
+    {
         $client = static::getAuthenticatedClient();
 
         $crawler = $client->request('GET', '/docu/new');
@@ -42,10 +45,27 @@ class DocumentCrudTest extends WebTestCase {
     }
 
     /** @depends testNew */
-    public function testShow(string $pkDoc) {
+    public function testShow(string $pkDoc)
+    {
         $client = static::getAuthenticatedClient();
         $client->request('GET', "/docu/show/$pkDoc");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function testDeleteMode()
+    {
+        $client = static::getAuthenticatedClient();
+        $crawler = $client->request('GET', '/docu/deletemode');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $deleteLink = $crawler->filter('article .big-link i.icon-trash');
+        $before = $deleteLink->count();
+        $client->click($deleteLink->first()->parents()->link());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $crawler = $client->followRedirect();
+
+        $deleteLink = $crawler->filter('article .big-link i.icon-right-open');
+        $this->assertEquals(1, $before - $deleteLink->count());
     }
 
 }

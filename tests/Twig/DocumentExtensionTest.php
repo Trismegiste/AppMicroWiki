@@ -51,7 +51,7 @@ class DocumentExtensionTest extends TestCase {
     }
 
     public function testFunction() {
-        $this->assertCount(1, $this->sut->getFunctions());
+        $this->assertCount(2, $this->sut->getFunctions());
     }
 
 }

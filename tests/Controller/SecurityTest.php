@@ -36,7 +36,7 @@ class SecurityTest extends WebTestCase {
         $crud = array_filter(iterator_to_array($router->getRouteCollection()), function(Route $route) {
             return preg_match('#^/docu#', $route->getPath());
         });
-        $this->assertCount(10, $crud, "There are new or less Routes to test (conservative test to check if all routes are secured)");
+        $this->assertCount(12, $crud, "There are new or less Routes to test (conservative test to check if all routes are secured)");
 
         $url = array_map(function(Route $route) {
             $path = $route->getPath();
