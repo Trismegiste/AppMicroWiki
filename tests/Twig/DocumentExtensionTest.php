@@ -8,29 +8,33 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
-class DocumentExtensionTest extends TestCase {
+class DocumentExtensionTest extends TestCase
+{
 
     protected $sut;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $url = $this->createMock(UrlGeneratorInterface::class);
         $url->expects($this->any())
-                ->method('generate')
-                ->willReturn('#');
+            ->method('generate')
+            ->willReturn('#');
         $token = $this->createStub(CsrfToken::class);
         $csrf = $this->createMock(CsrfTokenManagerInterface::class);
         $csrf->expects($this->any())
-                ->method('getToken')
-                ->willReturn($token);
+            ->method('getToken')
+            ->willReturn($token);
 
         $this->sut = new DocumentExtension($url, $csrf);
     }
 
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         unset($this->sut);
     }
 
-    public function fixtures() {
+    public function fixtures()
+    {
         $doc = new Document();
         $doc->setPk($this->createStub(\MongoDB\BSON\ObjectIdInterface::class));
         $doc->setTitle('graph');
@@ -40,17 +44,27 @@ class DocumentExtensionTest extends TestCase {
     }
 
     /** @dataProvider fixtures */
-    public function testDecoration(Document $doc) {
+    public function testWikiDecoration(Document $doc)
+    {
         $result = $this->sut->decorateWiki('This string a link to [[existing]] and [[missing]]', $doc);
-        // notice that href is empy because the router is a stub :
+        // notice that href is empty because the router is a stub :
         $this->assertEquals('This string a link to <a href="#" class="wiki-link">existing</a> and <a href="#" class="wiki-missing">missing</a>', $result);
     }
 
-    public function testFilter() {
-        $this->assertCount(1, $this->sut->getFilters());
+    /** @dataProvider fixtures */
+    public function testInnerLinkDecoration(Document $doc)
+    {
+        $result = $this->sut->innerLinkPdf('This string a link to [[existing]] and [[missing]]', $doc);
+        $this->assertEquals('This string a link to <a href="#existing">existing</a> and missing', $result);
     }
 
-    public function testFunction() {
+    public function testFilter()
+    {
+        $this->assertCount(2, $this->sut->getFilters());
+    }
+
+    public function testFunction()
+    {
         $this->assertCount(2, $this->sut->getFunctions());
     }
 
