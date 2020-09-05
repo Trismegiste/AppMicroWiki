@@ -1,2 +1,8 @@
-{% extends 'document/show.html.twig' %}
-{% block header_footer %}{% endblock %}
+<h1>{{ document.title }}</h1>
+<h3>{{ document.description }}</h3>
+{% for item in listing %}
+    <article>
+        <h2 id="{{ item.key }}">{{ item.key }} ({{ item.category }})</h2>
+        <div>{{ item.content|innerlink(document) }}</div>
+    </article>
+{% endfor %}

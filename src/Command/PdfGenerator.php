@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Trismegiste\MicroWiki\Document;
+use Trismegiste\MicroWiki\Sentence;
 use Trismegiste\Toolbox\MongoDb\Repository;
 use Twig\Environment;
 
@@ -55,7 +56,12 @@ class PdfGenerator extends Command
         $found->rewind();
         $doc = $found->current();
 
-        $html = $this->twig->render('document/pdf.html.twig', ['document' => $doc, 'listing' => $doc->getIterator()]);
+        $vertex = iterator_to_array($doc->getIterator());
+        usort($vertex, function(Sentence $a, Sentence $b) {
+            return strcmp($a->getKey(), $b->getKey());
+        });
+
+        $html = $this->twig->render('document/pdf.html.twig', ['document' => $doc, 'listing' => $vertex]);
         $generator = new Dompdf();
         $generator->loadHtml($html);
         $generator->render();

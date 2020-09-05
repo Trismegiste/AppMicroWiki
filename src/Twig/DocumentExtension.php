@@ -32,6 +32,7 @@ class DocumentExtension extends AbstractExtension
     {
         return [
             new TwigFilter('wiki', [$this, 'decorateWiki'], ['is_safe' => ['html'], 'pre_escape' => 'html']),
+            new TwigFilter('innerlink', [$this, 'innerLinkPdf'], ['is_safe' => ['html'], 'pre_escape' => 'html']),
         ];
     }
 
@@ -41,6 +42,19 @@ class DocumentExtension extends AbstractExtension
             new TwigFunction('pinned', [$this, 'getPinnedLink']),
             new TwigFunction('path_delete_doc', [$this, 'getDeleteDocLink'])
         ];
+    }
+
+    public function innerLinkPdf(string $content, Document $doc): string
+    {
+        $processed = preg_replace_callback(Sentence::linkRegex, function($match) use ($doc) {
+            $pkStc = html_entity_decode($match[1], ENT_HTML5 | ENT_QUOTES);
+
+            return ($doc->offsetExists($pkStc)) ? "<a href=\"#$pkStc\">$pkStc</a>" : $pkStc;
+        }, $content);
+
+        $processed = str_replace("\n", '<br/>', $processed);
+
+        return $processed;
     }
 
     public function decorateWiki(string $content, Document $doc): string
