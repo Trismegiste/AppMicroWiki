@@ -22,6 +22,10 @@
     line-height: 160%
 }
 
+.content .backlinks {
+padding-top: 0.6em;
+}
+
 /* color of links in content */
 .mobile .content a {
     text-decoration: none;

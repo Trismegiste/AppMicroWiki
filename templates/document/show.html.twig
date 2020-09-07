@@ -24,12 +24,13 @@
         {% if loop.first %}
             {% set inbound = document.findVertexByLink(item.key) %}
             {% if inbound|length > 0 %}
-                <br/>
-                <i class="icon-link"></i> 
-                {% for link in inbound %}
-                    {% apply wiki(document) %}[[{{ link.key }}]]{% endapply %}
-                    {%- if not loop.last %},{% endif %}
-                {% endfor %}
+                <div class="backlinks">
+                    <i class="icon-link"></i> 
+                    {% for link in inbound %}
+                        {% apply wiki(document) %}[[{{ link.key }}]]{% endapply %}
+                        {%- if not loop.last %},{% endif %}
+                    {% endfor %}
+                </div>
             {% endif %}
         {% endif %}
     </div>
