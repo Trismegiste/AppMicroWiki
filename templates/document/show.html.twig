@@ -21,6 +21,11 @@
         {% endif %}
     </div>
     <div class="content">{{ item.content|wiki(document) }}
+        {% if item.link %}
+            <div class="external-link">
+                <a href="{{ item.link }}" target="__blank"><i class="icon-link-ext"></i></a>
+            </div>
+        {% endif %}
         {% if loop.first %}
             {% set inbound = document.findVertexByLink(item.key) %}
             {% if inbound|length > 0 %}
