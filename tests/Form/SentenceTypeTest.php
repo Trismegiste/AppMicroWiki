@@ -7,30 +7,36 @@ use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
 /** Functionnal tests */
-class SentenceTypeTest extends KernelTestCase {
+class SentenceTypeTest extends KernelTestCase
+{
 
     protected $document;
 
-    static public function setUpBeforeClass(): void {
+    static public function setUpBeforeClass(): void
+    {
         static::bootKernel();
     }
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->document = new Document();
     }
 
-    protected function createForm($obj = null): Form {
+    protected function createForm($obj = null): Form
+    {
         return self::$kernel->getContainer()->get('form.factory')->create(SentenceType::class, $obj, [
-                    'document' => $this->document,
-                    'csrf_protection' => false
+                'document' => $this->document,
+                'csrf_protection' => false
         ]);
     }
 
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         unset($this->document);
     }
 
-    public function testEmptyData() {
+    public function testEmptyData()
+    {
         $doc = $this->document;
         $form = $this->createForm();
         $formData = [
@@ -47,7 +53,8 @@ class SentenceTypeTest extends KernelTestCase {
         $this->assertArrayHasKey('HAL9000', $doc);
     }
 
-    public function testEdit() {
+    public function testEdit()
+    {
         $doc = $this->document;
         $stc = new Sentence("HAL9000");
         $doc[] = $stc;
@@ -56,7 +63,8 @@ class SentenceTypeTest extends KernelTestCase {
         $formData = [
             'key' => 'IBM8000',
             'category' => 'chess master',
-            'content' => "Murderer of [[Frank Poole]]"
+            'content' => "Murderer of [[Frank Poole]]",
+            'link' => "http://url"
         ];
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
@@ -66,9 +74,11 @@ class SentenceTypeTest extends KernelTestCase {
         $this->assertEquals('chess master', $stc->getCategory());
         $this->assertArrayHasKey('IBM8000', $doc);
         $this->assertEquals($stc, $doc['IBM8000']);
+        $this->assertEquals('http://url', $stc->getLink());
     }
 
-    public function getBadNames(): array {
+    public function getBadNames(): array
+    {
         return [
             ['HA[9000', 'bracket'],
             ['HA]9000', 'bracket'],
@@ -78,7 +88,8 @@ class SentenceTypeTest extends KernelTestCase {
     }
 
     /** @dataProvider getBadNames */
-    public function testBadData($badname, $msg) {
+    public function testBadData($badname, $msg)
+    {
         $sut = $this->createForm();
         $formData = [
             'key' => $badname,

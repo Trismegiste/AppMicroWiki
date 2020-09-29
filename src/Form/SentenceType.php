@@ -19,15 +19,11 @@ use Trismegiste\MicroWiki\Sentence;
 /**
  * Description of SentenceType
  */
-class SentenceType extends AbstractType implements DataMapperInterface
+class SentenceType extends AbstractType
 {
-
-    protected $parentDocument;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->parentDocument = $options['document'];
-
         $builder
             ->add('key', TextType::class, [
                 'label' => 'Name',
@@ -38,9 +34,9 @@ class SentenceType extends AbstractType implements DataMapperInterface
             ])
             ->add('category', TextareaType::class, ['attr' => ['rows' => 1, 'style' => 'resize: none; height:2.27em;']])
             ->add('content', TextareaType::class, ['attr' => ['rows' => 10, 'style' => 'resize: vertical']])
-            ->add('link', TextType::class, ['required' => false])
+            ->add('link', TextType::class, ['required' => false, 'empty_data' => ''])
             ->add('save', SubmitType::class)
-            ->setDataMapper($this);
+            ->setDataMapper(new SentenceMapper($options['document']));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -55,49 +51,6 @@ class SentenceType extends AbstractType implements DataMapperInterface
             }
         ]);
         $resolver->setAllowedTypes('document', Document::class);
-    }
-
-    public function mapDataToForms($viewData, $forms)
-    {
-        // there is no data yet, so nothing to prepopulate
-        if (null === $viewData) {
-            return;
-        }
-
-        // invalid data type
-        if (!$viewData instanceof Sentence) {
-            throw new UnexpectedTypeException($viewData, Sentence::class);
-        }
-
-        /** @var FormInterface[] $forms */
-        $forms = iterator_to_array($forms);
-
-        // initialize form field values
-        $forms['key']->setData($viewData->getKey());
-        $forms['category']->setData($viewData->getCategory());
-        $forms['content']->setData($viewData->getContent());
-        $forms['link']->setData($viewData->getLink());
-    }
-
-    public function mapFormsToData($forms, &$viewData)
-    {
-        // invalid data type
-        if (!$viewData instanceof Sentence) {
-            throw new UnexpectedTypeException($viewData, Sentence::class);
-        }
-        /** @var FormInterface[] $forms */
-        $forms = iterator_to_array($forms);
-        $viewData->setCategory($forms['category']->getData());
-        $viewData->setContent($forms['content']->getData());
-        $viewData->setLink($forms['link']->getData() ?: '');
-
-        if (!$this->parentDocument->offsetExists($viewData->getKey())) {
-            $this->parentDocument[] = $viewData;
-        }
-
-        if ($viewData->getKey() !== $forms['key']->getData()) {
-            $viewData->renameKey($this->parentDocument, $forms['key']->getData());
-        }
     }
 
 }
