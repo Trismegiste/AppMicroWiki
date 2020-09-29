@@ -3,11 +3,10 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +33,7 @@ class SentenceType extends AbstractType
             ])
             ->add('category', TextareaType::class, ['attr' => ['rows' => 1, 'style' => 'resize: none; height:2.27em;']])
             ->add('content', TextareaType::class, ['attr' => ['rows' => 10, 'style' => 'resize: vertical']])
-            ->add('link', TextType::class, ['required' => false, 'empty_data' => ''])
+            ->add('link', UrlType::class, ['required' => false, 'empty_data' => ''])
             ->add('save', SubmitType::class)
             ->setDataMapper(new SentenceMapper($options['document']));
     }
