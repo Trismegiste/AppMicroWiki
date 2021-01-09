@@ -7,6 +7,7 @@ use Trismegiste\MicroWiki\Sentence;
 class DocumentTest extends TestCase
 {
 
+    /** @var Document */
     protected $sut;
 
     protected function setUp(): void
@@ -97,13 +98,24 @@ class DocumentTest extends TestCase
         $this->assertEquals('NameOk', $result[0]->getKey());
     }
 
-    public function testSearchKeysStartingBy()
+    public function testEscapingForSearchKeysStartingBy()
     {
         $uniqueKey = 'R+C';
         $target = new Sentence($uniqueKey);
         $this->sut[] = $target;
 
         $result = $this->sut->searchKeysStartingBy('r+c');
+        $this->assertCount(1, $result);
+        $this->assertEquals($uniqueKey, $result[0]);
+    }
+
+    public function testSpecialCharForSearchKeysStartingBy()
+    {
+        $uniqueKey = 'Æmenotep';
+        $target = new Sentence($uniqueKey);
+        $this->sut[] = $target;
+
+        $result = $this->sut->searchKeysStartingBy('Æm');
         $this->assertCount(1, $result);
         $this->assertEquals($uniqueKey, $result[0]);
     }
