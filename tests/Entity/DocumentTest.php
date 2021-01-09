@@ -108,4 +108,16 @@ class DocumentTest extends TestCase
         $this->assertEquals($uniqueKey, $result[0]);
     }
 
+    public function testSearchLinksStartingBy()
+    {
+        $uniqueKey = 'name';
+        $target = new Sentence($uniqueKey);
+        $target->setContent('link to [[R+C]]');
+        $this->sut[] = $target;
+
+        $result = $this->sut->searchLinksStartingBy('r+');
+        $this->assertCount(1, $result);
+        $this->assertEquals($uniqueKey, $result[0]);
+    }
+
 }
