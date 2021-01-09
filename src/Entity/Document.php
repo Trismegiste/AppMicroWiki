@@ -58,7 +58,7 @@ class Document extends Graph implements Root
     protected function replaceBrokenLinks(string $oldKey, string $newKey): void
     {
         foreach ($this->vertex as $sentence) {
-            $sentence->setContent(preg_replace('/\[\[(' . $oldKey . ')\]\]/', "[[$newKey]]", $sentence->getContent()));
+            $sentence->setContent(str_replace("[[$oldKey]]", "[[$newKey]]", $sentence->getContent()));
         }
     }
 
