@@ -176,7 +176,7 @@ class Document extends Graph implements Root
                 return $stc->getCategory();
             },
                 array_filter($this->vertex, function(Sentence $stc) use ($keyword) {
-                    return preg_match("|^$keyword|i", $stc->getCategory());
+                    return preg_match('|^' . preg_quote($keyword) . '|i', $stc->getCategory());
                 })));
         sort($combo);
         return array_values($combo);

@@ -119,4 +119,15 @@ class DocumentTest extends TestCase
         $this->assertEquals('R+C', $result[0]);
     }
 
+    public function testSearchCategoryStartingBy()
+    {
+        $target = new Sentence('name');
+        $target->setCategory('R+C');
+        $this->sut[] = $target;
+
+        $result = $this->sut->searchCategoryStartingBy('r+c');
+        $this->assertCount(1, $result);
+        $this->assertEquals('R+C', $result[0]);
+    }
+
 }
