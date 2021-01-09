@@ -119,7 +119,7 @@ class Document extends Graph implements Root
     {
         $report = [];
         foreach ($this->vertex as $key => $obj) {
-            if (preg_match('/\[\[' . $searchKey . '\]\]/', $obj->getContent())) {
+            if (preg_match('/\[\[' . preg_quote($searchKey) . '\]\]/', $obj->getContent())) {
                 $report[] = $obj;
             }
         }
