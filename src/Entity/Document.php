@@ -153,7 +153,7 @@ class Document extends Graph implements Root
     public function searchLinksStartingBy(string $keyword): array
     {
         return array_values(array_filter($this->getAllLinks(), function($v) use ($keyword) {
-                return preg_match("|^$keyword|i", $v);
+                return preg_match('|^' . preg_quote($keyword) . '|i', $v);
             }));
     }
 

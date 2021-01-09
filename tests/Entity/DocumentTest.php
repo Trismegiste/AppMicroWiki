@@ -103,21 +103,20 @@ class DocumentTest extends TestCase
         $target = new Sentence($uniqueKey);
         $this->sut[] = $target;
 
-        $result = $this->sut->searchKeysStartingBy('r+');
+        $result = $this->sut->searchKeysStartingBy('r+c');
         $this->assertCount(1, $result);
         $this->assertEquals($uniqueKey, $result[0]);
     }
 
     public function testSearchLinksStartingBy()
     {
-        $uniqueKey = 'name';
-        $target = new Sentence($uniqueKey);
+        $target = new Sentence('name');
         $target->setContent('link to [[R+C]]');
         $this->sut[] = $target;
 
-        $result = $this->sut->searchLinksStartingBy('r+');
+        $result = $this->sut->searchLinksStartingBy('r+c');
         $this->assertCount(1, $result);
-        $this->assertEquals($uniqueKey, $result[0]);
+        $this->assertEquals('R+C', $result[0]);
     }
 
 }
