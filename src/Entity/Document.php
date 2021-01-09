@@ -128,7 +128,7 @@ class Document extends Graph implements Root
     }
 
     /**
-     * Searches all KEYS of sentences. Usage : autocomplete
+     * Searches all KEYS of sentences starting by a keyword. Usage : autocomplete
      * @param string $keyword
      * @return array
      */
@@ -136,7 +136,7 @@ class Document extends Graph implements Root
     {
         $report = [];
         foreach ($this->vertex as $key => $stc) {
-            if (preg_match("|^$keyword|i", $key)) {
+            if (preg_match('|^' . preg_quote($keyword) . '|i', $key)) {
                 $report[] = $key;
             }
         }

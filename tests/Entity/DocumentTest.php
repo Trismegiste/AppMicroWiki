@@ -94,6 +94,18 @@ class DocumentTest extends TestCase
 
         $result = $this->sut->findVertexByLink('R+C');
         $this->assertCount(1, $result);
+        $this->assertEquals('NameOk', $result[0]->getKey());
+    }
+
+    public function testSearchKeysStartingBy()
+    {
+        $uniqueKey = 'R+C';
+        $target = new Sentence($uniqueKey);
+        $this->sut[] = $target;
+
+        $result = $this->sut->searchKeysStartingBy('r+');
+        $this->assertCount(1, $result);
+        $this->assertEquals($uniqueKey, $result[0]);
     }
 
 }
