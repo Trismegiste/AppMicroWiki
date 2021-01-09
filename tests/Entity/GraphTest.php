@@ -5,43 +5,51 @@ use Trismegiste\MicroWiki\DuplicateKeyException;
 use Trismegiste\MicroWiki\Graph;
 use Trismegiste\MicroWiki\Vertex;
 
-class GraphTest extends TestCase {
+class GraphTest extends TestCase
+{
 
     protected $sut;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->sut = new Graph();
     }
 
-    protected function createVertexMock(string $key): Vertex {
+    protected function createVertexMock(string $key): Vertex
+    {
         $vertex = $this->createMock(Vertex::class);
         $vertex->expects($this->atLeastOnce())
-                ->method('getKey')
-                ->willReturn($key);
+            ->method('getKey')
+            ->willReturn($key);
 
         return $vertex;
     }
 
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         unset($this->sut);
     }
 
-    public function testEmpty() {
+    public function testEmpty()
+    {
         $this->assertCount(0, $this->sut);
     }
 
-    public function testNonExitingKey() {
+    public function testNonExitingKey()
+    {
         $this->expectException(OutOfBoundsException::class);
         $this->sut[123];
     }
 
-    public function testPush() {
+    public function testPush()
+    {
         $vertex = $this->createStub(Vertex::class);
         $this->sut[] = $vertex;
         $this->assertCount(1, $this->sut);
     }
 
-    public function testPushAndIndexing() {
+    public function testPushAndIndexing()
+    {
         $vertex = $this->createVertexMock('42');
 
         $this->sut[] = $vertex;
@@ -51,18 +59,32 @@ class GraphTest extends TestCase {
         $this->assertEquals($vertex, $this->sut['42']);
     }
 
-    public function testFailSetWithDumb() {
+    public function testPushAndIndexingInteger()
+    {
+        $vertex = $this->createVertexMock(42);
+
+        $this->sut[] = $vertex;
+
+        $this->assertCount(1, $this->sut);
+        $this->assertArrayHasKey('42', $this->sut);
+        $this->assertEquals($vertex, $this->sut['42']);
+    }
+
+    public function testFailSetWithDumb()
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->sut[] = new stdClass();
     }
 
-    public function testFailSetWithKey() {
+    public function testFailSetWithKey()
+    {
         $this->expectException(LogicException::class);
         $vertex = $this->createStub(Vertex::class);
         $this->sut['42'] = $vertex;
     }
 
-    public function testDuplicateKey() {
+    public function testDuplicateKey()
+    {
         $this->expectException(DuplicateKeyException::class);
 
         $vertex = $this->createVertexMock('42');
@@ -71,7 +93,8 @@ class GraphTest extends TestCase {
         $this->sut[] = $vertex;
     }
 
-    public function testUnset() {
+    public function testUnset()
+    {
         $vertex = $this->createVertexMock('42');
 
         $this->sut[] = $vertex;
@@ -81,7 +104,8 @@ class GraphTest extends TestCase {
         $this->assertCount(0, $this->sut);
     }
 
-    public function testIterator() {
+    public function testIterator()
+    {
         $vertex = $this->createVertexMock('42');
         $this->sut[] = $vertex;
 
@@ -91,7 +115,8 @@ class GraphTest extends TestCase {
         }
     }
 
-    public function testMoveVertexToNewKey() {
+    public function testMoveVertexToNewKey()
+    {
         $this->expectException(DuplicateKeyException::class);
         $first = $this->createVertexMock('yolo');
         $this->sut[] = $first;
@@ -99,7 +124,8 @@ class GraphTest extends TestCase {
         $this->sut->moveVertexToNewKey($first, 'zogzog');
     }
 
-    public function testMoveVertexInvalid() {
+    public function testMoveVertexInvalid()
+    {
         $this->expectException(OutOfBoundsException::class);
         $first = $this->createVertexMock('yolo');
         $this->sut[] = $first;
@@ -107,7 +133,8 @@ class GraphTest extends TestCase {
         $this->sut->moveVertexToNewKey($second, 'other');
     }
 
-    public function testMoveVertexThief() {
+    public function testMoveVertexThief()
+    {
         $this->expectException(LogicException::class);
         $first = $this->createVertexMock('yolo');
         $this->sut[] = $first;
@@ -115,7 +142,8 @@ class GraphTest extends TestCase {
         $this->sut->moveVertexToNewKey($second, 'other');
     }
 
-    public function testMoveVertexSuccess() {
+    public function testMoveVertexSuccess()
+    {
         $first = $this->createVertexMock('yolo');
         $this->sut[] = $first;
         $this->sut->moveVertexToNewKey($first, 'other');

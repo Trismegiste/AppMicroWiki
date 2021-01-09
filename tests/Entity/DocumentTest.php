@@ -4,19 +4,23 @@ use PHPUnit\Framework\TestCase;
 use Trismegiste\MicroWiki\Document;
 use Trismegiste\MicroWiki\Sentence;
 
-class DocumentTest extends TestCase {
+class DocumentTest extends TestCase
+{
 
     protected $sut;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->sut = new Document();
     }
 
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         unset($this->sut);
     }
 
-    public function simpleEdgeFactory() {
+    public function simpleEdgeFactory()
+    {
         $origin = new Sentence('origin');
         $origin->setContent('Link to [[target]] and [[missing]]');
         $target = new Sentence('target');
@@ -27,7 +31,8 @@ class DocumentTest extends TestCase {
         ];
     }
 
-    public function testSetter() {
+    public function testSetter()
+    {
         $this->assertequals('', $this->sut->getTitle());
         $this->assertequals('', $this->sut->getDescription());
         $this->sut->setTitle('a');
@@ -37,14 +42,16 @@ class DocumentTest extends TestCase {
     }
 
     /** @dataProvider simpleEdgeFactory */
-    public function testMoveVertexToNewKeyBadKey($origin, $target) {
+    public function testMoveVertexToNewKeyBadKey($origin, $target)
+    {
         $this->sut[] = $origin;
         $this->expectException(OutOfBoundsException::class);
         $this->sut->moveVertexToNewKey($target, 'dummy');
     }
 
     /** @dataProvider simpleEdgeFactory */
-    public function testMoveVertexToNewKeySameKey($origin, $target) {
+    public function testMoveVertexToNewKeySameKey($origin, $target)
+    {
         $this->sut[] = $origin;
         $identityThief = new Sentence('origin');
         $this->expectException(LogicException::class);
@@ -52,7 +59,8 @@ class DocumentTest extends TestCase {
     }
 
     /** @dataProvider simpleEdgeFactory */
-    public function testMoveVertexToNewKey($origin, $target) {
+    public function testMoveVertexToNewKey($origin, $target)
+    {
         $this->sut[] = $origin;
         $this->sut[] = $target;
         $this->sut->moveVertexToNewKey($target, 'new target');
@@ -61,7 +69,8 @@ class DocumentTest extends TestCase {
     }
 
     /** @dataProvider simpleEdgeFactory */
-    public function testLink($origin, $target) {
+    public function testLink($origin, $target)
+    {
         $orphan = new Sentence('orphan');
         $orphan->setContent('nothing');
         $this->sut[] = $origin;
@@ -71,6 +80,20 @@ class DocumentTest extends TestCase {
         $this->assertEquals(['missing'], $this->sut->findBrokenLink());
         $this->assertEquals([$orphan], $this->sut->findOrphan());
         $this->assertEquals([$target], $this->sut->findVertexByLink('origin'));
+    }
+
+    public function testFindVertexByLink()
+    {
+        $source = new Sentence('NameOk');
+        $source->setContent('link to [[R+C]]');
+        $target = new Sentence('R+C');
+        $target->setContent('nothing');
+
+        $this->sut[] = $source;
+        $this->sut[] = $target;
+
+        $result = $this->sut->findVertexByLink('R+C');
+        $this->assertCount(1, $result);
     }
 
 }
